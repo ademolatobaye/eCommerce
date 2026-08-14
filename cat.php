@@ -1,0 +1,209 @@
+<?php 
+session_start();
+include('db_conn.php'); 
+
+$categoryName = '';
+$categoryNameDisplay = 'Category';
+
+if (isset($_GET['category']) && !empty($_GET['category'])) {
+    $categoryName = $_GET['category'];
+    $categoryNameDisplay = htmlspecialchars($categoryName);
+} elseif (isset($_GET['cat']) && !empty($_GET['cat'])) {
+    $cat_id = (int)$_GET['cat'];
+    $cat_sql = "SELECT categoryname FROM category WHERE id = '$cat_id'";
+    $cat_res = mysqli_query($conn, $cat_sql);
+    if($cat_res && mysqli_num_rows($cat_res) > 0){
+        $c_row = mysqli_fetch_assoc($cat_res);
+        $categoryName = $c_row['categoryname'];
+        $categoryNameDisplay = htmlspecialchars($categoryName);
+    }
+}
+
+if (empty($categoryName)) {
+    // If no category is found or provided, redirect back to shop
+    header("Location: shop.php");
+    exit();
+}
+
+$categoryNameEscaped = mysqli_real_escape_string($conn, $categoryName);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>DEE MART || <?php echo strtoupper($categoryNameDisplay); ?> PRODUCTS</title>
+
+    <link rel="icon" type="image/png" href="assets/images/icons/favicon.png">
+
+    <style>
+        .product-media img {
+            width: 100%;
+            height: 200px; 
+            object-fit: cover; 
+        }
+        .product-wrap {
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <script>
+        WebFontConfig = {
+            google: { families: ['Poppins:400,500,600,700'] }
+        };
+        (function (d) {
+            var wf = d.createElement('script'), s = d.scripts[0];
+            wf.src = 'assets/js/webfont.js';
+            wf.async = true;
+            s.parentNode.insertBefore(wf, s);
+        })(document);
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendor/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.min.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+
+        <?php 
+        include("header.php"); 
+        ?>
+
+        <main class="main">
+            <nav class="breadcrumb-nav">
+                <div class="container">
+                    <ul class="breadcrumb bb-no">
+                        <li><a href="index.php">Home</a></li>
+                        <li><a href="shop.php">Shop</a></li>
+                        <li><?php echo $categoryNameDisplay; ?></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="page-content mb-10">
+                <div class="container">
+                    <div class="shop-content">
+                        <div class="main-content">
+                            <?php
+                            // PAGINATION LOGIC
+                            $limit = 30; 
+                            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                            if ($page < 1) { $page = 1; }
+                            $offset = ($page - 1) * $limit;
+
+                            $sql = "SELECT * FROM `product_table` WHERE category='$categoryNameEscaped' ORDER BY `product_id` ASC LIMIT $limit OFFSET $offset";
+                            $result = mysqli_query($conn, $sql);
+                            ?>
+
+                            <div class="product-wrapper row cols-lg-4 cols-md-3 cols-sm-2 cols-2">
+                                <?php
+                                if (mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                ?>
+                                    <div class="product-wrap">
+                                        <div class="product text-center">
+                                            <figure class="product-media">
+                                                <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                                    <img src="dashboard/productupload/<?php echo $row['productimage'];?>" alt="Product" />
+                                                </a>
+                                            </figure>
+
+                                            <div class="product-details">
+                                                <div class="product-cat">
+                                                    <a href="cat.php?category=<?php echo urlencode($row['category']); ?>"><?php echo $row['category']; ?></a>
+                                                </div>
+                                                <h3 class="product-name">
+                                                    <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                                        <?php echo $row['productname']; ?>
+                                                    </a>
+                                                </h3>
+                                                <div class="product-price">
+                                                    &#8358; <?php echo number_format($row['sellingprice'], 2); ?>   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php
+                                    }
+                                } else {
+                                    echo "<p>No products found in this category.</p>";
+                                }
+                                ?>
+                            </div>
+
+                            <?php
+                            // PAGINATION LINKS
+                            $count_sql = "SELECT COUNT(*) AS total FROM `product_table` WHERE category='$categoryNameEscaped'";
+                            $count_result = mysqli_query($conn, $count_sql);
+                            $count_row = mysqli_fetch_assoc($count_result);
+                            $total_products = $count_row['total'];
+                            $total_pages = ceil($total_products / $limit);
+
+                            if ($total_pages > 1) {
+                                echo '<div class="pagination" style="margin-top:30px; text-align:center;">';
+                                
+                                // Preserve URL parameters for pagination
+                                $queryParams = $_GET;
+                                unset($queryParams['page']);
+                                $queryString = http_build_query($queryParams);
+                                $baseUrl = "?" . ($queryString ? $queryString . "&" : "");
+                                
+                                if ($page > 1) {
+                                    echo "<a href='".$baseUrl."page=".($page - 1)."' style='margin-right:10px;'>« Prev</a>";
+                                }
+                                for ($i = 1; $i <= $total_pages; $i++) {
+                                    if ($i == $page) {
+                                        echo "<strong style='margin:0 5px;'>$i</strong>";
+                                    } else {
+                                        echo "<a href='".$baseUrl."page=$i' style='margin:0 5px;'>$i</a>";
+                                    }
+                                }
+                                if ($page < $total_pages) {
+                                    echo "<a href='".$baseUrl."page=".($page + 1)."' style='margin-left:10px;'>Next »</a>";
+                                }
+                                echo '</div>';
+                            }
+                            ?>               
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <?php include("footer.php"); ?>
+    </div> 
+</body>
+</html>
+    <!-- End of Page Wrapper -->
+
+    <?php
+    include("sticky-footer.php");
+    ?>
+   
+    <!-- Start of Scroll Top -->
+    <a id="scroll-top" class="scroll-top" href="#top" title="Top" role="button"> <i class="w-icon-angle-up"></i> <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70"> <circle id="progress-indicator" fill="transparent" stroke="#000000" stroke-miterlimit="10" cx="35" cy="35" r="34" style="stroke-dasharray: 16.4198, 400;"></circle> </svg> </a>
+    <!-- End of Scroll Top -->
+
+    <?php
+    include("mobile-menu.php");
+    ?>
+
+    <!-- Plugin JS File -->
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="assets/vendor/sticky/sticky.js"></script>
+    <script src="assets/vendor//jquery.plugin/jquery.plugin.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/nouislider/nouislider.min.js"></script>
+    <script src="assets/vendor/jquery.countdown/jquery.countdown.min.js"></script>
+    <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/vendor/zoom/jquery.zoom.js"></script>
+    <script src="assets/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+    <!-- Main JS -->
+    <script src="assets/js/main.min.js"></script>
+</body>
+</html>

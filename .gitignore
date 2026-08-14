@@ -1,0 +1,26 @@
+# Composer dependencies
+/vendor/
+
+# Environment/config files with secrets
+.env
+config.php
+db_conn.php
+
+# Logs
+*.log
+error.log
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Uploaded/generated files (adjust to your project)
+/dashboard/assets/
+/dashboard/blogupload/
+/dashboard/productupload/
+/assets/
+/reg/images/
+/cache/
+*.cache

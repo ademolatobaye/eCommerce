@@ -1,0 +1,9 @@
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-SSL} !on
+RewriteCond %{HTTP_HOST} ^dapobespoke\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.dapobespoke\.com$
+RewriteRule ^/?$ "https\:\/\/dapobespoke\.com\/" [R=301,L]

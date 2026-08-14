@@ -1,0 +1,254 @@
+[30-Apr-2026 19:50:54 UTC] PHP Fatal error:  Uncaught Error: Class "mysqli" not found in /home/pocketve/public_html/ademola/e-commerce/reg/db_conn.php:4
+Stack trace:
+#0 /home/pocketve/public_html/ademola/e-commerce/reg/user-login.php(5): require()
+#1 {main}
+  thrown in /home/pocketve/public_html/ademola/e-commerce/reg/db_conn.php on line 4
+[30-Apr-2026 20:08:08 UTC] PHP Fatal error:  Uncaught Error: Class "mysqli" not found in /home/pocketve/public_html/ademola/e-commerce/reg/db_conn.php:4
+Stack trace:
+#0 /home/pocketve/public_html/ademola/e-commerce/reg/user-login.php(5): require()
+#1 {main}
+  thrown in /home/pocketve/public_html/ademola/e-commerce/reg/db_conn.php on line 4
+[30-Apr-2026 20:08:19 UTC] PHP Fatal error:  Uncaught Error: Class "mysqli" not found in /home/pocketve/public_html/ademola/e-commerce/reg/db_conn.php:4
+Stack trace:
+#0 /home/pocketve/public_html/ademola/e-commerce/reg/user-login.php(5): require()
+#1 {main}
+  thrown in /home/pocketve/public_html/ademola/e-commerce/reg/db_conn.php on line 4
+[30-Apr-2026 20:08:21 UTC] PHP Fatal error:  Uncaught Error: Class "mysqli" not found in /home/pocketve/public_html/ademola/e-commerce/reg/db_conn.php:4
+Stack trace:
+#0 /home/pocketve/public_html/ademola/e-commerce/reg/user-login.php(5): require()
+#1 {main}
+  thrown in /home/pocketve/public_html/ademola/e-commerce/reg/db_conn.php on line 4
+[30-Apr-2026 20:11:26 UTC] PHP Fatal error:  Uncaught Error: Class "mysqli" not found in /home/pocketve/public_html/ademola/e-commerce/reg/db_conn.php:4
+Stack trace:
+#0 /home/pocketve/public_html/ademola/e-commerce/reg/user-login.php(5): include()
+#1 {main}
+  thrown in /home/pocketve/public_html/ademola/e-commerce/reg/db_conn.php on line 4
+[30-Apr-2026 20:11:30 UTC] PHP Fatal error:  Uncaught Error: Class "mysqli" not found in /home/pocketve/public_html/ademola/e-commerce/reg/db_conn.php:4
+Stack trace:
+#0 /home/pocketve/public_html/ademola/e-commerce/reg/user-login.php(5): include()
+#1 {main}
+  thrown in /home/pocketve/public_html/ademola/e-commerce/reg/db_conn.php on line 4
+[30-Apr-2026 22:25:42 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/frontend/mobile-menu.php on line 40
+[30-Apr-2026 21:25:44 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/frontend/mobile-menu.php on line 40
+[30-Apr-2026 22:25:50 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/frontend/mobile-menu.php on line 40
+[30-Apr-2026 22:25:52 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/frontend/mobile-menu.php on line 40
+[04-May-2026 13:13:00 Africa/Lagos] PHP Warning:  Undefined variable $customer_uin in /home/pocketve/public_html/ademola/e-commerce/reg/user-register.php on line 107
+[04-May-2026 18:48:36 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 40
+[04-May-2026 17:48:38 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 40
+[04-May-2026 18:49:21 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 40
+[04-May-2026 18:49:23 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 40
+[04-May-2026 18:49:30 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 40
+[04-May-2026 18:49:47 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 40
+[04-May-2026 18:49:50 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 40
+[04-May-2026 17:49:51 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 40
+[06-May-2026 17:15:57 UTC] PHP Warning:  include(../frontend/mobile-menu.php): Failed to open stream: No such file or directory in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:15:57 UTC] PHP Warning:  include(): Failed opening '../frontend/mobile-menu.php' for inclusion (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:03 UTC] PHP Warning:  include(../frontend/mobile-menu.php): Failed to open stream: No such file or directory in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:03 UTC] PHP Warning:  include(): Failed opening '../frontend/mobile-menu.php' for inclusion (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:05 UTC] PHP Warning:  include(../frontend/mobile-menu.php): Failed to open stream: No such file or directory in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:05 UTC] PHP Warning:  include(): Failed opening '../frontend/mobile-menu.php' for inclusion (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:39 UTC] PHP Warning:  include(../frontend/mobile-menu.php): Failed to open stream: No such file or directory in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:39 UTC] PHP Warning:  include(): Failed opening '../frontend/mobile-menu.php' for inclusion (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:43 UTC] PHP Warning:  include(../frontend/mobile-menu.php): Failed to open stream: No such file or directory in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:43 UTC] PHP Warning:  include(): Failed opening '../frontend/mobile-menu.php' for inclusion (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:44 UTC] PHP Warning:  include(../frontend/mobile-menu.php): Failed to open stream: No such file or directory in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:44 UTC] PHP Warning:  include(): Failed opening '../frontend/mobile-menu.php' for inclusion (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:46 UTC] PHP Warning:  include(../frontend/mobile-menu.php): Failed to open stream: No such file or directory in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:46 UTC] PHP Warning:  include(): Failed opening '../frontend/mobile-menu.php' for inclusion (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:50 UTC] PHP Warning:  include(../frontend/mobile-menu.php): Failed to open stream: No such file or directory in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 17:16:50 UTC] PHP Warning:  include(): Failed opening '../frontend/mobile-menu.php' for inclusion (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/pocketve/public_html/ademola/e-commerce/reg/staff-login.php on line 204
+[06-May-2026 18:41:39 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 18:41:50 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 18:42:33 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 18:42:46 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 17:42:49 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 17:43:20 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 17:44:04 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 17:44:06 UTC] PHP Fatal error:  Cannot use try without catch or finally in /home/pocketve/public_html/ademola/e-commerce/reg/user-register.php on line 128
+[06-May-2026 17:44:11 UTC] PHP Fatal error:  Cannot use try without catch or finally in /home/pocketve/public_html/ademola/e-commerce/reg/user-register.php on line 128
+[06-May-2026 18:47:40 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 18:48:30 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 18:48:33 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 18:48:36 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 18:48:41 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 18:49:32 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 18:49:36 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 18:49:39 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 18:49:40 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 18:49:41 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 18:50:22 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[06-May-2026 17:50:26 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[07-May-2026 18:10:14 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:02:21 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:03:14 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:03:16 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:03:19 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:03:23 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:03:24 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:03:26 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:03:27 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:03:28 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:03:29 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:03:29 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:03:30 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:03:30 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:03:30 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:03:44 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 01:04:05 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:04:07 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:06:10 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:06:14 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:07:10 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:07:16 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:07:17 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:07:18 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:07:19 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:07:50 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:07:55 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:07:58 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:08:27 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:08:28 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:09:12 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:09:17 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:09:25 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 02:09:29 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 08:12:41 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 08:12:48 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 07:12:51 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 08:12:56 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 07:13:06 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 13:24:13 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 12:24:15 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 12:24:48 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 13:24:50 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 13:26:37 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 12:26:44 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:13:25 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:14:15 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:14:36 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:15:09 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:15:41 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:16:04 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:17:44 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:17:56 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:18:18 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:18:19 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:19:00 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:25:17 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:25:20 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:25:46 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:26:22 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:26:25 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:26:44 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:28:23 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:28:49 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:31:06 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:31:32 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:36:46 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:37:10 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:39:35 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:39:55 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:43:11 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:43:24 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 15:43:26 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 15:44:12 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:44:13 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 16:44:34 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[08-May-2026 15:44:35 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:12:01 Africa/Lagos] PHP Warning:  Undefined array key "g-recaptcha-response" in /home/pocketve/public_html/ademola/e-commerce/reg/index.php on line 114
+[09-May-2026 22:12:01 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:12:29 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 21:12:32 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 21:12:52 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:12:55 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:13:24 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 21:13:27 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 21:13:34 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 21:13:36 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:28:30 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:28:40 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:31:22 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:36:18 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:36:22 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:36:24 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:36:34 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:38:12 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 23:29:34 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:29:53 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 22:30:45 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[09-May-2026 23:30:47 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/ademola/e-commerce/mobile-menu.php on line 39
+[10-May-2026 18:37:44 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 18:38:05 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 17:38:07 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 18:44:33 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 18:44:46 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:27:48 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:27:57 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:28:06 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:29:33 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:39:54 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:39:55 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:40:01 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:40:01 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:40:09 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:40:10 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:40:14 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:40:15 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:40:19 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:40:25 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:40:26 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:40:30 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:40:31 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:40:36 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:40:37 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:46:11 Africa/Lagos] PHP Warning:  Undefined array key "customer_name" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:46:44 Africa/Lagos] PHP Warning:  Undefined array key "customer_name" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:46:44 Africa/Lagos] PHP Warning:  Undefined array key "customer_name" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:47:28 Africa/Lagos] PHP Warning:  Undefined array key "customername" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 20:47:30 UTC] PHP Warning:  Undefined array key "customername" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 20:47:38 UTC] PHP Warning:  Undefined array key "customername" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:47:40 Africa/Lagos] PHP Warning:  Undefined array key "customername" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:47:48 Africa/Lagos] PHP Warning:  Undefined array key "customername" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:47:48 Africa/Lagos] PHP Warning:  Undefined array key "customername" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:52:59 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:52:59 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 39
+[10-May-2026 21:55:02 Africa/Lagos] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 3
+[10-May-2026 21:55:02 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 43
+[10-May-2026 21:55:35 Africa/Lagos] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 3
+[10-May-2026 21:55:35 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 43
+[10-May-2026 21:55:39 Africa/Lagos] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 3
+[10-May-2026 21:55:39 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 43
+[10-May-2026 21:55:41 Africa/Lagos] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 3
+[10-May-2026 21:55:41 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 43
+[10-May-2026 21:55:43 Africa/Lagos] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 3
+[10-May-2026 21:55:43 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 43
+[10-May-2026 21:55:48 Africa/Lagos] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 3
+[10-May-2026 21:55:48 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 43
+[10-May-2026 20:55:52 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 3
+[10-May-2026 20:55:52 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 43
+[10-May-2026 20:56:11 UTC] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 42
+[10-May-2026 21:56:16 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 42
+[10-May-2026 21:56:20 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 42
+[10-May-2026 21:56:21 Africa/Lagos] PHP Warning:  Undefined array key "fullname" in /home/pocketve/public_html/e-commerce/mobile-menu.php on line 42
+[10-May-2026 21:08:32 UTC] PHP Warning:  Undefined variable $_SESSIONcustomer_ in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 10
+[10-May-2026 21:08:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 10
+[10-May-2026 21:08:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 13
+[10-May-2026 21:08:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 14
+[10-May-2026 21:12:59 UTC] PHP Warning:  Undefined variable $_SESSIONcustomer_ in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 10
+[10-May-2026 21:12:59 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 10
+[10-May-2026 21:12:59 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 13
+[10-May-2026 21:12:59 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 14
+[10-May-2026 21:13:46 UTC] PHP Warning:  Undefined variable $_SESSIONcustomer_ in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 10
+[10-May-2026 21:13:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 10
+[10-May-2026 21:13:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 13
+[10-May-2026 21:13:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 14
+[10-May-2026 21:13:56 UTC] PHP Warning:  Undefined variable $_SESSIONcustomer_ in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 10
+[10-May-2026 21:13:56 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 10
+[10-May-2026 21:13:56 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 13
+[10-May-2026 21:13:56 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 14
+[10-May-2026 21:16:40 UTC] PHP Warning:  Undefined array key "otp" in /home/pocketve/public_html/e-commerce/reg/user-resend-newotp.php on line 18
+[10-May-2026 21:21:14 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'email='ademolaomomeji@gmail.com'' at line 1 in /home/pocketve/public_html/e-commerce/reg/user-newotp.php:125
+Stack trace:
+#0 /home/pocketve/public_html/e-commerce/reg/user-newotp.php(125): mysqli_query()
+#1 {main}
+  thrown in /home/pocketve/public_html/e-commerce/reg/user-newotp.php on line 125

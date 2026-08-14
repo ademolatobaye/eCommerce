@@ -1,0 +1,7 @@
+[07-May-2026 08:28:29 Africa/Lagos] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/ademola/e-commerce/dashboard/view-product.php on line 108
+[07-May-2026 08:28:29 Africa/Lagos] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/ademola/e-commerce/dashboard/view-product.php on line 135
+[07-May-2026 08:28:29 Africa/Lagos] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/ademola/e-commerce/dashboard/view-product.php on line 146
+[07-May-2026 08:28:29 Africa/Lagos] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/ademola/e-commerce/dashboard/view-product.php on line 147
+[07-May-2026 08:28:29 Africa/Lagos] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in /home/pocketve/public_html/ademola/e-commerce/dashboard/view-product.php on line 147
+[07-May-2026 08:28:29 Africa/Lagos] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/ademola/e-commerce/dashboard/view-product.php on line 186
+[07-May-2026 08:28:29 Africa/Lagos] PHP Warning:  Trying to access array offset on value of type null in /home/pocketve/public_html/ademola/e-commerce/dashboard/view-product.php on line 219
