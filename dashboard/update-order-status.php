@@ -142,7 +142,8 @@ $tracking_val = isset($order['tracking_number']) ? $order['tracking_number'] : '
                                                         Queue::dispatch('send_order_status_email', $jobPayload, $conn);
                                                     }
 
-                                                    echo "<script>alert('Order status successfully updated to {$order_status} and notification email queued for delivery.'); window.location.href='orders.php';</script>";
+                                                    echo "<script>alert('Order status successfully updated to {$order_status} and notification email queued for delivery.');
+                                                    window.location.href='orders.php';</script>";
                                                     exit();
                                                 } else {
                                                     echo "<div class='alert alert-danger'>Error updating order status: " . mysqli_error($conn) . "</div>";
