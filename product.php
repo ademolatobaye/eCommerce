@@ -458,7 +458,7 @@ $quantity = $product_row['quantity'];
                                     <div class="swiper-wrapper row cols-lg-3 cols-md-4 cols-sm-3 cols-2">
 
                                     <?php
-                                    $sql = "SELECT * FROM `product_table` WHERE category='$category' ORDER BY `product_id` ASC";
+                                    $sql = "SELECT * FROM `product_table` WHERE category='$category' AND uin !='$uin' ORDER BY `product_id` ASC";
      $result = mysqli_query($conn, $sql);
      if (mysqli_num_rows($result) > 0) {
          while ($row = mysqli_fetch_array($result)) {
@@ -618,7 +618,7 @@ $quantity = $product_row['quantity'];
                                                     <div class="widget-col swiper-slide">
 
                                                         <?php
-     $sql = "SELECT * FROM `product_table` ORDER BY `product_id` DESC LIMIT 0, 5";
+     $sql = "SELECT * FROM `product_table` WHERE uin !='$uin' ORDER BY RAND() LIMIT 4";
      $result = mysqli_query($conn, $sql);
      if (mysqli_num_rows($result) > 0) {
          while ($row = mysqli_fetch_array($result)) {
