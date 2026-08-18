@@ -9,13 +9,11 @@ ini_set('display_errors', 1);
         $identifier = mysqli_real_escape_string($conn, $identifier);
 
         $password = stripslashes($_POST['password']);
-        $password = mysqli_real_escape_string($conn, $password);
 
         // Check if identifier matches either email or phone
         $query = "
         SELECT * FROM `customertable` 
         WHERE (`customer_email` = '$identifier' OR `phone` = '$identifier') 
-        AND password = PASSWORD('$password') 
         AND `status` = 'Verified' 
         LIMIT 1
     ";
@@ -26,29 +24,26 @@ ini_set('display_errors', 1);
         if ($rows == 1) {
             $customer = mysqli_fetch_assoc($result);
 
-        // Set session variables
-        $_SESSION['customer_email'] = $customer['customer_email'];
-        $_SESSION['fullname'] = $customer['fullname'];
-        $_SESSION['customer_uin'] = $customer['customer_uin'];
+            if (password_verify($password, $customer['password'])) {
 
-        // Restore existing invoicenumber if user has a pending cart
-        $customer_uin = $customer['customer_uin'];
-        $invoice_check = mysqli_query($conn, "SELECT invoicenumber FROM invoiceorder WHERE customer_uin = '$customer_uin' AND paymentstatus = 'Pending' LIMIT 1");
-        if (mysqli_num_rows($invoice_check) > 0) {
-            $invoice_row = mysqli_fetch_assoc($invoice_check);
-            $_SESSION['invoicenumber'] = $invoice_row['invoicenumber'];
-        }
+                // Set session variables
+                $_SESSION['customer_email'] = $customer['customer_email'];
+                $_SESSION['fullname'] = $customer['fullname'];
+                $_SESSION['customer_uin'] = $customer['customer_uin'];
 
-            
-            // Role-based redirection fallback
-            if ($customer['status'] == 'Verified') {
+                // Restore existing invoicenumber if user has a pending cart
+                $customer_uin = $customer['customer_uin'];
+                $invoice_check = mysqli_query($conn, "SELECT invoicenumber FROM invoiceorder WHERE customer_uin = '$customer_uin' AND paymentstatus = 'Pending' LIMIT 1");
+                if (mysqli_num_rows($invoice_check) > 0) {
+                    $invoice_row = mysqli_fetch_assoc($invoice_check);
+                    $_SESSION['invoicenumber'] = $invoice_row['invoicenumber'];
+                }
+
                 header("Location: ../index.php");
                 exit();
-            } elseif ($customer['status'] != 'Verified') {
-                header("Location: user-login.php");
-                
+
             } else {
-                echo "<script>alert('Unregistered Customer. Please ensure you register.'); location.href='index.php';</script>";
+                echo "<script>alert('Invalid customer login credential.'); window.location.href='user-login.php';</script>";
             }
         } else {
             echo "<script>alert('Invalid customer login credential.'); window.location.href='user-login.php';</script>";

@@ -116,7 +116,10 @@ if(!isset($_SESSION["customer_email"])){
                                             $password = mysqli_real_escape_string($conn, trim($_REQUEST["password"]));
 
                                             // UPDATING VALUES INTO THE DATABASE.
-                                            $sql="UPDATE customertable SET fullname ='$fullname', phone ='$phone', `address` ='$address', `password`= PASSWORD('$password') WHERE customer_email ='$customer_email'";
+                                            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+                                            $sql = "UPDATE customertable SET fullname ='$fullname', phone ='$phone', `address` ='$address', `password`='$hashed_password'
+                                             WHERE customer_email ='$customer_email'";
                                             mysqli_query($conn, $sql) or die(mysqli_error($conn));
                                             $num = mysqli_insert_id($conn);
 
