@@ -57,12 +57,12 @@ if (isset($_POST['identifier']) && isset($_POST['password'])) {
             // Role-based redirection fallback
             if ($staff['role'] == 'Super Admin') {
                 header("Location: ../dashboard/index.php");
-            } elseif ($staff['role'] == 'Supervisor') {
-                header("Location: ../app/supervisor_dashboard");
-            } elseif ($staff['role'] == 'Admin'){
-              header("Location: ../app/admin_dashboard");
-            } elseif($staff['role'] == 'Manager') {
-              header("Location: ../app/manager_dashboard");
+            // } elseif ($staff['role'] == 'Supervisor') {
+            //     header("Location: supervisor_dashboard");
+            // } elseif ($staff['role'] == 'Admin'){
+            //   header("Location: ../app/admin_das");
+            // } elseif($staff['role'] == 'Manager') {
+            //   header("Location: ../app/manager_dashboard");
             }
             
             else {
