@@ -13,7 +13,6 @@ if (isset($_POST['identifier']) && isset($_POST['password'])) {
     $query = "
         SELECT * FROM `stafftable`
         WHERE (`email` = '$identifier' OR `phone` = '$identifier') 
-        AND password = PASSWORD('$password') 
         AND `status` = 'Verified' 
         LIMIT 1
     ";
@@ -23,34 +22,54 @@ if (isset($_POST['identifier']) && isset($_POST['password'])) {
 
     if ($rows == 1) {
         $staff = mysqli_fetch_assoc($result);
+        $stored_pass = $staff['password'];
+        $pass_valid = false;
 
-        // Set session variables
-        $_SESSION['email'] = $staff['email'];
-        $_SESSION['role'] = $staff['role'];
-        $_SESSION['fullname'] = $staff['fullname'];
-
-
-        // If staff was redirected due to timeout or not being logged in
-        if (isset($_SESSION['redirect_after_login'])) {
-            $redirect_url = $_SESSION['redirect_after_login'];
-            unset($_SESSION['redirect_after_login']);
-            header("Location: $redirect_url");
-            exit();
+        if (password_verify($password, $stored_pass)) {
+            $pass_valid = true;
+        } else {
+            // Check legacy MySQL PASSWORD() format
+            $legacy_hash = '*' . strtoupper(sha1(sha1($password, true)));
+            if ($stored_pass === $legacy_hash) {
+                $pass_valid = true;
+                // Automatically rehash legacy password to modern password_hash
+                $new_hash = password_hash($password, PASSWORD_DEFAULT);
+                $staff_id = $staff['id'];
+                mysqli_query($conn, "UPDATE `stafftable` SET `password` = '$new_hash' WHERE `id` = '$staff_id'");
+            }
         }
 
-        // Role-based redirection fallback
-        if ($staff['role'] == 'Super Admin') {
-            header("Location: ../dashboard/index.php");
-        } elseif ($staff['role'] == 'Supervisor') {
-            header("Location: ../app/supervisor_dashboard");
-        } elseif ($staff['role'] == 'Admin'){
-          header("Location: ../app/admin_dashboard");
-        } elseif($staff['role'] == 'Manager') {
-          header("Location: ../app/manager_dashboard");
-        }
-        
-        else {
-            echo "<script>alert('Unauthorized role. Please contact admin.'); location.href='staff-login.php';</script>";
+        if ($pass_valid) {
+            // Set session variables
+            $_SESSION['email'] = $staff['email'];
+            $_SESSION['role'] = $staff['role'];
+            $_SESSION['fullname'] = $staff['fullname'];
+
+
+            // If staff was redirected due to timeout or not being logged in
+            if (isset($_SESSION['redirect_after_login'])) {
+                $redirect_url = $_SESSION['redirect_after_login'];
+                unset($_SESSION['redirect_after_login']);
+                header("Location: $redirect_url");
+                exit();
+            }
+
+            // Role-based redirection fallback
+            if ($staff['role'] == 'Super Admin') {
+                header("Location: ../dashboard/index.php");
+            } elseif ($staff['role'] == 'Supervisor') {
+                header("Location: ../app/supervisor_dashboard");
+            } elseif ($staff['role'] == 'Admin'){
+              header("Location: ../app/admin_dashboard");
+            } elseif($staff['role'] == 'Manager') {
+              header("Location: ../app/manager_dashboard");
+            }
+            
+            else {
+                echo "<script>alert('Unauthorized role. Please contact admin.'); location.href='staff-login.php';</script>";
+            }
+        } else {
+            echo "<script>alert('Invalid Staff Login Credential.'); location.href='staff-login.php';</script>";
         }
     } else {
         echo "<script>alert('Invalid Staff Login Credential.'); location.href='staff-login.php';</script>";

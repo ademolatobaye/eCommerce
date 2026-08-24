@@ -120,7 +120,8 @@ if(!isset($_SESSION["email"])){
                                             file_put_contents($file, $image_base64);
 
                                             // UPDATING VALUES INTO THE DATABASE.
-                                            $sql="UPDATE stafftable SET fullname ='$fullname', phone ='$phone', `password`= PASSWORD('$password'), `role`='$role', photo='$fileName' WHERE email ='$email' OR uin ='$UIN' ";
+                                            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                                            $sql="UPDATE stafftable SET fullname ='$fullname', phone ='$phone', `password`= '$hashed_password', `role`='$role', photo='$fileName' WHERE email ='$email' OR uin ='$UIN' ";
                                             mysqli_query($conn, $sql) or die(mysqli_error($conn));
                                             $num = mysqli_insert_id($conn);
 

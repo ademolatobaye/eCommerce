@@ -106,7 +106,8 @@ if(!isset($_SESSION["customer_email"])){
                                             $_SESSION["password"] = $password;
 
                                             // UPDATING NEWLY CREATED PASSWORD ON DATABASE.
-                                            $sql = "UPDATE customertable SET `password`= PASSWORD('$password') WHERE customer_email = '$customer_email'";
+                                            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                                            $sql = "UPDATE customertable SET `password`= '$hashed_password' WHERE customer_email = '$customer_email'";
                                             $result=mysqli_query($conn, $sql);
                                             if($result){
                                                 echo "<script>alert('Password successfully changed!');

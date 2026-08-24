@@ -23,8 +23,24 @@ ini_set('display_errors', 1);
 
         if ($rows == 1) {
             $customer = mysqli_fetch_assoc($result);
+            $stored_pass = $customer['password'];
+            $pass_valid = false;
 
-            if (password_verify($password, $customer['password'])) {
+            if (password_verify($password, $stored_pass)) {
+                $pass_valid = true;
+            } else {
+                // Check legacy MySQL PASSWORD() format
+                $legacy_hash = '*' . strtoupper(sha1(sha1($password, true)));
+                if ($stored_pass === $legacy_hash) {
+                    $pass_valid = true;
+                    // Automatically rehash legacy password to modern password_hash
+                    $new_hash = password_hash($password, PASSWORD_DEFAULT);
+                    $customer_id = $customer['customer_id'];
+                    mysqli_query($conn, "UPDATE `customertable` SET `password` = '$new_hash' WHERE `customer_id` = '$customer_id'");
+                }
+            }
+
+            if ($pass_valid) {
 
                 // Set session variables
                 $_SESSION['customer_email'] = $customer['customer_email'];

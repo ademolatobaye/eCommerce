@@ -116,7 +116,8 @@ $rows = mysqli_fetch_array($result);
                                                 else{
 
                                                   // INSERTING VALUES INTO DATABASE.
-                                                $sql="INSERT INTO stafftable (email, uin, fullname, phone, `password`, `role`, `status`) VALUES ('$email', '$UIN', '$fullname', '$phone', PASSWORD('$password'), '$role', 'Verified')";
+                                                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                                                $sql="INSERT INTO stafftable (email, uin, fullname, phone, `password`, `role`, `status`) VALUES ('$email', '$UIN', '$fullname', '$phone', '$hashed_password', '$role', 'Verified')";
                                                 mysqli_query($conn, $sql) or die(mysqli_error($conn));
                                                 $num = mysqli_insert_id($conn);
                                                 if(mysqli_affected_rows($conn)!= 1){

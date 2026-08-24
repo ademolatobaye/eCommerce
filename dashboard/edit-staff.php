@@ -117,7 +117,8 @@ $staff = mysqli_fetch_assoc($result);
                                                         $password=$_REQUEST['password'];
                                                         $role=$_REQUEST['role'];
 
-                                                        $sql="UPDATE stafftable SET email='$email', fullname='$fullname', phone='$phone', `password`=PASSWORD('$password'), `role`='$role' WHERE id='$_REQUEST[id]'";
+                                                        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                                                        $sql="UPDATE stafftable SET email='$email', fullname='$fullname', phone='$phone', `password`='$hashed_password', `role`='$role' WHERE id='$_REQUEST[id]'";
                                                         if(mysqli_query($conn, $sql)){
                                                         echo "<script>alert(`Staff's details successfully updated.`);
                                                         window.location.href='view-staff.php'</script>";

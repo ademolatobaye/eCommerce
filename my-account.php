@@ -258,9 +258,25 @@ if ($order_query) {
                                         // Password change logic
                                         $password_sql = '';
                                         if (!empty($cur_password)) {
-                                            $cur_escaped = mysqli_real_escape_string($conn, $cur_password);
-                                            $pass_check = mysqli_query($conn, "SELECT customer_id FROM customertable WHERE customer_email = '$session_email' AND password = PASSWORD('$cur_escaped') LIMIT 1");
-                                            if (mysqli_num_rows($pass_check) === 0) {
+                                            $pass_check = mysqli_query($conn, "SELECT password FROM customertable WHERE customer_email = '$session_email' LIMIT 1");
+                                            if (!$pass_check || mysqli_num_rows($pass_check) === 0) {
+                                                echo '<div class="alert alert-danger">Account not found.</div>';
+                                                goto skip_update;
+                                            }
+                                            $user_row = mysqli_fetch_assoc($pass_check);
+                                            $stored_pass = $user_row['password'];
+
+                                            $pass_valid = false;
+                                            if (password_verify($cur_password, $stored_pass)) {
+                                                $pass_valid = true;
+                                            } else {
+                                                $legacy_hash = '*' . strtoupper(sha1(sha1($cur_password, true)));
+                                                if ($stored_pass === $legacy_hash) {
+                                                    $pass_valid = true;
+                                                }
+                                            }
+
+                                            if (!$pass_valid) {
                                                 echo '<div class="alert alert-danger">Current password is incorrect.</div>';
                                                 goto skip_update;
                                             }
@@ -272,8 +288,9 @@ if ($order_query) {
                                                 echo '<div class="alert alert-danger">New password must be at least 6 characters.</div>';
                                                 goto skip_update;
                                             }
-                                            $new_escaped = mysqli_real_escape_string($conn, $new_password);
-                                            $password_sql = ", password = PASSWORD('$new_escaped')";
+                                            $hashed_new = password_hash($new_password, PASSWORD_DEFAULT);
+                                            $new_escaped = mysqli_real_escape_string($conn, $hashed_new);
+                                            $password_sql = ", password = '$new_escaped'";
                                         }
 
                                         $update = mysqli_prepare($conn, "UPDATE customertable SET fullname = ?, customer_email = ?, phone = ? $password_sql WHERE customer_email = ?");
