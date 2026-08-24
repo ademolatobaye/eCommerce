@@ -235,26 +235,30 @@ if(!isset($_SESSION["customer_email"])){
                                             <input type="text" name="address" class="form-control" required placeholder="Enter your home address">
                                         </div>
 
-                                        <div class="form-group" style="position: relative;">
+                                        <div class="form-group">
                                             <label>Password *</label>
-                                            <input type="password" name="password" class="form-control" id="password" required placeholder="Enter your password" oninput="return check()">
-                                            <span onclick="togglePassword('password', 'eyeIcon1')" style="position:absolute; right:15px; top:75%; transform:translateY(-50%); cursor:pointer; color:#4B0082;">
-									<svg id="eyeIcon1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-										<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-										<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-									</svg>
-   									 </span>
+                                            <div style="position: relative;">
+                                                <input type="password" name="password" class="form-control" id="password" required placeholder="Enter your password" oninput="return check()" style="padding-right: 45px;">
+                                                <span onclick="togglePassword('password', 'eyeIcon1')" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); cursor:pointer; color:#4B0082; display:inline-flex; align-items:center; z-index:10;">
+                                                    <svg id="eyeIcon1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                                                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                                                    </svg>
+                                                </span>
+                                            </div>
                                         </div>
 
-                                        <div class="form-group mb-0" style="position: relative;">
+                                        <div class="form-group mb-0">
                                             <label>Confirm Password *</label>
-                                            <input type="password" name="passwordreg" class="form-control" id="passwordReg" required placeholder="Confirm your password" oninput="return check()">
-                                            <span onclick="togglePassword('passwordReg', 'eyeIcon2')" style="position:absolute; right:15px; top:75%; transform:translateY(-50%); cursor:pointer; color:#4B0082;">
-									<svg id="eyeIcon2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-										<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-										<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-									</svg>
-								</span>
+                                            <div style="position: relative;">
+                                                <input type="password" name="passwordreg" class="form-control" id="passwordReg" required placeholder="Confirm your password" oninput="return check()" style="padding-right: 45px;">
+                                                <span onclick="togglePassword('passwordReg', 'eyeIcon2')" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); cursor:pointer; color:#4B0082; display:inline-flex; align-items:center; z-index:10;">
+                                                    <svg id="eyeIcon2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                                                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                                                    </svg>
+                                                </span>
+                                            </div>
                                         </div>
                                         <span id="error" class="d-block mt-2 font-weight-bold"></span>
 
