@@ -146,7 +146,6 @@ session_start();
 
                                             $sql = "INSERT INTO vendor_table(vendor_uin, store_name, store_slug, vendor_name, vendor_email, vendor_phone, `password`, store_address, `date`, `status`, logo, banner, `description`)
                                                     VALUES ('$vendor_uin', '$store_name', '$store_slug', '$vendor_name', '$vendor_email', '$vendor_phone', '$hashed_password', '$address', '$date', '$status', '$logo_filename', '$banner_filename', '$description')";
-                                                    mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
                                             if (mysqli_query($conn, $sql)) {
                                                 echo "<script>
