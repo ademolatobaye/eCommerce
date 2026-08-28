@@ -182,7 +182,7 @@ include("db_conn.php");
                                 <div class="swiper-slide counter-wrap">
                                     <div class="counter text-center">
                                         <?php
-                                        $sql = "SELECT * FROM `product_table`";
+                                        $sql = "SELECT * FROM `product_table` WHERE approval_status = 'Approved'";
                                         $result = mysqli_query($conn, $sql);
                                         $productCount = mysqli_num_rows($result);
                                         ?>
@@ -391,7 +391,7 @@ include("db_conn.php");
 
                         <div class="product-wrapper row cols-lg-4 cols-md-3 cols-sm-2 cols-2">
                             <?php
-                            $sql = "SELECT * FROM `product_table` ORDER BY product_id DESC LIMIT 8";
+                            $sql = "SELECT * FROM `product_table` WHERE approval_status = 'Approved' ORDER BY product_id DESC LIMIT 8";
                             $result = mysqli_query($conn, $sql);
                             if ($result && mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_array($result)) {

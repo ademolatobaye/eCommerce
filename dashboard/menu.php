@@ -410,6 +410,8 @@
 
                                                         <li><a href="orders.php" class="slide-item"> View All Orders</a></li>
 
+                                                        <li><a href="vendors.php" class="slide-item"> Manage Vendors</a></li>
+
                                                         <li class="sub-slide">
                                                             <a class="sub-side-menu__item" href="#" data-bs-toggle="modal" data-bs-target="#productreportbydate"><span
                                                                     class="sub-side-menu__label">Product's report by date</span></a>
@@ -432,3 +434,41 @@
                 </div>
             </div>
             <!--/APP-SIDEBAR-->
+
+<style>
+/* Global Dark Mode Override: Turn purple text and primary accents to white in Dark Mode */
+body.dark-mode .text-primary,
+body.dark-mode a.text-primary,
+body.dark-mode h1.text-primary,
+body.dark-mode h2.text-primary,
+body.dark-mode h3.text-primary,
+body.dark-mode h4.text-primary,
+body.dark-mode h5.text-primary,
+body.dark-mode h6.text-primary,
+body.dark-mode p.text-primary,
+body.dark-mode span.text-primary,
+body.dark-mode i.text-primary,
+body.dark-mode label.text-primary,
+body.dark-mode strong.text-primary,
+body.dark-mode b.text-primary,
+body.dark-mode .badge.bg-primary-light,
+body.dark-theme .text-primary,
+body.dark-theme a.text-primary,
+.dark-mode .text-primary,
+.dark-mode a.text-primary,
+.dark-mode [style*="color: #4b0082"],
+.dark-mode [style*="color: #4B0082"],
+.dark-mode [style*="color:#4b0082"],
+.dark-mode [style*="color:#4B0082"],
+.dark-mode [style*="color: purple"],
+.dark-mode [style*="color:purple"] {
+    color: #ffffff !important;
+}
+
+body.dark-mode .badge.bg-primary-light,
+body.dark-theme .badge.bg-primary-light,
+.dark-mode .badge.bg-primary-light {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+}
+</style>

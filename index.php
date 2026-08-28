@@ -418,19 +418,22 @@ if (isset($_SESSION['customer_email'])) {
                                 $recent_products_list = CacheManager::get('index_recent_products_limit5');
                                 if ($recent_products_list === null) {
                                     $recent_products_list = array();
-                                    $sql = "SELECT * FROM `product_table` ORDER BY product_id DESC LIMIT 5";
+                                    $sql = "SELECT * FROM `product_table` WHERE approval_status = 'Approved' ORDER BY product_id DESC LIMIT 5";
                                     $result = mysqli_query($conn, $sql);
                                     if ($result && mysqli_num_rows($result) > 0){
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             $prod_uin = mysqli_real_escape_string($conn, $row['uin']);
                                             $imgs_query = mysqli_query($conn, "SELECT * FROM `product_images` WHERE uin='$prod_uin' ORDER BY sort_order ASC");
                                             $product_images_list = array();
+                                            if (!empty($row['productimage'])) {
+                                                $product_images_list[] = $row['productimage'];
+                                            }
                                             if ($imgs_query && mysqli_num_rows($imgs_query) > 0) {
                                                 while ($img_row = mysqli_fetch_assoc($imgs_query)) {
-                                                    $product_images_list[] = $img_row['product_image'];
+                                                    if ($img_row['product_image'] !== $row['productimage']) {
+                                                        $product_images_list[] = $img_row['product_image'];
+                                                    }
                                                 }
-                                            } else if (!empty($row['productimage'])) {
-                                                $product_images_list[] = $row['productimage'];
                                             }
                                             $row['images_list'] = $product_images_list;
                                             $recent_products_list[] = $row;
@@ -452,8 +455,8 @@ if (isset($_SESSION['customer_email'])) {
                                                                 <?php foreach ($product_images_list as $img_name) { ?>
                                                                 <div class="swiper-slide">
                                                                     <figure class="product-image">
-                                                                        <img src="dashboard/productupload/<?php echo htmlspecialchars($img_name); ?>"
-                                                                            data-zoom-image="dashboard/productupload/<?php echo htmlspecialchars($img_name); ?>"
+                                                                        <img src="vendor/vendorupload/<?php echo htmlspecialchars($img_name); ?>"
+                                                                            data-zoom-image="vendor/vendorupload/<?php echo htmlspecialchars($img_name); ?>"
                                                                             alt="<?php echo htmlspecialchars($row['productname']); ?>" width="800"
                                                                             height="900">
                                                                     </figure>
@@ -485,7 +488,7 @@ if (isset($_SESSION['customer_email'])) {
                                                             <div class="product-thumbs swiper-wrapper row cols-lg-1 cols-4 gutter-sm">
                                                                 <?php foreach ($product_images_list as $img_name) { ?>
                                                                 <div class="product-thumb swiper-slide">
-                                                                    <img src="dashboard/productupload/<?php echo htmlspecialchars($img_name); ?>"
+                                                                    <img src="vendor/vendorupload/<?php echo htmlspecialchars($img_name); ?>"
                                                                         alt="Product thumb" width="60" height="68" />
                                                                 </div>
                                                                 <?php } ?>
@@ -559,7 +562,7 @@ if (isset($_SESSION['customer_email'])) {
 
                                       <div class="swiper-wrapper row cols-lg-1 cols-md-3">
          <?php
-        $sql = "SELECT * FROM `product_table` ORDER BY product_id ASC";
+        $sql = "SELECT * FROM `product_table` WHERE approval_status = 'Approved' ORDER BY product_id ASC";
         $result = mysqli_query($conn, $sql);
         $total_products = mysqli_num_rows($result);
 
@@ -567,7 +570,7 @@ if (isset($_SESSION['customer_email'])) {
     ?>
     <div class="swiper-slide product-widget-wrap">
         <?php
-            $sql = "SELECT * FROM `product_table` ORDER BY product_id ASC LIMIT $offset, 4";
+            $sql = "SELECT * FROM `product_table` WHERE approval_status = 'Approved' ORDER BY product_id ASC LIMIT $offset, 4";
             $result = mysqli_query($conn, $sql);
             if ($result && mysqli_num_rows($result) > 0) {
                 $item_count = 0;
@@ -578,7 +581,7 @@ if (isset($_SESSION['customer_email'])) {
         <div class="product product-widget <?php if ($item_count != $total_items_in_slide) { echo 'bb-no'; } ?>">
             <figure class="product-media">
                 <a href="product.php?uin=<?php echo $row['uin']; ?>">
-                    <img src="dashboard/productupload/<?php echo $row['productimage']; ?>"
+                    <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>"
                         alt="Product" width="105" height="118" />
                 </a>
             </figure>
@@ -639,7 +642,7 @@ if (isset($_SESSION['customer_email'])) {
                         }">
                             <div class="swiper-wrapper row cols-lg-6 cols-md-5 cols-sm-3 cols-2">
                                 <?php
-     $sql = "SELECT * FROM `product_table` WHERE category NOT IN ('Electronics') GROUP BY category ORDER BY product_id DESC";
+     $sql = "SELECT * FROM `product_table` WHERE approval_status = 'Approved' GROUP BY category ORDER BY product_id DESC";
      $result = mysqli_query($conn, $sql);
      if (mysqli_num_rows($result) > 0) {
          while ($row = mysqli_fetch_array($result)) {
@@ -648,7 +651,7 @@ if (isset($_SESSION['customer_email'])) {
                                 <div class="swiper-slide">
                                     <div class="top-category-card">
                                         <a href="cat.php?category=<?php echo urlencode($row['category']); ?>" class="category-media">
-                                            <img src="dashboard/productupload/<?php echo $row['productimage']; ?>" alt="Category"
+                                            <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>" alt="Category"
                                                 width="130" height="80">
                                         </a>
                                         <div class="category-content">
@@ -675,7 +678,7 @@ if (isset($_SESSION['customer_email'])) {
                 <div class="product-wrapper-1 appear-animate mb-5">
                 <div class="title-link-wrapper pb-1 mb-4">
                     <?php
-                    $sql = "SELECT * FROM `product_table` WHERE category IN ('Fashion') ORDER BY product_id DESC LIMIT 0, 8";
+                    $sql = "SELECT * FROM `product_table` WHERE category IN ('Wears') AND approval_status = 'Approved' ORDER BY product_id DESC LIMIT 0, 8";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         $row = mysqli_fetch_array($result);
@@ -690,12 +693,12 @@ if (isset($_SESSION['customer_email'])) {
                     <div class="row">
                         <div class="col-lg-3 col-sm-4 mb-4">
                             <?php
-                    $sql = "SELECT * FROM `product_table` WHERE category IN ('Fashion') ORDER BY product_id ASC LIMIT 0, 8";
+                    $sql = "SELECT * FROM `product_table` WHERE category IN ('Shoes') AND approval_status = 'Approved' ORDER BY product_id ASC LIMIT 0, 8";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         $row = mysqli_fetch_array($result);
                     ?>
-                            <div class="banner h-100 br-sm" style="background-image: url(dashboard/productupload/<?php echo $row['productimage']; ?>); 
+                            <div class="banner h-100 br-sm" style="background-image: url(vendor/vendorupload/<?php echo $row['productimage']; ?>); 
                                 background-color: #ebeced;">
                                 <div class="banner-content content-top">
                                     <h5 class="banner-subtitle font-weight-normal mb-2">Cool Stuff</h5>
@@ -729,7 +732,7 @@ if (isset($_SESSION['customer_email'])) {
                             }">
                                 <div class="swiper-wrapper row cols-xl-4 cols-lg-3 cols-2">
                                      <?php
-     $sql = "SELECT * FROM `product_table` WHERE category IN ('Fashion') ORDER BY product_id DESC LIMIT 0, 5";
+     $sql = "SELECT * FROM `product_table` WHERE category IN ('Fashion') AND approval_status = 'Approved' ORDER BY product_id DESC LIMIT 0, 5";
      $result = mysqli_query($conn, $sql);
      if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_array($result)) {
@@ -739,7 +742,7 @@ if (isset($_SESSION['customer_email'])) {
                                         <div class="product-wrap product text-center">
                                             <figure class="product-media">
                                                 <a href="product.php?uin=<?php echo $row['uin']; ?>">
-                                                    <img src="dashboard/productupload/<?php echo $row['productimage']; ?>" alt="Product"
+                                                    <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>" alt="Product"
                                                         width="216" height="243">
                                                 </a>
 
@@ -788,7 +791,7 @@ if (isset($_SESSION['customer_email'])) {
                 <div class="product-wrapper-1 appear-animate mb-8">
                     <div class="title-link-wrapper pb-1 mb-4">
                         <?php
-     $sql = "SELECT * FROM `product_table` WHERE category IN ('Gadgets')";
+     $sql = "SELECT * FROM `product_table` WHERE category IN ('Gadgets') AND approval_status = 'Approved'";
      $result = mysqli_query($conn, $sql);
      if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_array($result);
@@ -834,7 +837,7 @@ if (isset($_SESSION['customer_email'])) {
 
                                 <div class="swiper-wrapper row cols-xl-4 cols-lg-3 cols-2">
                                     <?php
-     $sql = "SELECT * FROM `product_table` WHERE category IN ('Gadgets') ORDER BY product_id DESC LIMIT 0, 5";
+     $sql = "SELECT * FROM `product_table` WHERE category IN ('Gadgets') AND approval_status = 'Approved' ORDER BY product_id DESC LIMIT 0, 5";
      $result = mysqli_query($conn, $sql);
      if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_array($result)) {
@@ -844,7 +847,7 @@ if (isset($_SESSION['customer_email'])) {
                                         <div class="product-wrap product text-center">
                                             <figure class="product-media">
                                                 <a href="product.php?uin=<?php echo $row['uin']; ?>">
-                                                    <img src="dashboard/productupload/<?php echo $row['productimage']; ?>"
+                                                    <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>"
                                                         alt="Product" width="216" height="243" />
                                                 </a>
 
@@ -891,7 +894,7 @@ if (isset($_SESSION['customer_email'])) {
 
                     <div class="title-link-wrapper pb-1 mb-4">
                         <?php
-     $sql = "SELECT * FROM `product_table` WHERE category IN ('Shoes')";
+     $sql = "SELECT * FROM `product_table` WHERE category IN ('Shoes') AND approval_status = 'Approved'";
      $result = mysqli_query($conn, $sql);
      if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_array($result);
@@ -905,12 +908,12 @@ if (isset($_SESSION['customer_email'])) {
                     <div class="row">
                         <div class="col-lg-3 col-sm-4 mb-4">
                             <?php
-     $sql = "SELECT * FROM `product_table` WHERE category IN ('Shoes') ORDER BY product_id ASC LIMIT 0, 8";
+     $sql = "SELECT * FROM `product_table` WHERE category IN ('Shoes') AND approval_status = 'Approved' ORDER BY product_id ASC LIMIT 0, 8";
      $result = mysqli_query($conn, $sql);
      if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_array($result);
         ?>
-                            <div class="banner h-100 br-sm" style="background-image: url(dashboard/productupload/<?php echo $row['productimage']; ?>); 
+                            <div class="banner h-100 br-sm" style="background-image: url(vendor/vendorupload/<?php echo $row['productimage']; ?>); 
                             background-color: #EAEFF3;">
                                 <div class="banner-content content-top">
                                     <h5 class="banner-subtitle font-weight-normal mb-2 text-white">New Kicks</h5>
@@ -941,7 +944,7 @@ if (isset($_SESSION['customer_email'])) {
                             }">
                                 <div class="swiper-wrapper row cols-xl-4 cols-lg-3 cols-2">
                             <?php
-                            $sql = "SELECT * FROM `product_table` WHERE category IN ('Shoes') ORDER BY product_id DESC";
+                            $sql = "SELECT * FROM `product_table` WHERE category IN ('Shoes') AND approval_status = 'Approved' ORDER BY product_id DESC";
                             $result = mysqli_query($conn, $sql);
                             if (mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_array($result)) {
@@ -950,7 +953,7 @@ if (isset($_SESSION['customer_email'])) {
                                 <div class="product-wrap product text-center">
                                     <figure class="product-media">
                                         <a href="product.php?uin=<?php echo $row['uin']; ?>">
-                                            <img src="dashboard/productupload/<?php echo $row['productimage']; ?>" alt="Product"
+                                            <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>" alt="Product"
                                                 width="216" height="243" />
                                         </a>
 

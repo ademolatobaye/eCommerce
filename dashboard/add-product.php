@@ -95,6 +95,7 @@ $rows = mysqli_fetch_array($result);
                                              $costprice = floatval($_REQUEST["costprice"]);
                                              $sellingprice = floatval($_REQUEST["sellingprice"]);
                                              $quantity = intval($_REQUEST["quantity"]);
+                                             $lowlevel = isset($_REQUEST["lowlevel"]) ? intval($_REQUEST["lowlevel"]) : 5;
                                              $profit = $sellingprice - $costprice;
                                              $category = mysqli_real_escape_string($conn, trim($_REQUEST["category"]));
                                              $description = mysqli_real_escape_string($conn, trim($_REQUEST["description"]));
@@ -134,16 +135,18 @@ $rows = mysqli_fetch_array($result);
                                                 echo "<script>alert('Product with this name already exists.')</script>";
                                             } else {
                                                 // INSERTING VALUES INTO product_table
-                                                $sql="INSERT INTO product_table (uin, productname, `date`, costprice, sellingprice, quantity, productimage, profit, category, `description`, staff) VALUES ('$customerID', '$productname', '$date', '$costprice', '$sellingprice', '$quantity', '$primary_image', '$profit', '$category', '$description', '$staff')";
+                                                $sql="INSERT INTO product_table (uin, productname, `date`, costprice, sellingprice, quantity, lowlevel, productimage, profit, category, `description`, staff) VALUES ('$customerID', '$productname', '$date', '$costprice', '$sellingprice', '$quantity', '$lowlevel', '$primary_image', '$profit', '$category', '$description', '$staff')";
                                                 mysqli_query($conn, $sql) or die(mysqli_error($conn));
                                                 
                                                 if(mysqli_affected_rows($conn) == 1){
-                                                    // INSERT ALL IMAGES INTO product_images TABLE
-                                                    foreach ($uploaded_images as $sort_index => $img_name) {
-                                                        $sort_order = $sort_index + 1;
-                                                        $img_escaped = mysqli_real_escape_string($conn, $img_name);
-                                                        $sql_img = "INSERT INTO product_images (uin, product_image, sort_order) VALUES ('$customerID', '$img_escaped', '$sort_order')";
-                                                        mysqli_query($conn, $sql_img);
+                                                    // INSERT SECONDARY IMAGES INTO product_images TABLE
+                                                    if (count($uploaded_images) > 1) {
+                                                        for ($i = 1; $i < count($uploaded_images); $i++) {
+                                                            $sort_order = $i;
+                                                            $img_escaped = mysqli_real_escape_string($conn, $uploaded_images[$i]);
+                                                            $sql_img = "INSERT INTO product_images (uin, product_image, sort_order) VALUES ('$customerID', '$img_escaped', '$sort_order')";
+                                                            mysqli_query($conn, $sql_img);
+                                                        }
                                                     }
 
                                                      // Flush product catalog caches
@@ -193,6 +196,13 @@ $rows = mysqli_fetch_array($result);
                                             <label class="col-md-3 form-label">Quantity :</label>
                                             <div class="col-md-9">
                                                 <input type="number" class="form-control" name="quantity" placeholder="Input product's quantity">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-4">
+                                            <label class="col-md-3 form-label">Low Level Stock Alert :</label>
+                                            <div class="col-md-9">
+                                                <input type="number" class="form-control" name="lowlevel" placeholder="Input low level stock threshold (e.g. 5)" value="5">
                                             </div>
                                         </div>
 

@@ -17,6 +17,18 @@ if(isset($_REQUEST['uin'])){
         $sellingprice = $product_row['sellingprice'];
         $productimage = $product_row['productimage'];
 
+        // Fetch Vendor Info if product belongs to a vendor
+        $vendor_info = "";
+        if (!empty($product_row['vendor_uin'])) {
+            $v_stmt = mysqli_prepare($conn, "SELECT * FROM vendor_table WHERE vendor_uin = ? LIMIT 1");
+            if ($v_stmt) {
+                mysqli_stmt_bind_param($v_stmt, "s", $product_row['vendor_uin']);
+                mysqli_stmt_execute($v_stmt);
+                $v_res = mysqli_stmt_get_result($v_stmt);
+                $vendor_info = mysqli_fetch_assoc($v_res);
+            }
+        }
+
         // Track recently viewed products in session
         if (!isset($_SESSION['recently_viewed']) || !is_array($_SESSION['recently_viewed'])) {
             $_SESSION['recently_viewed'] = array();
@@ -168,85 +180,112 @@ if(isset($_REQUEST['uin'])){
                                             }
                                         }">
                                             <div class="swiper-wrapper row cols-1 gutter-no">
-                                                <?php
-                                                $req_uin = mysqli_real_escape_string($conn, $_REQUEST['uin']);
-                                                $imgs_result = mysqli_query($conn, "SELECT * FROM `product_images` WHERE uin='$req_uin' ORDER BY sort_order ASC");
-                                                if ($imgs_result && mysqli_num_rows($imgs_result) > 0) {
-                                                    while ($img_row = mysqli_fetch_array($imgs_result)) {
-                                                ?>
-                                                        <div class="swiper-slide">
-                                                            <figure class="product-image">
-                                                                <img src="dashboard/productupload/<?php echo htmlspecialchars($img_row['product_image']); ?>"
-                                                                    data-zoom-image="dashboard/productupload/<?php echo htmlspecialchars($img_row['product_image']); ?>"
-                                                                    width="800" height="900">
-                                                            </figure>
-                                                        </div>
-                                                <?php
-                                                    }
-                                                } else if (isset($product_row['productimage']) && !empty($product_row['productimage'])) {
-                                                ?>
-                                                    <div class="swiper-slide">
-                                                        <figure class="product-image">
-                                                            <img src="dashboard/productupload/<?php echo htmlspecialchars($product_row['productimage']); ?>"
-                                                                data-zoom-image="dashboard/productupload/<?php echo htmlspecialchars($product_row['productimage']); ?>"
-                                                                width="800" height="900">
-                                                        </figure>
-                                                    </div>
-                                                <?php } ?>
-                                            </div>
-                                            <button class="swiper-button-next"></button>
-                                            <button class="swiper-button-prev"></button>
-                                            <a href="#" class="product-gallery-btn product-image-full"><i class="w-icon-zoom"></i></a>
-                                        </div>
-                                        
-                                        <div class="product-thumbs-wrap swiper-container" data-swiper-options="{
-                                            'navigation': {
-                                                'nextEl': '.swiper-button-next',
-                                                'prevEl': '.swiper-button-prev'
-                                            }
-                                        }">
-                                            <div class="product-thumbs swiper-wrapper row cols-4 gutter-sm">
-                                                <?php
-                                                $imgs_result_thumbs = mysqli_query($conn, "SELECT * FROM `product_images` WHERE uin='$req_uin' ORDER BY sort_order ASC");
-                                                if ($imgs_result_thumbs && mysqli_num_rows($imgs_result_thumbs) > 0) {
-                                                    while ($img_row = mysqli_fetch_array($imgs_result_thumbs)) {
-                                                ?>
-                                                        <div class="product-thumb swiper-slide">
-                                                            <img src="dashboard/productupload/<?php echo htmlspecialchars($img_row['product_image']); ?>"
-                                                                alt="Product Thumb" width="800" height="900">
-                                                        </div>
-                                                <?php
-                                                    }
-                                                } else if (isset($product_row['productimage']) && !empty($product_row['productimage'])) {
-                                                ?>
-                                                    <div class="product-thumb swiper-slide">
-                                                        <img src="dashboard/productupload/<?php echo htmlspecialchars($product_row['productimage']); ?>"
-                                                            alt="Product Thumb" width="800" height="900">
-                                                    </div>
-                                                <?php } ?>
-                                            </div>
-                                            <button class="swiper-button-next"></button>
-                                            <button class="swiper-button-prev"></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6 mb-4 mb-md-6">
-                                    <div class="product-details" data-sticky-options="{'minWidth': 767}">
-                                        <h1 class="product-title"><?php echo $product_row['productname']; ?></h1>
-                                        <div class="product-bm-wrapper">
+                                                 <?php
+                                                 if (!function_exists('getProductImgUrl')) {
+                                                     function getProductImgUrl($fileName) {
+                                                         if (!empty($fileName) && file_exists("vendor/vendorupload/" . $fileName)) {
+                                                             return "vendor/vendorupload/" . htmlspecialchars($fileName);
+                                                         }
+                                                         if (!empty($fileName) && file_exists("dashboard/productupload/" . $fileName)) {
+                                                             return "dashboard/productupload/" . htmlspecialchars($fileName);
+                                                         }
+                                                         return "vendor/vendorupload/" . htmlspecialchars($fileName);
+                                                     }
+                                                 }
+                                                 $req_uin = mysqli_real_escape_string($conn, $_REQUEST['uin']);
+                                                 $all_product_images = array();
+                                                 if (!empty($product_row['productimage'])) {
+                                                     $all_product_images[] = $product_row['productimage'];
+                                                 }
+                                                 $imgs_result = mysqli_query($conn, "SELECT * FROM `product_images` WHERE uin='$req_uin' ORDER BY sort_order ASC");
+                                                 if ($imgs_result && mysqli_num_rows($imgs_result) > 0) {
+                                                     while ($img_row = mysqli_fetch_array($imgs_result)) {
+                                                         if ($img_row['product_image'] !== $product_row['productimage']) {
+                                                             $all_product_images[] = $img_row['product_image'];
+                                                         }
+                                                     }
+                                                 }
 
-                                            <div class="product-meta">
-                                                <div class="product-categories">
-                                                    Category:
-                                                    <span class="product-category"><a href="category?category=<?php echo $product_row['category']; ?>"><?php echo $product_row['category']; ?></a></span>
-                                                </div>
+                                                 foreach ($all_product_images as $img_file) {
+                                                     $imgPath = getProductImgUrl($img_file);
+                                                 ?>
+                                                     <div class="swiper-slide">
+                                                         <figure class="product-image">
+                                                             <img src="<?php echo $imgPath; ?>"
+                                                                 data-zoom-image="<?php echo $imgPath; ?>"
+                                                                 width="800" height="900">
+                                                         </figure>
+                                                     </div>
+                                                 <?php } ?>
+                                             </div>
+                                             <button class="swiper-button-next"></button>
+                                             <button class="swiper-button-prev"></button>
+                                             <a href="#" class="product-gallery-btn product-image-full"><i class="w-icon-zoom"></i></a>
+                                         </div>
+                                         
+                                          <div class="product-thumbs-wrap swiper-container" data-swiper-options="{
+                                              'navigation': {
+                                                  'nextEl': '.swiper-button-next',
+                                                  'prevEl': '.swiper-button-prev'
+                                              }
+                                          }">
+                                              <div class="product-thumbs swiper-wrapper row cols-4 gutter-sm">
+                                                  <?php
+                                                  foreach ($all_product_images as $img_file) {
+                                                      $thumbPath = getProductImgUrl($img_file);
+                                                  ?>
+                                                      <div class="product-thumb swiper-slide">
+                                                          <img src="<?php echo $thumbPath; ?>"
+                                                              alt="Product Thumb" width="800" height="900">
+                                                      </div>
+                                                  <?php } ?>
+                                              </div>
+                                              <button class="swiper-button-next"></button>
+                                              <button class="swiper-button-prev"></button>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  
+                                  <div class="col-md-6 mb-4 mb-md-6">
+                                      <div class="product-details" data-sticky-options="{'minWidth': 767}">
+                                          <h1 class="product-title"><?php echo htmlspecialchars($product_row['productname']); ?></h1>
+                                          <div class="product-bm-wrapper">
+                                              <div class="product-meta">
+                                                  <div class="product-categories">
+                                                      Category:
+                                                      <span class="product-category"><a href="cat.php?category=<?php echo urlencode($product_row['category']); ?>"><?php echo htmlspecialchars($product_row['category']); ?></a></span>
+                                                  </div>
 
-                                                <div class="product-sku">
-                                                    SKU: <span><?php echo $product_row['uin']; ?></span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                  <div class="product-sku">
+                                                      SKU: <span><?php echo htmlspecialchars($product_row['uin']); ?></span>
+                                                  </div>
+                                              </div>
+                                          </div>
+
+                                          <!-- Vendor Sold By Bar -->
+                                          <div class="vendor-sold-by-bar" style="display: flex; align-items: center; justify-content: space-between; background: #f7f8fa; border: 1px solid #e1e4e8; border-radius: 6px; padding: 8px 14px; margin: 12px 0 16px 0;">
+                                              <div style="display: flex; align-items: center; gap: 8px;">
+                                                  <span style="font-size: 13px; color: #666; font-weight: 500;">Sold by:</span>
+                                                  <?php if (!empty($vendor_info)): ?>
+                                                      <?php if (!empty($vendor_info['logo']) && file_exists("vendor/vendorupload/" . $vendor_info['logo'])): ?>
+                                                          <img src="vendor/vendorupload/<?php echo htmlspecialchars($vendor_info['logo']); ?>" alt="logo" style="width: 24px; height: 24px; object-fit: cover; border-radius: 50%;">
+                                                      <?php else: ?>
+                                                          <i class="fas fa-store text-primary" style="font-size: 14px;"></i>
+                                                      <?php endif; ?>
+                                                      <a href="vendor-store.php?vendor_uin=<?php echo urlencode($vendor_info['vendor_uin']); ?>" style="font-weight: 700; color: #336699; font-size: 14px;">
+                                                          <?php echo htmlspecialchars($vendor_info['store_name']); ?>
+                                                      </a>
+                                                  <?php else: ?>
+                                                      <i class="fas fa-shield-alt text-success" style="font-size: 14px;"></i>
+                                                      <span style="font-weight: 700; color: #333; font-size: 14px;">DEE MART Official Store</span>
+                                                  <?php endif; ?>
+                                              </div>
+                                              <?php if (!empty($vendor_info)): ?>
+                                                  <a href="vendor-store.php?vendor_uin=<?php echo urlencode($vendor_info['vendor_uin']); ?>" style="font-size: 12px; font-weight: 600; color: #336699; text-decoration: underline;">
+                                                      View Vendor &rarr;
+                                                  </a>
+                                              <?php endif; ?>
+                                          </div>
 
                                         <hr class="product-divider">
 
@@ -326,26 +365,96 @@ $quantity = $product_row['quantity'];
                             </div>
                             
                            
-                            <div class="tab tab-nav-boxed tab-nav-underline product-tabs">
-                                <ul class="nav nav-tabs" role="tablist">
-                                    <li class="nav-item">
-                                        <a href="#product-tab-description" class="nav-link active">Product Description</a>
-                                    </li>  
-                                    <li class="nav-item">
-                                        <a href="#product-tab-reviews" class="nav-link">Customer Reviews (<?php echo $review_count; ?>)</a>
-                                    </li>
-                                </ul>
+                             <div class="tab tab-nav-boxed tab-nav-underline product-tabs">
+                                 <ul class="nav nav-tabs" role="tablist">
+                                     <li class="nav-item">
+                                         <a href="#product-tab-description" class="nav-link active">Product Description</a>
+                                     </li>  
+                                     <li class="nav-item">
+                                         <a href="#product-tab-vendor" class="nav-link">Vendor Info</a>
+                                     </li>
+                                     <li class="nav-item">
+                                         <a href="#product-tab-reviews" class="nav-link">Customer Reviews (<?php echo $review_count; ?>)</a>
+                                     </li>
+                                 </ul>
 
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="product-tab-description">
-                                        <div class="row mb-4">
-                                            <div class="col-md-12 mb-5">
-                                                <p class="mb-4">
-                                                    <?php echo $product_row['description']; ?>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                 <div class="tab-content">
+                                     <div class="tab-pane active" id="product-tab-description">
+                                         <div class="row mb-4">
+                                             <div class="col-md-12 mb-5">
+                                                 <p class="mb-4">
+                                                     <?php echo $product_row['description']; ?>
+                                                 </p>
+                                             </div>
+                                         </div>
+                                     </div>
+
+                                     <div class="tab-pane" id="product-tab-vendor">
+                                         <div class="row mb-4">
+                                             <div class="col-md-12">
+                                                 <?php if (!empty($vendor_info)): ?>
+                                                     <div class="vendor-info-tab" style="border: 1px solid #e1e4e8; border-radius: 10px; background: #ffffff; padding: 28px 32px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                                                         <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
+                                                             <?php if (!empty($vendor_info['logo']) && file_exists("vendor/vendorupload/" . $vendor_info['logo'])): ?>
+                                                                 <img src="vendor/vendorupload/<?php echo htmlspecialchars($vendor_info['logo']); ?>" alt="Vendor Logo" style="width: 75px; height: 75px; object-fit: cover; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,0.12);">
+                                                             <?php else: ?>
+                                                                 <div style="width: 75px; height: 75px; border-radius: 50%; background: #336699; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 3px 10px rgba(0,0,0,0.12);">
+                                                                     <i class="fas fa-store"></i>
+                                                                 </div>
+                                                             <?php endif; ?>
+                                                             <div>
+                                                                 <h3 style="font-size: 1.35rem; font-weight: 700; color: #222; margin: 0 0 6px 0;"><?php echo htmlspecialchars($vendor_info['store_name']); ?></h3>
+                                                                 <p style="font-size: 0.92rem; color: #666; margin: 0;"><i class="fas fa-user-circle text-primary" style="margin-right: 6px;"></i>Owner: <strong><?php echo htmlspecialchars($vendor_info['vendor_name']); ?></strong></p>
+                                                             </div>
+                                                         </div>
+
+                                                         <?php if (!empty($vendor_info['description'])): ?>
+                                                             <div style="margin-bottom: 22px;">
+                                                                 <h5 style="font-size: 0.95rem; font-weight: 700; color: #444; margin-bottom: 8px;">About Store:</h5>
+                                                                 <p style="font-size: 0.92rem; line-height: 1.7; color: #555; margin: 0; background: #fafafa; padding: 14px 18px; border-radius: 6px; border-left: 3px solid #336699;"><?php echo nl2br(htmlspecialchars($vendor_info['description'])); ?></p>
+                                                             </div>
+                                                         <?php endif; ?>
+
+                                                         <div style="margin-bottom: 24px;">
+                                                             <ul style="list-style: none; padding: 0; margin: 0;">
+                                                                 <?php if (!empty($vendor_info['store_address'])): ?>
+                                                                     <li style="margin-bottom: 12px; font-size: 0.93rem; color: #444; display: flex; align-items: flex-start; gap: 10px;">
+                                                                         <i class="fas fa-map-marker-alt text-primary" style="font-size: 16px; margin-top: 3px; min-width: 18px;"></i>
+                                                                         <span><strong>Address:</strong> <?php echo htmlspecialchars($vendor_info['store_address']); ?></span>
+                                                                     </li>
+                                                                 <?php endif; ?>
+                                                                 <?php if (!empty($vendor_info['vendor_phone'])): ?>
+                                                                     <li style="margin-bottom: 12px; font-size: 0.93rem; color: #444; display: flex; align-items: center; gap: 10px;">
+                                                                         <i class="fas fa-phone-alt text-primary" style="font-size: 15px; min-width: 18px;"></i>
+                                                                         <span><strong>Phone:</strong> <?php echo htmlspecialchars($vendor_info['vendor_phone']); ?></span>
+                                                                     </li>
+                                                                 <?php endif; ?>
+                                                             </ul>
+                                                         </div>
+
+                                                         <div style="padding-top: 10px;">
+                                                             <a href="vendor-store.php?vendor_uin=<?php echo urlencode($vendor_info['vendor_uin']); ?>" class="btn btn-primary btn-rounded" style="padding: 12px 28px; font-weight: 600;">
+                                                                 <i class="fas fa-store" style="margin-right: 8px;"></i> View Vendor
+                                                             </a>
+                                                         </div>
+                                                     </div>
+                                                 <?php else: ?>
+                                                     <div class="vendor-info-tab" style="border: 1px solid #e1e4e8; border-radius: 10px; background: #ffffff; padding: 28px 32px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                                                         <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 16px;">
+                                                             <i class="fas fa-shield-alt text-success" style="font-size: 32px;"></i>
+                                                             <div>
+                                                                 <h3 style="font-size: 1.25rem; font-weight: 700; color: #222; margin: 0;">DEE MART Official Store</h3>
+                                                                 <p style="font-size: 0.88rem; color: #666; margin: 4px 0 0 0;">Verified Official Partner</p>
+                                                             </div>
+                                                         </div>
+                                                         <p style="font-size: 0.93rem; color: #555; line-height: 1.6; margin-bottom: 0;">
+                                                             This product is sold and fulfilled directly by DEE MART. Quality guaranteed and fast delivery across Nigeria.
+                                                         </p>
+                                                     </div>
+                                                 <?php endif; ?>
+                                             </div>
+                                         </div>
+                                     </div>
 
                                     <div class="tab-pane" id="product-tab-reviews">
                                         <div class="row mb-4">
@@ -467,7 +576,7 @@ $quantity = $product_row['quantity'];
                                         <div class="swiper-slide product">
                                             <figure class="product-media">
                                                 <a href="product.php?uin=<?php echo $row['uin']; ?>">
-                                                    <img src="dashboard/productupload/<?php echo $row['productimage']; ?>" alt="Product"
+                                                    <img src="<?php echo getProductImgUrl($row['productimage']); ?>" alt="Product"
                                                         width="300" height="338" />
                                                 </a>
                                                 
@@ -478,7 +587,7 @@ $quantity = $product_row['quantity'];
                                             </figure>
 
                                             <div class="product-details">
-                                                <h4 class="product-name"><a href="dashboard/productupload/<?php echo $row['productimage']; ?>"><?php echo $row['productname']; ?></a></h4>
+                                                <h4 class="product-name"><a href="product.php?uin=<?php echo $row['uin']; ?>"><?php echo htmlspecialchars($row['productname']); ?></a></h4>
 
                                                 <div class="ratings-container">
                                                     <div class="ratings-full">
@@ -626,7 +735,7 @@ $quantity = $product_row['quantity'];
                                                         <div class="product product-widget">
                                                             <figure class="product-media">
                                                                 <a href="product.php?uin=<?php echo $row['uin']; ?>">
-                                                                    <img src="dashboard/productupload/<?php echo $row['productimage']; ?>" alt="Product"
+                                                                    <img src="<?php echo getProductImgUrl($row['productimage']); ?>" alt="Product"
                                                                         width="100" height="113" />
                                                                 </a>
                                                             </figure>

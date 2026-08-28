@@ -92,14 +92,16 @@ if ($existingProduct) {
     mysqli_stmt_execute($update);
 
 } else {
+    $vendorUin = isset($row['vendor_uin']) ? $row['vendor_uin'] : null;
+
     $insert = mysqli_prepare($conn, "
         INSERT INTO invoiceorder 
-        (invoicenumber, quantity, amount, profit, productname, category, uin, date, customername, customer_phone, customer_email, customer_uin, paymentstatus, productimage)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (invoicenumber, quantity, amount, profit, productname, category, uin, date, customername, customer_phone, customer_email, customer_uin, paymentstatus, productimage, vendor_uin)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
     mysqli_stmt_bind_param(
         $insert,
-        'siddssssssssss',
+        'siddsssssssssss',
         $invoiceNumber,
         $quantity,
         $amount,
@@ -113,7 +115,8 @@ if ($existingProduct) {
         $customerEmail,
         $customerUin,
         $paymentStatus,
-        $productImage
+        $productImage,
+        $vendorUin
     );
     mysqli_stmt_execute($insert);
 }

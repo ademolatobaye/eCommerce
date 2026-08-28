@@ -13,6 +13,9 @@ if(isset($_REQUEST['product_id'])){
 
     $sql = "DELETE FROM product_table WHERE product_id='$product_id'";
     if(mysqli_query($conn, $sql)){
+        if (class_exists('CacheManager')) {
+            CacheManager::flush();
+        }
         echo "<script>alert('Product successfully deleted.'); window.location.href='product.php';</script>";
     } else {
         echo "Error deleting record: " . mysqli_error($conn);

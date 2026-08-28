@@ -51,6 +51,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['img_id
             @unlink($file_path);
         }
 
+        if (class_exists('CacheManager')) {
+            CacheManager::flush();
+        }
+
         echo "<script>alert('Image deleted successfully.'); window.location.href='edit-product-images.php?product_id=$product_id';</script>";
         exit();
     }
@@ -60,6 +64,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['img_id
 if (isset($_GET['action']) && $_GET['action'] == 'set_cover' && isset($_GET['img_name'])) {
     $cover_name = mysqli_real_escape_string($conn, $_GET['img_name']);
     mysqli_query($conn, "UPDATE product_table SET productimage = '$cover_name' WHERE product_id = '$product_id'");
+    if (class_exists('CacheManager')) {
+        CacheManager::flush();
+    }
     echo "<script>alert('Cover image updated.'); window.location.href='edit-product-images.php?product_id=$product_id';</script>";
     exit();
 }
@@ -96,6 +103,10 @@ if (isset($_POST['upload_images'])) {
         // If product cover image is empty, set first uploaded image as cover
         if (empty($product['productimage']) && !empty($first_new_img)) {
             mysqli_query($conn, "UPDATE product_table SET productimage = '$first_new_img' WHERE product_id = '$product_id'");
+        }
+
+        if (class_exists('CacheManager')) {
+            CacheManager::flush();
         }
 
         echo "<script>alert('$uploaded_count image(s) uploaded successfully.'); window.location.href='edit-product-images.php?product_id=$product_id';</script>";

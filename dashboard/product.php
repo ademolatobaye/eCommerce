@@ -1,11 +1,24 @@
 <?php
 include('session-check.php');
 include('db_conn.php');
-$product_id = 1;
-$sql = "SELECT * FROM product_table WHERE product_id='$product_id'";
-$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-$rows = mysqli_fetch_array($result);
 
+// Handle product approval/rejection by Admin
+if (isset($_GET['action']) && isset($_GET['product_id'])) {
+    $action_p = $_GET['action'];
+    $pid = intval($_GET['product_id']);
+    
+    $status_col = "approval_status";
+
+    if ($action_p === 'approve_product') {
+        @mysqli_query($conn, "UPDATE product_table SET `$status_col` = 'Approved' WHERE product_id = '$pid'");
+        echo "<script>alert('Product APPROVED successfully!'); window.location.href='product.php';</script>";
+        exit();
+    } else if ($action_p === 'reject_product') {
+        @mysqli_query($conn, "UPDATE product_table SET `$status_col` = 'Rejected' WHERE product_id = '$pid'");
+        echo "<script>alert('Product REJECTED.'); window.location.href='product.php';</script>";
+        exit();
+    }
+}
 ?>
 
 <!doctype html>
@@ -92,8 +105,8 @@ $rows = mysqli_fetch_array($result);
                                             <table id="file-datatable" class="table table-bordered text-nowrap key-buttons border-bottom">
                                                 <thead>
                                                     <tr>
-                                                        <th class="border-bottom-0">PRODUCT ID</th>
-                                                        <th class="border-bottom-0">UIN</th>
+                                                        <th class="border-bottom-0">S/N</th>
+                                                        <th class="border-bottom-0">Product ID</th>
                                                         <th class="border-bottom-0">Product Name</th>
                                                         <th class="border-bottom-0">Date</th>
                                                         <th class="border-bottom-0">Cost Price</th>
@@ -104,7 +117,8 @@ $rows = mysqli_fetch_array($result);
                                                         <th class="border-bottom-0">Profit</th>
                                                         <th class="border-bottom-0">Category</th>
                                                         <th class="border-bottom-0">Description</th>
-                                                        <th class="border-bottom-0">Staff</th>
+                                                        <th class="border-bottom-0">Vendor</th>
+                                                        <th class="border-bottom-0">Approval Status</th>
                                                         <th class="border-bottom-0">Action</th>
                                                     </tr>
                                                 </thead>
@@ -112,12 +126,14 @@ $rows = mysqli_fetch_array($result);
 
                                                     <?php
                                                 include("db_conn.php");
-                                                $sql="SELECT * FROM product_table ORDER BY `date` ASC";
-                                                $result= mysqli_query($conn, $sql);
-                                                if(mysqli_num_rows($result)>0){
-                                                $count=1;
-                                                while($row=mysqli_fetch_array($result)){
-                                                
+                                                $sql = "SELECT * FROM product_table ORDER BY product_id DESC";
+                                                $result = mysqli_query($conn, $sql);
+                                                if ($result && mysqli_num_rows($result) > 0) {
+                                                $count = 1;
+                                                while ($row = mysqli_fetch_assoc($result)) {
+                                                    $vendor_name = !empty($row['vendor_storename']) ? $row['vendor_storename'] . " (Vendor)" : 'DEE MART';
+                                                    $p_stat      = !empty($row['approval_status']) ? $row['approval_status'] : (!empty($row['product_status']) ? $row['product_status'] : 'Approved');
+                                                    if (empty($p_stat)) { $p_stat = 'Approved'; }
                                                 ?>
                                                     <tr>
                                                         <td style="text-align:center;"><?php echo $count++?></td>
@@ -128,24 +144,39 @@ $rows = mysqli_fetch_array($result);
                                                         <td style="text-align:center;">&#8358;<?php echo number_format($row['sellingprice'], 2); ?></td>
                                                         <td style="text-align:center;"><?php echo $row['quantity']?></td>
                                                         <td><?php echo $row['lowlevel']?></td>
-                                                         <td><img src="productupload/<?php echo $row['productimage']?>" style="height:70px; width:150px; object-fit:cover; border-radius:5px;"></td>
+                                                         <td><img src="../vendor/vendorupload/<?php echo $row['productimage']?>" style="height:70px; width:150px; object-fit:cover; border-radius:5px;"></td>
                                                         <td style="text-align:center;">&#8358;<?php echo number_format($row['profit'], 2); ?></td>
                                                         <td style="text-align:center;"><?php echo $row['category']?></td>
                                                         <td><?php echo $row['description']?></td>
-                                                        <td><?php echo $row['staff']?></td>
+                                                        <td><strong><?php echo htmlspecialchars($vendor_name); ?></strong></td>
+                                                        <td>
+                                                            <?php if ($p_stat === 'Approved'): ?>
+                                                                <span class="badge bg-success">Approved & Live</span>
+                                                            <?php elseif ($p_stat === 'Pending'): ?>
+                                                                <span class="badge bg-warning">Pending Approval</span>
+                                                            <?php else: ?>
+                                                                <span class="badge bg-danger"><?php echo htmlspecialchars($p_stat); ?></span>
+                                                            <?php endif; ?>
+                                                        </td>
                                                          <td>
                                                              <div class="dropdown">
                                                         <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown">
                                                                 <i class="fe fe-action me-2"></i>Action
                                                             </button>
                                                         <div class="dropdown-menu">
+                                                            <?php if ($p_stat === 'Pending' || $p_stat === 'Rejected'): ?>
+                                                                <a class="dropdown-item text-success" href="product.php?action=approve_product&product_id=<?php echo $row['product_id']?>" onclick="return confirm('Approve this product for storefront display?')"><i class="fa fa-check me-1"></i> Approve Product</a>
+                                                            <?php endif; ?>
+                                                            <?php if ($p_stat === 'Pending' || $p_stat === 'Approved'): ?>
+                                                                <a class="dropdown-item text-warning" href="product.php?action=reject_product&product_id=<?php echo $row['product_id']?>" onclick="return confirm('Reject this product?')"><i class="fa fa-times me-1"></i> Reject Product</a>
+                                                            <?php endif; ?>
                                                             <a class="dropdown-item" href="delete-product.php?product_id=<?php echo $row['product_id']?>" onclick="return confirm('Are you sure to delete this product?')">Delete Product</a>
 
                                                             <a class="dropdown-item" href="view-product.php?product_id=<?php echo $row['product_id']?>">View Product</a>
 
-                                                            <a class="dropdown-item" href="edit-product.php?product_id=<?php echo $row['product_id']?>"><i class="fa fa-edit me-1"></i> Edit Product</a>
+                                                            <!-- <a class="dropdown-item" href="edit-product.php?product_id=<?php echo $row['product_id']?>"><i class="fa fa-edit me-1"></i> Edit Product</a>
 
-                                                            <a class="dropdown-item" href="edit-product-images.php?product_id=<?php echo $row['product_id']?>"><i class="fa fa-image me-1"></i> Edit Images</a>
+                                                            <a class="dropdown-item" href="edit-product-images.php?product_id=<?php echo $row['product_id']?>"><i class="fa fa-image me-1"></i> Edit Images</a> -->
                                                         </div>
                                                     </div>
                                                         </td>

@@ -111,6 +111,9 @@ $product = mysqli_fetch_assoc($result);
 
                                             $sql = "UPDATE product_table SET productname='$productname', costprice='$costprice', sellingprice='$sellingprice', quantity='$quantity', profit='$profit', category='$category', `description`='$description', staff='$staff' WHERE product_id='$product_id'";
                                             if(mysqli_query($conn, $sql)){
+                                                if (class_exists('CacheManager')) {
+                                                    CacheManager::flush();
+                                                }
                                                 echo "<script>alert('Product details successfully updated.');
                                                 window.location.href='product.php';</script>";
                                             } else {

@@ -69,7 +69,7 @@ include('db_conn.php');
                             if ($page < 1) { $page = 1; }
                             $offset = ($page - 1) * $limit;
 
-                            $sql = "SELECT * FROM `product_table` ORDER BY `product_id` ASC LIMIT $limit OFFSET $offset";
+                            $sql = "SELECT * FROM product_table WHERE approval_status = 'Approved' ORDER BY product_id DESC LIMIT $limit OFFSET $offset";
                             $result = mysqli_query($conn, $sql);
                             ?>
 
@@ -82,7 +82,7 @@ include('db_conn.php');
                                          <div class="product text-center">
                                               <figure class="product-media">
                                                   <a href="product.php?uin=<?php echo $row['uin']; ?>">
-                                                      <img src="dashboard/productupload/<?php echo htmlspecialchars($row['productimage']);?>" alt="Product" />
+                                                      <img src="vendor/vendorupload/<?php echo htmlspecialchars($row['productimage']);?>" alt="Product" />
                                                   </a>
                                                   <div class="product-action-vertical">
                                                       <a href="addtowishlist.php?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-wishlist w-icon-heart btn-add-wishlist-ajax" title="Add to Wishlist" data-uin="<?php echo $row['uin']; ?>"></a>
@@ -103,6 +103,17 @@ include('db_conn.php');
                                                          <?php echo htmlspecialchars($row['productname']); ?>
                                                      </a>
                                                  </h3>
+                                                 <!-- Vendor Badge on Card -->
+                                                 <div class="product-vendor-mini mt-1 mb-1" style="font-size: 12px; color: #666;">
+                                                     <?php if (!empty($row['vendor_uin'])): ?>
+                                                         <i class="fas fa-store text-primary me-1"></i>
+                                                         <a href="vendor-store.php?vendor_uin=<?php echo $row['vendor_uin']; ?>" class="text-primary font-weight-bold" style="text-decoration: underline;">
+                                                             <?php echo htmlspecialchars($row['vendor_storename']); ?>
+                                                         </a>
+                                                     <?php else: ?>
+                                                         <span class="text-muted"><i class="fas fa-shield-alt text-success me-1"></i> DEE MART</span>
+                                                     <?php endif; ?>
+                                                 </div>
                                                  <?php
                                                  $p_uin = $row['uin'];
                                                  $r_stmt = mysqli_prepare($conn, "SELECT AVG(rating) as avg_r, COUNT(*) as cnt FROM product_reviews WHERE product_uin = ?");
@@ -141,7 +152,7 @@ include('db_conn.php');
 
                             <?php
                             // PAGINATION LINKS
-                            $count_sql = "SELECT COUNT(*) AS total FROM `product_table` ";
+                            $count_sql = "SELECT COUNT(*) AS total FROM `product_table` WHERE approval_status = 'Approved'";
                             $count_result = mysqli_query($conn, $count_sql);
                             $count_row = mysqli_fetch_assoc($count_result);
                             $total_products = $count_row['total'];
