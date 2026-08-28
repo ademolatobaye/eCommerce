@@ -186,8 +186,8 @@ if(isset($_REQUEST['uin'])){
                                                          if (!empty($fileName) && file_exists("vendor/vendorupload/" . $fileName)) {
                                                              return "vendor/vendorupload/" . htmlspecialchars($fileName);
                                                          }
-                                                         if (!empty($fileName) && file_exists("dashboard/productupload/" . $fileName)) {
-                                                             return "dashboard/productupload/" . htmlspecialchars($fileName);
+                                                         if (!empty($fileName) && file_exists("vendor/vendorupload/" . $fileName)) {
+                                                             return "vendor/vendorupload/" . htmlspecialchars($fileName);
                                                          }
                                                          return "vendor/vendorupload/" . htmlspecialchars($fileName);
                                                      }
@@ -425,7 +425,7 @@ $quantity = $product_row['quantity'];
                                                                  <?php endif; ?>
                                                                  <?php if (!empty($vendor_info['vendor_phone'])): ?>
                                                                      <li style="margin-bottom: 12px; font-size: 0.93rem; color: #444; display: flex; align-items: center; gap: 10px;">
-                                                                         <i class="fas fa-phone-alt text-primary" style="font-size: 15px; min-width: 18px;"></i>
+                                                                         <i class="fas fa-phone text-primary" style="font-size: 15px; min-width: 18px;"></i>
                                                                          <span><strong>Phone:</strong> <?php echo htmlspecialchars($vendor_info['vendor_phone']); ?></span>
                                                                      </li>
                                                                  <?php endif; ?>
@@ -647,7 +647,7 @@ $quantity = $product_row['quantity'];
                                                 <div class="product text-center border p-2 rounded" style="border-radius: 6px;">
                                                     <figure class="product-media mb-2">
                                                         <a href="product.php?uin=<?php echo $rv_row['uin']; ?>">
-                                                            <img src="dashboard/productupload/<?php echo htmlspecialchars($rv_row['productimage']); ?>" alt="Product" style="height: 160px; object-fit: cover; width: 100%;">
+                                                            <img src="vendor/vendorupload/<?php echo htmlspecialchars($rv_row['productimage']); ?>" alt="Product" style="height: 160px; object-fit: cover; width: 100%;">
                                                         </a>
                                                     </figure>
                                                     <div class="product-details">

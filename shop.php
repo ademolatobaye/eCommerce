@@ -117,7 +117,8 @@ include('db_conn.php');
                                                  <?php
                                                  $p_uin = $row['uin'];
                                                  $r_stmt = mysqli_prepare($conn, "SELECT AVG(rating) as avg_r, COUNT(*) as cnt FROM product_reviews WHERE product_uin = ?");
-                                                 $card_rating = 0; $card_count = 0;
+                                                 $card_rating = 0;
+                                                 $card_count = 0;
                                                  if ($r_stmt) {
                                                      mysqli_stmt_bind_param($r_stmt, 's', $p_uin);
                                                      mysqli_stmt_execute($r_stmt);

@@ -86,7 +86,7 @@ mysqli_stmt_close($stmt);
                                                     <div class="p-relative">
                                                         <a href="product.php?uin=<?php echo $row['uin']; ?>">
                                                             <figure>
-                                                                <img src="dashboard/productupload/<?php echo $row['productimage']; ?>" 
+                                                                <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>" 
                                                                      alt="product" width="300" height="338">
                                                             </figure>
                                                         </a>

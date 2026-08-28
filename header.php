@@ -176,7 +176,7 @@ if (!empty($customerUin)) {
                                 </div>
                                 <figure class="product-media">
                                     <a href="product.php?uin=<?php echo $row['uin']; ?>">
-                                        <img src="dashboard/productupload/<?php echo $row['productimage']; ?>"
+                                        <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>"
                                             alt="product" height="84" width="94" />
                                     </a>
                                 </figure>

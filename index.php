@@ -514,10 +514,27 @@ if (isset($_SESSION['customer_email'])) {
                                                         </ins></div>
 
 
+                                                         <?php
+                                                 $p_uin = $row['uin'];
+                                                 $r_stmt = mysqli_prepare($conn, "SELECT AVG(rating) as avg_r, COUNT(*) as cnt FROM product_reviews WHERE product_uin = ?");
+                                                 $card_rating = 0;
+                                                 $card_count = 0;
+                                                 if ($r_stmt) {
+                                                     mysqli_stmt_bind_param($r_stmt, 's', $p_uin);
+                                                     mysqli_stmt_execute($r_stmt);
+                                                     $r_res = mysqli_stmt_get_result($r_stmt);
+                                                     if ($r_row = mysqli_fetch_assoc($r_res)) {
+                                                         $card_rating = round((float)$r_row['avg_r'], 1);
+                                                         $card_count = (int)$r_row['cnt'];
+                                                     }
+                                                     mysqli_stmt_close($r_stmt);
+                                                 }
+                                                 $card_stars = ($card_rating / 5) * 100;
+                                                 ?>
                                                         <div class="ratings-container">
                                                             <div class="ratings-full">
-                                                                <span class="ratings" style="width: 80%;"></span>
-                                                                <span class="tooltiptext tooltip-top"></span>
+                                                                <span class="ratings" style="width: <?php echo $card_stars ?>%;"></span>
+                                                                <span class="tooltiptext tooltip-top"><?php echo $card_rating ?> stars</span>
                                                             </div>
                                                         </div>
 
@@ -590,9 +607,27 @@ if (isset($_SESSION['customer_email'])) {
                 <h4 class="product-name">
                     <a href="product.php?uin=<?php echo $row['uin']; ?>"><?php echo $row['productname']; ?></a>
                 </h4>
+
+                <?php
+                                                 $p_uin = $row['uin'];
+                                                 $r_stmt = mysqli_prepare($conn, "SELECT AVG(rating) as avg_r, COUNT(*) as cnt FROM product_reviews WHERE product_uin = ?");
+                                                 $card_rating = 0;
+                                                 $card_count = 0;
+                                                 if ($r_stmt) {
+                                                     mysqli_stmt_bind_param($r_stmt, 's', $p_uin);
+                                                     mysqli_stmt_execute($r_stmt);
+                                                     $r_res = mysqli_stmt_get_result($r_stmt);
+                                                     if ($r_row = mysqli_fetch_assoc($r_res)) {
+                                                         $card_rating = round((float)$r_row['avg_r'], 1);
+                                                         $card_count = (int)$r_row['cnt'];
+                                                     }
+                                                     mysqli_stmt_close($r_stmt);
+                                                 }
+                                                 $card_stars = ($card_rating / 5) * 100;
+                                                 ?>
                 <div class="ratings-container">
                     <div class="ratings-full">
-                        <span class="ratings" style="width: 60%;"></span>
+                        <span class="ratings" style="width: <?php echo $card_stars ?>%;"></span>
                         <span class="tooltiptext tooltip-top"></span>
                     </div>
                 </div>
