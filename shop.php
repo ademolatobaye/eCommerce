@@ -88,9 +88,7 @@ include('db_conn.php');
                                                       <a href="addtowishlist.php?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-wishlist w-icon-heart btn-add-wishlist-ajax" title="Add to Wishlist" data-uin="<?php echo $row['uin']; ?>"></a>
                                                   </div>
                                                   <div class="product-action">
-                                                      <a href="addtocart.php?uin=<?php echo $row['uin']; ?>&product_id=<?php echo $row['product_id']; ?>&quantity=1" class="btn-product btn-cart btn-add-cart-ajax" title="Add to Cart" data-uin="<?php echo $row['uin']; ?>" data-id="<?php echo $row['product_id']; ?>">
-                                                          <i class="w-icon-cart"></i> Add To Cart
-                                                      </a>
+                                                      
                                                   </div>
                                               </figure>
 
@@ -344,7 +342,7 @@ include('db_conn.php');
                         </div>
                         <button class="btn btn-primary btn-cart">
                             <i class="w-icon-cart"></i>
-                            <span>Add to Cart</span>
+                            <!-- <span>Add to Cart</span> -->
                         </button>
                     </div>
 

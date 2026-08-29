@@ -786,9 +786,6 @@ if (isset($_SESSION['customer_email'])) {
                                                     <a href="product.php?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-quickview w-icon-search" title="Quickview"></a>
                                                 </div>
                                                 <div class="product-action">
-                                                    <a href="addtocart.php?uin=<?php echo $row['uin']; ?>&product_id=<?php echo $row['product_id']; ?>&quantity=1" class="btn-product btn-cart btn-add-cart-ajax" title="Add to Cart">
-                                                        <i class="w-icon-cart"></i> Add To Cart
-                                                    </a>
                                                 </div>
                                             </figure>
 
@@ -891,9 +888,6 @@ if (isset($_SESSION['customer_email'])) {
                                                     <a href="product.php?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-quickview w-icon-search" title="Quickview"></a>
                                                 </div>
                                                 <div class="product-action">
-                                                    <a href="addtocart.php?uin=<?php echo $row['uin']; ?>&product_id=<?php echo $row['product_id']; ?>&quantity=1" class="btn-product btn-cart btn-add-cart-ajax" title="Add to Cart">
-                                                        <i class="w-icon-cart"></i> Add To Cart
-                                                    </a>
                                                 </div>
                                             </figure>
                                             
@@ -948,7 +942,7 @@ if (isset($_SESSION['customer_email'])) {
      if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_array($result);
         ?>
-                            <div class="banner h-100 br-sm" style="background-image: url(vendor/vendorupload/<?php echo $row['productimage']; ?>); 
+                            <div class="banner h-100 br-sm" style="background-image: url('assets/shoe.jpg'); 
                             background-color: #EAEFF3;">
                                 <div class="banner-content content-top">
                                     <h5 class="banner-subtitle font-weight-normal mb-2 text-white">New Kicks</h5>
@@ -997,9 +991,7 @@ if (isset($_SESSION['customer_email'])) {
                                             <a href="product.php?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-quickview w-icon-search" title="Quickview"></a>
                                         </div>
                                         <div class="product-action">
-                                            <a href="addtocart.php?uin=<?php echo $row['uin']; ?>&product_id=<?php echo $row['product_id']; ?>&quantity=1" class="btn-product btn-cart btn-add-cart-ajax" title="Add to Cart">
-                                                <i class="w-icon-cart"></i> Add To Cart
-                                            </a>
+                                            
                                         </div>
                                     </figure>
 

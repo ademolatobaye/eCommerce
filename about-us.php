@@ -400,7 +400,7 @@ include("db_conn.php");
                                 <div class="product text-center">
                                     <figure class="product-media">
                                         <a href="product.php?uin=<?php echo $row['uin']; ?>">
-                                            <img src="dashboard/productupload/<?php echo $row['productimage']; ?>" alt="Product" />
+                                            <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>" alt="Product" />
                                         </a>
                                     </figure>
 
