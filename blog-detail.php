@@ -2,6 +2,21 @@
 session_start();
 include('db_conn.php'); 
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
+
 $blog_row = null;
 if (isset($_REQUEST['uin'])) {
     $uin = mysqli_real_escape_string($conn, $_REQUEST['uin']);
@@ -20,7 +35,7 @@ if (isset($_REQUEST['uin'])) {
 }
 
 if (!$blog_row) {
-    header("Location: blog.php");
+    header("Location: blog");
     exit();
 }
 
@@ -34,7 +49,7 @@ $blog_uin = $blog_row['uin'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title><?php echo htmlspecialchars($blog_row['headline']); ?> - DEE MART BLOG</title>
+    <title><?php echo htmlspecialchars($blog_row['headline']); ?> - <?php echo $business_name;?> BLOG</title>
 
     <meta name="keywords" content="<?php echo htmlspecialchars($blog_row['category']); ?>" />
     <meta name="description" content="<?php echo htmlspecialchars(substr(strip_tags($blog_row['content']), 0, 160)); ?>">

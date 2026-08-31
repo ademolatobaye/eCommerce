@@ -147,7 +147,7 @@ $rows = mysqli_fetch_array($result);
                                                     }
 
                                                     echo "<script>alert('Blog successfully added.');
-                                                        window.location.href='blog.php'</script>";
+                                                        window.location.href='blog'</script>";
                                                 } else {
                                                     echo "<script>alert('Error inserting record into database.');</script>";
                                                 }

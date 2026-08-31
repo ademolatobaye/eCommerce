@@ -11,7 +11,7 @@ $current_url = $_SERVER['REQUEST_URI'];
 
 // Ensure this is a CUSTOMER session (avoid conflict with admin/staff)
 if (!isset($_SESSION['customer_email'])) {
-    header("Location: reg/user-login.php");
+    header("Location: reg/user-login");
     exit();
 }
 
@@ -24,7 +24,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) >
     session_destroy();
      echo "<script>
         alert('Session expired due to inactivity. Please log in again.');
-        window.location.href = 'reg/user-login.php';
+        window.location.href = 'reg/user-login';
     </script>";
     exit();
 }

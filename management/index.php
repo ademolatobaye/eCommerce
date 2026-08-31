@@ -52,7 +52,7 @@ session_start();
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Management Registration Prerequisites</li>
                     </ul>
                 </div>
@@ -103,7 +103,7 @@ session_start();
                                             <strong style="color: #333; font-size: 16px;">THEADEMOLADEV</strong>
                                         </p>
 
-                                        <a href="register.php" class="btn btn-primary w-100 btn-rounded" style="padding: 14px; font-size: 16px; font-weight: 600; text-transform: uppercase; display: inline-block;">
+                                        <a href="register" class="btn btn-primary w-100 btn-rounded" style="padding: 14px; font-size: 16px; font-weight: 600; text-transform: uppercase; display: inline-block;">
                                             Sign Up Now <i class="w-icon-long-arrow-right ml-2"></i>
                                         </a>
                                     </div>

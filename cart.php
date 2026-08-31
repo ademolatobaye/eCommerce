@@ -2,14 +2,29 @@
 include('customer-session-check.php');
 include('db_conn.php');
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
+
 // Redirect if not logged in
 if (!isset($_SESSION['customer_email'])){
-    header("Location: reg/user-login.php");
+    header("Location: reg/user-login");
     exit();
 }
 
 if (!isset($_SESSION['invoicenumber'])) {
-    header("Location: index.php");
+    header("Location: index");
     exit();
 }
 
@@ -35,7 +50,7 @@ mysqli_stmt_close($stmt);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>DEE MART || CART</title>
+    <title><?php echo $business_name;?> || CART</title>
     <link rel="icon" type="image/png" href="assets/images/icons/favicon.png">
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.min.css">
@@ -60,7 +75,7 @@ mysqli_stmt_close($stmt);
                 <div class="container">
                     <div class="row gutter-lg mb-10">
                         <div class="col-lg-8 pr-lg-4 mb-6">
-                            <form method="post" action="update-cart.php" id="cart-update-form">
+                            <form method="post" action="update-cart" id="cart-update-form">
                                 <table class="shop-table cart-table">
                                     <thead>
                                         <tr>
@@ -84,13 +99,13 @@ mysqli_stmt_close($stmt);
                                             <tr>
                                                 <td class="product-thumbnail">
                                                     <div class="p-relative">
-                                                        <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                                        <a href="product?uin=<?php echo $row['uin']; ?>">
                                                             <figure>
                                                                 <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>" 
                                                                      alt="product" width="300" height="338">
                                                             </figure>
                                                         </a>
-                                                        <a href="remove-item.php?product_id=<?php echo $row['product_id']; ?>" 
+                                                        <a href="remove-item?product_id=<?php echo $row['product_id']; ?>" 
                                                            class="btn btn-close" 
                                                            onclick="return confirm('Remove this item?')">
                                                             <i class="fas fa-times"></i>
@@ -98,7 +113,7 @@ mysqli_stmt_close($stmt);
                                                     </div>
                                                 </td>
                                                 <td class="product-name">
-                                                    <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                                    <a href="product?uin=<?php echo $row['uin']; ?>">
                                                         <?php echo htmlspecialchars($row['productname']); ?>
                                                     </a>
                                                 </td>
@@ -118,9 +133,9 @@ mysqli_stmt_close($stmt);
                                                 </td>
                                             </tr>
                                         <?php }} else { ?>
-                                            <tr>
+                                             <tr>
                                                 <td colspan="5" class="text-center py-4">
-                                                    Your cart is empty. <a href="shop.php">Continue Shopping</a>
+                                                    Your cart is empty. <a href="shop">Continue Shopping</a>
                                                 </td>
                                             </tr>
                                         <?php } 
@@ -130,11 +145,11 @@ mysqli_stmt_close($stmt);
                                 </table>
 
                                 <div class="cart-action mb-6">
-                                    <a href="shop.php" class="btn btn-dark btn-rounded btn-icon-left btn-shopping mr-auto">
+                                    <a href="shop" class="btn btn-dark btn-rounded btn-icon-left btn-shopping mr-auto">
                                         <i class="w-icon-long-arrow-left"></i>Continue Shopping
                                     </a>
                                     <button type="submit" name="update_cart" class="btn btn-rounded btn-outline btn-dark btn-update mr-2">Update Cart</button>
-                                    <a href="clear-cart.php" class="btn btn-rounded btn-default btn-clear" 
+                                    <a href="clear-cart" class="btn btn-rounded btn-default btn-clear" 
                                        onclick="return confirm('Are you certain to clear cart?')">Clear Cart</a>
                                 </div>
                             </form>
@@ -155,12 +170,12 @@ mysqli_stmt_close($stmt);
                                     </div>
 
                                     <?php if ($cartCount > 0) { ?>
-                                        <a href="checkout.php" class="btn btn-block btn-dark btn-icon-right btn-rounded btn-checkout">
+                                        <a href="checkout" class="btn btn-block btn-dark btn-icon-right btn-rounded btn-checkout">
                                             Proceed to checkout<i class="w-icon-long-arrow-right"></i>
                                         </a>
                                     <?php } else { ?>
                                         <button class="btn btn-block btn-dark btn-icon-right btn-rounded btn-checkout" 
-                                                onclick="alert('Your cart is empty. Add items before checking out.'); window.location.href='index.php';">
+                                                onclick="alert('Your cart is empty. Add items before checking out.'); window.location.href='index';">
                                             Proceed to checkout<i class="w-icon-long-arrow-right"></i>
                                         </button>
                                     <?php } ?>

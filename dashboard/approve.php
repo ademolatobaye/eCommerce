@@ -5,7 +5,7 @@ if(isset($_REQUEST['id'])){
     $sql = "UPDATE vendor_table SET `status` = 'Active' WHERE id='$vendor_id'";
     if(mysqli_query($conn, $sql)){
         echo "<script>alert('Vendor successfully approved.'); 
-        window.location.href='vendors.php';
+        window.location.href='vendors';
         </script>";
     } else {
         echo "Error approving record: " . mysqli_error($conn);

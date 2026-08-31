@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(!isset($_SESSION['email'])){
-  header("Location: staff-index.php");
+  header("Location: staff-index");
   exit();
 
 }
@@ -75,7 +75,7 @@ if(!isset($_SESSION['email'])){
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Staff OTP Validation</li>
                     </ul>
                 </div>
@@ -108,7 +108,7 @@ if(!isset($_SESSION['email'])){
                                         include('db_conn.php');
                                         if(isset($_REQUEST["verify"])){
                                             if (isset($_SESSION['otp_time']) && (time() - $_SESSION['otp_time']) > 60) {
-                                                echo "<script>alert('OTP has expired after 1 minute! Please request a new one.'); window.location.href='staff-otp.php';</script>";
+                                                echo "<script>alert('OTP has expired after 1 minute! Please request a new one.'); window.location.href='staff-otp';</script>";
                                                 exit();
                                             }
                                             $n1=$_REQUEST["n1"];
@@ -125,7 +125,7 @@ if(!isset($_SESSION['email'])){
                                                 $result=mysqli_query($conn, $sql);
                                                 if($result){
                                                     echo "<script>alert('Email successfully verified!');
-                                                    window.location.href='staff-register.php'</script>";
+                                                    window.location.href='staff-register'</script>";
                                                 }
                                             }
                                         }
@@ -161,7 +161,7 @@ if(!isset($_SESSION['email'])){
                                                     clearInterval(interval);
                                                     countdownEl.textContent = "0";
                                                     alert('OTP has expired after 1 minute! Please request a new one.');
-                                                    window.location.href = 'staff-otp.php';
+                                                    window.location.href = 'staff-otp';
                                                 } else {
                                                     countdownEl.textContent = remaining;
                                                 }
@@ -184,7 +184,7 @@ if(!isset($_SESSION['email'])){
                                         });
                                     </script>
 
-                                    <p class="text-center mt-4">Not received your code? <a href="staff-resendotp.php" class="text-primary">Resend code</a></p>
+                                    <p class="text-center mt-4">Not received your code? <a href="staff-resendotp" class="text-primary">Resend code</a></p>
                                 </div>
                             </div>
                         </div>

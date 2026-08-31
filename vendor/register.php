@@ -40,7 +40,7 @@ session_start();
             <!-- Start of Page Header -->
             <div class="page-header">
                 <div class="container text-center">
-                    <a href="../index.php">
+                    <a href="../index">
                         <img src="../assets/images/logo.png" alt="DEE MART Logo" width="144" height="45" />
                     </a>
                 </div>
@@ -51,7 +51,7 @@ session_start();
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Vendor Account Registration</li>
                     </ul>
                 </div>
@@ -150,7 +150,7 @@ session_start();
                                             if (mysqli_query($conn, $sql)) {
                                                 echo "<script>
                                                     alert('Registration successful! Your vendor account is currently PENDING approval. The management will review your application, and you will receive an email once approved.');
-                                                    window.location.href = 'login.php';
+                                                    window.location.href = 'login';
                                                 </script>";
                                                 exit();
                                             } else {
@@ -240,7 +240,7 @@ session_start();
                                         </button>
 
                                         <div class="text-center mt-3">
-                                            <p>Already have a vendor account? <a href="login.php" class="text-primary font-weight-bold">Log In Here</a></p>
+                                            <p>Already have a vendor account? <a href="login" class="text-primary font-weight-bold">Log In Here</a></p>
                                         </div>
                                     </form>
 

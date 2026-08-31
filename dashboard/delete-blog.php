@@ -13,7 +13,7 @@ if(isset($_REQUEST['id'])){
 
     $sql = "DELETE FROM blog WHERE id='$blog_id'";
     if(mysqli_query($conn, $sql)){
-        echo "<script>alert('Blog successfully deleted.'); window.location.href='blog.php';</script>";
+        echo "<script>alert('Blog successfully deleted.'); window.location.href='blog';</script>";
     } else {
         echo "Error deleting record: " . mysqli_error($conn);
     }

@@ -199,7 +199,7 @@ $rows = mysqli_fetch_array($result);
                                             <div class="card-body">
                                                 <div class="d-flex">
                                                     <div class="mt-6">
-                                                        <h2 class="mb-0 number-font"><a href="add-product.php">Add New Product</a></h2>
+                                                         <h2 class="mb-0 number-font"><a href="add-product">Add New Product</a></h2>
                                                     </div>
                                                     <div class="ms-auto">
                                                         <div class="chart-wrapper mt-1">
@@ -218,7 +218,7 @@ $rows = mysqli_fetch_array($result);
                                             <div class="card-body">
                                                 <div class="d-flex">
                                                     <div class="mt-6">
-                                                        <h2 class="mb-0 number-font"><a href="product.php">View All Products</a></h2>
+                                                         <h2 class="mb-0 number-font"><a href="product">View All Products</a></h2>
                                                     </div>
                                                     <div class="ms-auto">
                                                         <div class="chart-wrapper mt-1">
@@ -237,7 +237,7 @@ $rows = mysqli_fetch_array($result);
                                             <div class="card-body">
                                                 <div class="d-flex">
                                                     <div class="mt-6">
-                                                        <h2 class="mb-0 number-font"><a href="view-category.php">View All Categories</a></h2>
+                                                         <h2 class="mb-0 number-font"><a href="view-category">View All Categories</a></h2>
                                                     </div>
                                                     <div class="ms-auto">
                                                         <div class="chart-wrapper mt-1">
@@ -256,7 +256,7 @@ $rows = mysqli_fetch_array($result);
                                             <div class="card-body">
                                                 <div class="d-flex">
                                                     <div class="mt-6">
-                                                        <h2 class="mb-0 number-font"><a href="orders.php">View All Orders</a></h2>
+                                                         <h2 class="mb-0 number-font"><a href="orders">View All Orders</a></h2>
                                                     </div>
                                                     <div class="ms-auto">
                                                         <div class="chart-wrapper mt-1">

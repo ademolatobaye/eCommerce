@@ -11,11 +11,11 @@ if (isset($_GET['action']) && isset($_GET['product_id'])) {
 
     if ($action_p === 'approve_product') {
         @mysqli_query($conn, "UPDATE product_table SET `$status_col` = 'Approved' WHERE product_id = '$pid'");
-        echo "<script>alert('Product APPROVED successfully!'); window.location.href='product.php';</script>";
+        echo "<script>alert('Product APPROVED successfully!'); window.location.href='product';</script>";
         exit();
     } else if ($action_p === 'reject_product') {
         @mysqli_query($conn, "UPDATE product_table SET `$status_col` = 'Rejected' WHERE product_id = '$pid'");
-        echo "<script>alert('Product REJECTED.'); window.location.href='product.php';</script>";
+        echo "<script>alert('Product REJECTED.'); window.location.href='product';</script>";
         exit();
     }
 }
@@ -165,14 +165,14 @@ if (isset($_GET['action']) && isset($_GET['product_id'])) {
                                                             </button>
                                                         <div class="dropdown-menu">
                                                             <?php if ($p_stat === 'Pending' || $p_stat === 'Rejected'): ?>
-                                                                <a class="dropdown-item text-success" href="product.php?action=approve_product&product_id=<?php echo $row['product_id']?>" onclick="return confirm('Approve this product for storefront display?')"><i class="fa fa-check me-1"></i> Approve Product</a>
+                                                                <a class="dropdown-item text-success" href="product?action=approve_product&product_id=<?php echo $row['product_id']?>" onclick="return confirm('Approve this product for storefront display?')"><i class="fa fa-check me-1"></i> Approve Product</a>
                                                             <?php endif; ?>
                                                             <?php if ($p_stat === 'Pending' || $p_stat === 'Approved'): ?>
-                                                                <a class="dropdown-item text-warning" href="product.php?action=reject_product&product_id=<?php echo $row['product_id']?>" onclick="return confirm('Reject this product?')"><i class="fa fa-times me-1"></i> Reject Product</a>
+                                                                <a class="dropdown-item text-warning" href="product?action=reject_product&product_id=<?php echo $row['product_id']?>" onclick="return confirm('Reject this product?')"><i class="fa fa-times me-1"></i> Reject Product</a>
                                                             <?php endif; ?>
-                                                            <a class="dropdown-item" href="delete-product.php?product_id=<?php echo $row['product_id']?>" onclick="return confirm('Are you sure to delete this product?')">Delete Product</a>
+                                                            <a class="dropdown-item" href="delete-product?product_id=<?php echo $row['product_id']?>" onclick="return confirm('Are you sure to delete this product?')">Delete Product</a>
 
-                                                            <a class="dropdown-item" href="view-product.php?product_id=<?php echo $row['product_id']?>">View Product</a>
+                                                            <a class="dropdown-item" href="view-product?product_id=<?php echo $row['product_id']?>">View Product</a>
 
                                                             <!-- <a class="dropdown-item" href="edit-product.php?product_id=<?php echo $row['product_id']?>"><i class="fa fa-edit me-1"></i> Edit Product</a>
 

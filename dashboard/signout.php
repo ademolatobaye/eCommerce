@@ -10,7 +10,7 @@ $_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
 if(session_destroy()) //Destroying all sessions
 {
   echo "<script>alert(`You have successfully signed out from THEADEMOLA's Super Admin Dashboard.`)
-location.href='../reg/staff-login.php'</script>";
+location.href='../reg/staff-login'</script>";
    //Redirecting to login page
 }
 ?>

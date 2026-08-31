@@ -2,6 +2,21 @@
 session_start();
 include('db_conn.php'); 
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
+
 $categoryName = '';
 $categoryNameDisplay = 'Category';
 
@@ -21,7 +36,7 @@ if (isset($_GET['category']) && !empty($_GET['category'])) {
 
 if (empty($categoryName)) {
     // If no category is found or provided, redirect back to shop
-    header("Location: shop.php");
+    header("Location: shop");
     exit();
 }
 
@@ -34,7 +49,7 @@ $categoryNameEscaped = mysqli_real_escape_string($conn, $categoryName);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>DEE MART || <?php echo strtoupper($categoryNameDisplay); ?> PRODUCTS</title>
+    <title><?php echo $business_name;?> || <?php echo strtoupper($categoryNameDisplay); ?> PRODUCTS</title>
 
     <link rel="icon" type="image/png" href="assets/images/icons/favicon.png">
 
@@ -77,8 +92,8 @@ $categoryNameEscaped = mysqli_real_escape_string($conn, $categoryName);
             <nav class="breadcrumb-nav">
                 <div class="container">
                     <ul class="breadcrumb bb-no">
-                        <li><a href="index.php">Home</a></li>
-                        <li><a href="shop.php">Shop</a></li>
+                        <li><a href="index">Home</a></li>
+                        <li><a href="shop">Shop</a></li>
                         <li><?php echo $categoryNameDisplay; ?></li>
                     </ul>
                 </div>
@@ -107,11 +122,11 @@ $categoryNameEscaped = mysqli_real_escape_string($conn, $categoryName);
                                      <div class="product-wrap">
                                          <div class="product text-center">
                                              <figure class="product-media">
-                                                 <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                                 <a href="product?uin=<?php echo $row['uin']; ?>">
                                                      <img src="vendor/vendorupload/<?php echo htmlspecialchars($row['productimage']);?>" alt="Product" />
                                                  </a>
                                                  <div class="product-action-vertical">
-                                                     <a href="addtowishlist.php?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-wishlist w-icon-heart btn-add-wishlist-ajax" title="Add to Wishlist" data-uin="<?php echo $row['uin']; ?>"></a>
+                                                     <a href="addtowishlist?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-wishlist w-icon-heart btn-add-wishlist-ajax" title="Add to Wishlist" data-uin="<?php echo $row['uin']; ?>"></a>
                                                  </div>
                                                  <div class="product-action">
                                                      
@@ -120,10 +135,10 @@ $categoryNameEscaped = mysqli_real_escape_string($conn, $categoryName);
 
                                              <div class="product-details">
                                                  <div class="product-cat">
-                                                     <a href="cat.php?category=<?php echo urlencode($row['category']); ?>"><?php echo htmlspecialchars($row['category']); ?></a>
+                                                     <a href="cat?category=<?php echo urlencode($row['category']); ?>"><?php echo htmlspecialchars($row['category']); ?></a>
                                                  </div>
                                                  <h3 class="product-name">
-                                                     <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                                     <a href="product?uin=<?php echo $row['uin']; ?>">
                                                          <?php echo htmlspecialchars($row['productname']); ?>
                                                      </a>
                                                  </h3>
@@ -131,11 +146,11 @@ $categoryNameEscaped = mysqli_real_escape_string($conn, $categoryName);
                                                  <div class="product-vendor-mini mt-1 mb-1" style="font-size: 12px; color: #666;">
                                                      <?php if (!empty($row['vendor_uin'])): ?>
                                                          <i class="fas fa-store text-primary me-1"></i>
-                                                         <a href="vendor-store.php?vendor_uin=<?php echo $row['vendor_uin']; ?>" class="text-primary font-weight-bold" style="text-decoration: underline;">
+                                                         <a href="vendor-store?vendor_uin=<?php echo $row['vendor_uin']; ?>" class="text-primary font-weight-bold" style="text-decoration: underline;">
                                                              <?php echo htmlspecialchars($row['vendor_storename']); ?>
                                                          </a>
                                                      <?php else: ?>
-                                                         <span class="text-muted"><i class="fas fa-shield-alt text-success me-1"></i> DEE MART</span>
+                                                         <span class="text-muted"><i class="fas fa-shield-alt text-success me-1"></i> <?php echo $business_name;?></span>
                                                      <?php endif; ?>
                                                  </div>
                                                  <?php

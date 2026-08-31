@@ -64,7 +64,7 @@ if (!empty($customerUin)) {
                                         }
                                         ?></h1>
                                         <?php } else{ ?>
-                                       <h1 class="welcome-msg">Welcome to DEE MART.</h1>
+                                       <h1 class="welcome-msg">Welcome to <?php echo $business_name; ?>.</h1>
                                        <?php } ?>
 
             </div>
@@ -78,21 +78,21 @@ if (!empty($customerUin)) {
                 </div>
 
                 <span class="divider d-lg-show"></span>
-                <a href="blog.php" class="d-lg-show">Blog</a>
-                <a href="contact-us.php" class="d-lg-show">Contact Us</a>
+                <a href="blog" class="d-lg-show">Blog</a>
+                <a href="contact-us" class="d-lg-show">Contact Us</a>
                 <a href="dashboard" class="d-lg-show" target="_blank">Admin</a>
                 <?php if(isset($_SESSION['customer_email'])){ ?>
-                <a href="track-order.php" class="d-lg-show">Track Order</a>
-                <a href="my-account.php" class="d-lg-show"><?php echo $_SESSION['fullname'];; ?></a>
+                <a href="track-order" class="d-lg-show">Track Order</a>
+                <a href="my-account" class="d-lg-show"><?php echo $_SESSION['fullname'];; ?></a>
                 <?php } else{ ?>
-                <a href="my-account.php" class="d-lg-show">My Account</a>
+                <a href="my-account" class="d-lg-show">My Account</a>
                 <?php } ?>
                <?php if (isset($_SESSION['customer_email'])) { ?>
-                <a href="signout.php" class="d-lg-show" onclick="return confirm('Are you certain to sign out?')"><i class="w-icon-account"></i>Sign Out</a>
+                <a href="signout" class="d-lg-show" onclick="return confirm('Are you certain to sign out?')"><i class="w-icon-account"></i>Sign Out</a>
             <?php } else { ?>
-                <a href="reg/user-login.php" class="d-lg-show"><i class="w-icon-account"></i>Sign In</a>
+                <a href="reg/user-login" class="d-lg-show"><i class="w-icon-account"></i>Sign In</a>
                 <span class="delimiter d-lg-show">/</span>
-                <a href="reg/index.php" class="ml-0 d-lg-show">Register</a>
+                <a href="reg/index" class="ml-0 d-lg-show">Register</a>
             <?php } ?>
             </div>
         </div>
@@ -102,11 +102,11 @@ if (!empty($customerUin)) {
         <div class="container">
             <div class="header-left mr-md-4">
                 <a href="#" class="mobile-menu-toggle w-icon-hamburger" aria-label="menu-toggle"></a>
-                <a href="index.php" class="logo ml-lg-0">
+                <a href="index" class="logo ml-lg-0">
                     <img src="assets/images/logo.png" alt="logo" width="144" height="45" />
                 </a>
 
-                <form method="post" action="search.php" class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
+                <form method="post" action="search" class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
                     <div class="select-box">
                         <select id="category" name="category">
                             <option value="">All Categories</option>
@@ -135,11 +135,11 @@ if (!empty($customerUin)) {
                         <h4 class="chat font-weight-normal font-size-md text-normal ls-normal text-light mb-0">
                             <a href="#" class="text-capitalize">Live Chat</a> or Call:
                         </h4>
-                        <a href="tel:#" class="phone-number font-weight-bolder ls-50">+234 816 016 1379</a>
+                        <a href="tel:#" class="phone-number font-weight-bolder ls-50"><?php echo $phone; ?></a>
                     </div>
                 </div>
 
-                <a href="wishlist.php" class="wishlist label-down link d-xs-show" title="Wishlist" style="position: relative; margin-right: 2.3rem;">
+                <a href="wishlist" class="wishlist label-down link d-xs-show" title="Wishlist" style="position: relative; margin-right: 2.3rem;">
                     <i class="w-icon-heart" style="position: relative; display: inline-block;">
                         <span class="wishlist-count" id="header-wishlist-count" style="position: absolute; right: -8px; top: -5px; width: 1.9rem; height: 1.9rem; border-radius: 50%; font-style: normal; z-index: 1; font-family: Poppins, sans-serif; font-size: 1.1rem; font-weight: 400; line-height: 1.9rem; background: #333; color: #fff; text-align: center; display: inline-block;"><?php echo $wishlistCount; ?></span>
                     </i>
@@ -166,7 +166,7 @@ if (!empty($customerUin)) {
                                 foreach ($cartItems as $row) { ?>
                             <div class="product product-cart">
                                 <div class="product-detail">
-                                    <a href="product.php?uin=<?php echo $row['uin']; ?>" class="product-name">
+                                    <a href="product?uin=<?php echo $row['uin']; ?>" class="product-name">
                                         <?php echo $row['productname']; ?>
                                     </a>
                                     <div class="price-box">
@@ -175,7 +175,7 @@ if (!empty($customerUin)) {
                                     </div>
                                 </div>
                                 <figure class="product-media">
-                                    <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                    <a href="product?uin=<?php echo $row['uin']; ?>">
                                         <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>"
                                             alt="product" height="84" width="94" />
                                     </a>
@@ -197,8 +197,8 @@ if (!empty($customerUin)) {
                         </div>
 
                         <div class="cart-action">
-                            <a href="cart.php" class="btn btn-dark btn-outline btn-rounded">View Cart</a>
-                            <a href="checkout.php" class="btn btn-primary btn-rounded">Checkout</a>
+                            <a href="cart" class="btn btn-dark btn-outline btn-rounded">View Cart</a>
+                            <a href="checkout" class="btn btn-primary btn-rounded">Checkout</a>
                         </div>
                     </div>
                 </div>
@@ -227,7 +227,7 @@ if (!empty($customerUin)) {
                                     while ($catRow2 = mysqli_fetch_array($catResult2)) {
                                 ?>
                                 <li>
-                                    <a href="cat.php?cat=<?php echo $catRow2['id']; ?>"><?php echo $catRow2["categoryname"]; ?></a>
+                                    <a href="cat?cat=<?php echo $catRow2['id']; ?>"><?php echo $catRow2["categoryname"]; ?></a>
                                 </li>
                                 <?php }} ?>
                             </ul>
@@ -236,12 +236,12 @@ if (!empty($customerUin)) {
 
                     <nav class="main-nav">
                         <ul class="menu active-underline">
-                            <li class="active"><a href="index.php">Home</a></li>
-                            <li><a href="shop.php">Shop</a></li>
-                            <li><a href="wishlist.php">Wishlist</a></li>
-                            <li><a href="blog.php">Blog</a></li>
-                            <li><a href="about-us.php">About Us</a></li>
-                            <li><a href="track-order.php">Track Order</a></li>
+                            <li class="active"><a href="index">Home</a></li>
+                            <li><a href="shop">Shop</a></li>
+                            <li><a href="wishlist">Wishlist</a></li>
+                            <li><a href="blog">Blog</a></li>
+                            <li><a href="about-us">About Us</a></li>
+                            <li><a href="track-order">Track Order</a></li>
                         </ul>
                     </nav>
                 </div>

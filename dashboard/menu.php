@@ -10,14 +10,14 @@
                     <div class="d-flex">
                         <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar" href="javascript:void(0)"></a>
                         <!-- sidebar-toggle-->
-                        <a class="logo-horizontal " href="index.php">
+                        <a class="logo-horizontal " href="index">
                             <img src="assets/images/brand/logo-white.png" class="header-brand-img desktop-logo" alt="logo">
                             <img src="assets/images/brand/logo-dark.png" class="header-brand-img light-logo1"
                                 alt="logo">
                         </a>
                         <!-- LOGO -->
                         <div class="main-header-center ms-3 d-none d-lg-block">
-                            <form action="search.php" method="post">
+                            <form action="search" method="post">
                                 <input type="text" class="form-control" id="typehead" placeholder="Search for products..." required name="search">
                             <button class="btn px-0 pt-2"><i class="fe fe-search" aria-hidden="true"></i></button>
                             </form>
@@ -41,7 +41,7 @@
                                             </a>
                                             <div class="dropdown-menu header-search dropdown-menu-start">
                                                 <div class="input-group w-100 p-2">
-                                                    <form action="search.php" method="post">
+                                                    <form action="search" method="post">
                                                         <input type="text" class="form-control" placeholder="Search...." name="search">
                                                     </form>
                                                     <div class="input-group-text btn btn-primary">
@@ -83,11 +83,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="dropdown-divider m-0"></div>
-                                                <a class="dropdown-item" href="profile.php">
+                                                <a class="dropdown-item" href="profile">
                                                     <i class="dropdown-icon fe fe-user"></i>My Profile
                                                 </a>
                                                
-                                                <a class="dropdown-item" href="signout.php" onclick="return confirm('Are you sure to sign out form this dashboard?')">
+                                                <a class="dropdown-item" href="signout" onclick="return confirm('Are you sure to sign out form this dashboard?')">
                                                     <i class="dropdown-icon fe fe-alert-circle"></i> Sign out
                                                 </a>
                                             </div>
@@ -114,7 +114,7 @@
                 </div>
                 <div class="modal-body">
                     
-                    <form method="post" action="search.php">
+                    <form method="post" action="search">
                         
                       <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Start Date</label>
@@ -176,7 +176,7 @@
                 }
 
                 echo "<script>alert('Category successfully added.');
-                window.location.href= 'view-category.php'</script>";
+                window.location.href= 'view-category'</script>";
 
                         }
                         }
@@ -238,7 +238,7 @@
                 }
 
                 echo "<script>alert('Blog category successfully added.');
-                window.location.href= 'view-blog-category.php'</script>";
+                window.location.href= 'view-blog-category'</script>";
 
                         }
                         }
@@ -269,7 +269,7 @@
                 <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
                 <div class="app-sidebar">
                     <div class="side-header">
-                        <a class="header-brand1" href="index.php">
+                        <a class="header-brand1" href="index">
                             <img src="assets/images/brand/logo-white.png" class="header-brand-img desktop-logo" alt="logo">
                             <img src="assets/images/brand/icon-white.png" class="header-brand-img toggle-logo"
                                 alt="logo">
@@ -290,7 +290,7 @@
                         <ul class="side-menu">
                            
                             <li class="slide">
-                                <a class="side-menu__item has-link" data-bs-toggle="slide" href="index.php  "><i
+                                <a class="side-menu__item has-link" data-bs-toggle="slide" href="index"><i
                                         class="side-menu__icon fe fe-home"></i><span
                                         class="side-menu__label">Dashboard</span></a>
                             </li>
@@ -321,9 +321,9 @@
 													<ul class="sidemenu-list">
                                                         <li class="side-menu-label1"><a href="javascript:void(0)">Pages</a></li>
                                                         
-                                                         <li><a href="register-staff.php" class="slide-item"> Register New Staff</a></li>
+                                                         <li><a href="register-staff" class="slide-item"> Register New Staff</a></li>
                                                         
-                                                         <li><a href="view-staff.php" class="slide-item"> View All Staff</a></li>
+                                                         <li><a href="view-staff" class="slide-item"> View All Staff</a></li>
                                                                                                                  
 													</ul>
                                                 
@@ -361,12 +361,12 @@
 													<ul class="sidemenu-list">
                                                         <li class="side-menu-label1"><a href="javascript:void(0)"></a></li>
                                                          
-                                                                <li><a href="add-blog.php" class="sub-slide-item"> Add New Blog</a>
+                                                                <li><a href="add-blog" class="sub-slide-item"> Add New Blog</a>
                                                                 </li>
 
-                                                                <li><a href="blog.php" class="sub-slide-item"> View All Blogs</a></li>
+                                                                <li><a href="blog" class="sub-slide-item"> View All Blogs</a></li>
 
-                                                                <li><a href="view-blog-category.php" class="sub-slide-item"> View Blog Category</a></li>
+                                                                <li><a href="view-blog-category" class="sub-slide-item"> View Blog Category</a></li>
                                                         
 													</ul>
                                                 
@@ -403,15 +403,15 @@
                                                         <li class="side-menu-label1"><a href="javascript:void(0)">E-Commerce</a></li>
 
 
-                                                        <li><a href="product.php" class="slide-item">View All Products</a></li>
+                                                        <li><a href="product" class="slide-item">View All Products</a></li>
 
-                                                        <li><a href="add-product.php" class="slide-item"> Add New Product</a></li>
+                                                        <li><a href="add-product" class="slide-item"> Add New Product</a></li>
 
-                                                        <li><a href="view-category.php" class="slide-item"> View Category</a></li>
+                                                        <li><a href="view-category" class="slide-item"> View Category</a></li>
 
-                                                        <li><a href="orders.php" class="slide-item"> View All Orders</a></li>
+                                                        <li><a href="orders" class="slide-item"> View All Orders</a></li>
 
-                                                        <li><a href="vendors.php" class="slide-item"> Manage Vendors</a></li>
+                                                        <li><a href="vendors" class="slide-item"> Manage Vendors</a></li>
 
                                                         <li class="sub-slide">
                                                             <a class="sub-side-menu__item" href="#" data-bs-toggle="modal" data-bs-target="#productreportbydate"><span

@@ -2,8 +2,23 @@
 include('customer-session-check.php');
 include('db_conn.php');
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
+
 if (!isset($_SESSION['invoicenumber'])) {
-    header("Location: index.php");
+    header("Location: index");
     exit();
 }
 ?>
@@ -25,7 +40,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 // Checking if User's cart is empty
 if (empty($cartItems)) {
-    echo "<script>alert('Your cart is empty. Add items before checking out.'); window.location.href='index.php';</script>";
+    echo "<script>alert('Your cart is empty. Add items before checking out.'); window.location.href='index';</script>";
     exit();
 }
 ?>
@@ -38,7 +53,7 @@ if (empty($cartItems)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title>DEE MART || CHECKOUT</title>
+    <title><?php echo $business_name;?> || CHECKOUT</title>
 
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -80,7 +95,7 @@ if (empty($cartItems)) {
 
 <body>
     <div class="page-wrapper">
-        <h1 class="d-none">DEE MART || CHECKOUT</h1>
+        <h1 class="d-none"><?php echo $business_name;?> || CHECKOUT</h1>
 
         <?php
         include("header.php");
@@ -93,8 +108,8 @@ if (empty($cartItems)) {
             <nav class="breadcrumb-nav">
                 <div class="container">
                     <ul class="breadcrumb shop-breadcrumb bb-no">
-                        <li class="passed"><a href="cart.php">Shopping Cart</a></li>
-                        <li class="active"><a href="checkout.php">Checkout</a></li>
+                        <li class="passed"><a href="cart">Shopping Cart</a></li>
+                        <li class="active"><a href="checkout">Checkout</a></li>
                         <li>Complete Order</li>
                     </ul>
                 </div>
@@ -107,7 +122,7 @@ if (empty($cartItems)) {
                 <div class="container">
                     
                    
-                    <form class="form checkout-form" action="addpayment.php" method="post">
+                    <form class="form checkout-form" action="addpayment" method="post">
 
                     <?php
                     include("db_conn.php");

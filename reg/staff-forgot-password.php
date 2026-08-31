@@ -62,7 +62,7 @@ session_start();
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Staff Forgot Password</li>
                     </ul>
                 </div>
@@ -105,7 +105,7 @@ $_SESSION['otp_time'] = time();
                                                 $sql="UPDATE stafftable SET otp='$OTP', `status`= 'Pending' WHERE email='$email'";
                                                 $result=mysqli_query($conn, $sql);
                                                 if($result){
-                                                    echo "<script>window.location.href='staff-newotp.php'</script>";
+                                                    echo "<script>window.location.href='staff-newotp'</script>";
                                                 }
                                             } 
                                         }
@@ -120,7 +120,7 @@ $_SESSION['otp_time'] = time();
                                         <button type="submit" name="submit" class="btn btn-primary w-100 mt-4">Continue</button>
                                     </form>
 
-                                    <p class="text-center mt-4">Return to <a href="staff-login.php" class="text-primary">Sign In</a></p>
+                                    <p class="text-center mt-4">Return to <a href="staff-login" class="text-primary">Sign In</a></p>
                                 </div>
                             </div>
                         </div>

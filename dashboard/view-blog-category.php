@@ -119,9 +119,9 @@ $rows = mysqli_fetch_array($result);
                                                                 <i class="fe fe-action me-2"></i>Action
                                                             </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="delete-blog-category.php?id=<?php echo $row['id']?>" onclick="return confirm('Are you sure to delete this category?')">Delete Blog Category</a>
+                                                            <a class="dropdown-item" href="delete-blog-category?id=<?php echo $row['id']?>" onclick="return confirm('Are you sure to delete this category?')">Delete Blog Category</a>
 
-                                                            <a class="dropdown-item" href="edit-blog-category.php?id=<?php echo $row['id']?>"> Edit Blog Category</a>
+                                                            <a class="dropdown-item" href="edit-blog-category?id=<?php echo $row['id']?>"> Edit Blog Category</a>
                                                         </div>
                                                     </div>
                                                         </td>

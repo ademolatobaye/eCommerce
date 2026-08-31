@@ -135,8 +135,8 @@ $rows = mysqli_fetch_array($result);
                                                                             <i class="fe fe-action me-1"></i>Action
                                                                         </button>
                                                                         <div class="dropdown-menu">
-                                                                            <a class="dropdown-item" href="update-order-status.php?invoicenumber=<?php echo urlencode($row['invoicenumber']); ?>">Update Status</a>
-                                                                            <a class="dropdown-item" href="delete-order.php?invoicenumber=<?php echo urlencode($row['invoicenumber']); ?>" onclick="return confirm('Are you sure to delete this order record?')">Delete Order</a>
+                                                                            <a class="dropdown-item" href="update-order-status?invoicenumber=<?php echo urlencode($row['invoicenumber']); ?>">Update Status</a>
+                                                                            <a class="dropdown-item" href="delete-order?invoicenumber=<?php echo urlencode($row['invoicenumber']); ?>" onclick="return confirm('Are you sure to delete this order record?')">Delete Order</a>
                                                                         </div>
                                                                     </div>
                                                                 </td>

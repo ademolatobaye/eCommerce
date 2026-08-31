@@ -11,7 +11,7 @@ session_start();
 // 	use PHPMailer\PHPMailer\Exception;
 
 if(!isset($_SESSION["customer_email"])){
-  header("Location: otp.php");
+  header("Location: user-otp");
   exit();
 }
 
@@ -83,7 +83,7 @@ if(!isset($_SESSION["customer_email"])){
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Create an Account</li>
                     </ul>
                 </div>
@@ -204,11 +204,11 @@ if(!isset($_SESSION["customer_email"])){
 // 	$mail->addAddress("$customer_email");
 // //Finally send email
 // 	if ($mail->send()) {
-    echo "<script>alert('Dear $fullname, your account has been successfully created.'); window.location.href='user-login.php'</script>";
+    echo "<script>alert('Dear $fullname, your account has been successfully created.'); window.location.href='user-login'</script>";
                                             }
 // } else {
 //     error_log("Mailer Error: " . $mail->ErrorInfo);
-//     echo "<script>alert('Account created but confirmation email failed.'); window.location.href='user-login.php'</script>";
+//     echo "<script>alert('Account created but confirmation email failed.'); window.location.href='user-login'</script>";
 // }
             }
         // }
@@ -340,7 +340,7 @@ if(!isset($_SESSION["customer_email"])){
 								}
                                     </script>
 
-                                    <p class="text-center mt-4">Already have an account? <a href="user-login.php" class="text-primary">Sign In</a></p>
+                                    <p class="text-center mt-4">Already have an account? <a href="user-login" class="text-primary">Sign In</a></p>
                                 </div>
                             </div>
                         </div>

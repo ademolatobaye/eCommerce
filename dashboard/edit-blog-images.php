@@ -3,7 +3,7 @@ include("session-check.php");
 include("db_conn.php");
 
 if (!isset($_REQUEST['id'])) {
-    header("Location: blog.php");
+    header("Location: blog");
     exit();
 }
 
@@ -17,7 +17,7 @@ $result = mysqli_stmt_get_result($stmt);
 $blog = mysqli_fetch_assoc($result);
 
 if (!$blog) {
-    echo "<script>alert('Blog post not found.'); window.location.href='blog.php';</script>";
+    echo "<script>alert('Blog post not found.'); window.location.href='blog';</script>";
     exit();
 }
 
@@ -48,7 +48,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['img_id
             @unlink($file_path);
         }
 
-        echo "<script>alert('Blog image deleted successfully.'); window.location.href='edit-blog-images.php?id=$blog_id';</script>";
+        echo "<script>alert('Blog image deleted successfully.'); window.location.href='edit-blog-images?id=$blog_id';</script>";
         exit();
     }
 }
@@ -58,7 +58,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['img_id
 if (isset($_GET['action']) && $_GET['action'] == 'set_cover' && isset($_GET['img_name'])) {
     $cover_name = mysqli_real_escape_string($conn, $_GET['img_name']);
     mysqli_query($conn, "UPDATE blog SET blogimage = '$cover_name' WHERE id = '$blog_id'");
-    echo "<script>alert('Cover image updated.'); window.location.href='edit-blog-images.php?id=$blog_id';</script>";
+    echo "<script>alert('Cover image updated.'); window.location.href='edit-blog-images?id=$blog_id';</script>";
     exit();
 }
 
@@ -94,7 +94,7 @@ if (isset($_POST['upload_images'])) {
             mysqli_query($conn, "UPDATE blog SET blogimage = '$first_new_img' WHERE id = '$blog_id'");
         }
 
-        echo "<script>alert('$uploaded_count image(s) uploaded successfully.'); window.location.href='edit-blog-images.php?id=$blog_id';</script>";
+        echo "<script>alert('$uploaded_count image(s) uploaded successfully.'); window.location.href='edit-blog-images?id=$blog_id';</script>";
         exit();
     }
 }

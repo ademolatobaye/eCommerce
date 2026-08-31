@@ -3,7 +3,7 @@ include("session-check.php");
 include("db_conn.php");
 
 if (!isset($_REQUEST['product_id'])) {
-    header("Location: product.php");
+    header("Location: product");
     exit();
 }
 

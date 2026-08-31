@@ -3,7 +3,7 @@ include("session-check.php");
 include("db_conn.php");
 
 if (!isset($_REQUEST['id'])) {
-    header("Location: view-staff.php");
+    header("Location: view-staff");
     exit();
 }
 
@@ -121,7 +121,7 @@ $staff = mysqli_fetch_assoc($result);
                                                         $sql="UPDATE stafftable SET email='$email', fullname='$fullname', phone='$phone', `password`='$hashed_password', `role`='$role' WHERE id='$_REQUEST[id]'";
                                                         if(mysqli_query($conn, $sql)){
                                                         echo "<script>alert(`Staff's details successfully updated.`);
-                                                        window.location.href='view-staff.php'</script>";
+                                                        window.location.href='view-staff'</script>";
                                                     }else{
                                                         echo "<script>alert(`Error updating details.`)</script>";
                                                     }

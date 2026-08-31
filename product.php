@@ -1,6 +1,21 @@
 <?php
 session_start();
 include("db_conn.php");
+
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
 ?>
 
 <?php
@@ -83,7 +98,7 @@ if(isset($_REQUEST['uin'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title>DEE MART || PRODUCTS</title>
+    <title><?php echo $business_name;?> || PRODUCTS</title>
 
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -253,7 +268,7 @@ if(isset($_REQUEST['uin'])){
                                               <div class="product-meta">
                                                   <div class="product-categories">
                                                       Category:
-                                                      <span class="product-category"><a href="cat.php?category=<?php echo urlencode($product_row['category']); ?>"><?php echo htmlspecialchars($product_row['category']); ?></a></span>
+                                                      <span class="product-category"><a href="cat?category=<?php echo urlencode($product_row['category']); ?>"><?php echo htmlspecialchars($product_row['category']); ?></a></span>
                                                   </div>
 
                                                   <div class="product-sku">
@@ -272,16 +287,16 @@ if(isset($_REQUEST['uin'])){
                                                       <?php else: ?>
                                                           <i class="fas fa-store text-primary" style="font-size: 14px;"></i>
                                                       <?php endif; ?>
-                                                      <a href="vendor-store.php?vendor_uin=<?php echo urlencode($vendor_info['vendor_uin']); ?>" style="font-weight: 700; color: #336699; font-size: 14px;">
+                                                      <a href="vendor-store?vendor_uin=<?php echo urlencode($vendor_info['vendor_uin']); ?>" style="font-weight: 700; color: #336699; font-size: 14px;">
                                                           <?php echo htmlspecialchars($vendor_info['store_name']); ?>
                                                       </a>
                                                   <?php else: ?>
                                                       <i class="fas fa-shield-alt text-success" style="font-size: 14px;"></i>
-                                                      <span style="font-weight: 700; color: #333; font-size: 14px;">DEE MART Official Store</span>
+                                                      <span style="font-weight: 700; color: #333; font-size: 14px;"><?php echo $business_name;?> Official Store</span>
                                                   <?php endif; ?>
                                               </div>
                                               <?php if (!empty($vendor_info)): ?>
-                                                  <a href="vendor-store.php?vendor_uin=<?php echo urlencode($vendor_info['vendor_uin']); ?>" style="font-size: 12px; font-weight: 600; color: #336699; text-decoration: underline;">
+                                                  <a href="vendor-store?vendor_uin=<?php echo urlencode($vendor_info['vendor_uin']); ?>" style="font-size: 12px; font-weight: 600; color: #336699; text-decoration: underline;">
                                                       View Vendor &rarr;
                                                   </a>
                                               <?php endif; ?>
@@ -327,37 +342,37 @@ $quantity = $product_row['quantity'];
 
                                         <hr class="product-divider">
 
-                                        <form method="post" action="addtocart.php" id="add-to-cart-form">
-
-    <input type="hidden" name="uin" readonly value="<?php echo $product_row['uin'] ?>">
-    <input type="hidden" name="product_id" readonly value="<?php echo $product_row['product_id'] ?>">
-    <input type="hidden" name="user" readonly value="<?php echo isset($_SESSION['invoicenumber']) ? $_SESSION['invoicenumber'] : ''; ?>">
-   <input type="hidden" name="sellingprice" value="<?php echo $product_row['sellingprice']; ?>">
-
-                                        <div class="fix-bottom product-sticky-content sticky-content">
-                                            <div class="product-form container">
-                                                <div class="product-qty-form">
-                                                    <div class="input-group">
-                                                        <input class="quantity form-control" type="number" name="quantity" id="product-quantity-input" min="1" max="10000000" placeholder="Qty" required value="">
-                                                        <button type="button" class="quantity-plus w-icon-plus"></button>
-                                                        <button type="button" class="quantity-minus w-icon-minus"></button>
-                                                    </div>
+                                        <form method="post" action="addtocart" id="add-to-cart-form">
+                                            <input type="hidden" name="uin" value="<?php echo $uin; ?>">
+                                            <input type="hidden" name="product_id" value="<?php echo $product_row['product_id']; ?>">
+                                            <div class="product-form product-qty">
+                                                <label>Qty:</label>
+                                                <div class="input-group">
+                                                    <input class="quantity form-control" name="quantity" type="number" min="1" max="10000000" value="1">
+                                                    <button type="button" class="quantity-plus w-icon-plus"></button>
+                                                    <button type="button" class="quantity-minus w-icon-minus"></button>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary" name="add">
+                                            </div>
+                                            
+                                            <?php if ($product_row['quantity'] > 0): ?>
+                                                <button type="submit" class="btn btn-primary btn-cart" name="add">
                                                     <i class="w-icon-cart"></i>
                                                     <span>Add to Cart</span>
                                                 </button>
-                                                <a href="addtowishlist.php?uin=<?php echo $uin; ?>" 
-                                                   id="btn-wishlist-toggle"
-                                                   class="btn btn-outline btn-dark btn-rounded ml-3 <?php echo $in_wishlist ? 'added' : ''; ?>" 
-                                                   title="<?php echo $in_wishlist ? 'Remove from Wishlist' : 'Add to Wishlist'; ?>"
-                                                   style="display: inline-flex; align-items: center; justify-content: center; height: 46px; padding: 0 20px; font-weight: 600; <?php echo $in_wishlist ? 'color:#e3342f; border-color:#e3342f; background-color:#fff0f0;' : ''; ?>">
-                                                   <i class="w-icon-heart mr-2" id="wishlist-btn-icon"></i>
-                                                   <span id="wishlist-btn-text"><?php echo $in_wishlist ? 'Wishlisted' : 'Add to Wishlist'; ?></span>
-                                                </a>
-                                            </div>
-                                        </div>
-
+                                            <?php else: ?>
+                                                <button type="button" class="btn btn-disabled btn-cart" disabled>
+                                                    <span>Out of Stock</span>
+                                                </button>
+                                            <?php endif; ?>
+                                            
+                                            <a href="addtowishlist?uin=<?php echo $uin; ?>" 
+                                               id="btn-wishlist-toggle"
+                                               class="btn btn-outline btn-dark btn-rounded ml-3 <?php echo $in_wishlist ? 'added' : ''; ?>" 
+                                               title="<?php echo $in_wishlist ? 'Remove from Wishlist' : 'Add to Wishlist'; ?>"
+                                               style="display: inline-flex; align-items: center; justify-content: center; height: 46px; padding: 0 20px; font-weight: 600; <?php echo $in_wishlist ? 'color:#e3342f; border-color:#e3342f; background-color:#fff0f0;' : ''; ?>">
+                                               <i class="w-icon-heart mr-2" id="wishlist-btn-icon"></i>
+                                               <span id="wishlist-btn-text"><?php echo $in_wishlist ? 'Wishlisted' : 'Add to Wishlist'; ?></span>
+                                            </a>
                                         </form>
 
                                     </div>
@@ -433,7 +448,7 @@ $quantity = $product_row['quantity'];
                                                          </div>
 
                                                          <div style="padding-top: 10px;">
-                                                             <a href="vendor-store.php?vendor_uin=<?php echo urlencode($vendor_info['vendor_uin']); ?>" class="btn btn-primary btn-rounded" style="padding: 12px 28px; font-weight: 600;">
+                                                             <a href="vendor-store?vendor_uin=<?php echo urlencode($vendor_info['vendor_uin']); ?>" class="btn btn-primary btn-rounded" style="padding: 12px 28px; font-weight: 600;">
                                                                  <i class="fas fa-store" style="margin-right: 8px;"></i> View Vendor
                                                              </a>
                                                          </div>
@@ -443,12 +458,12 @@ $quantity = $product_row['quantity'];
                                                          <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 16px;">
                                                              <i class="fas fa-shield-alt text-success" style="font-size: 32px;"></i>
                                                              <div>
-                                                                 <h3 style="font-size: 1.25rem; font-weight: 700; color: #222; margin: 0;">DEE MART Official Store</h3>
+                                                                 <h3 style="font-size: 1.25rem; font-weight: 700; color: #222; margin: 0;"><?php echo $business_name;?> Official Store</h3>
                                                                  <p style="font-size: 0.88rem; color: #666; margin: 4px 0 0 0;">Verified Official Partner</p>
                                                              </div>
                                                          </div>
                                                          <p style="font-size: 0.93rem; color: #555; line-height: 1.6; margin-bottom: 0;">
-                                                             This product is sold and fulfilled directly by DEE MART. Quality guaranteed and fast delivery across Nigeria.
+                                                             This product is sold and fulfilled directly by <?php echo $business_name;?>. Quality guaranteed and fast delivery across Nigeria.
                                                          </p>
                                                      </div>
                                                  <?php endif; ?>
@@ -472,7 +487,9 @@ $quantity = $product_row['quantity'];
                                             <div class="col-xl-8 col-lg-7 mb-4">
                                                 <div class="review-form-wrapper p-4" style="border: 1px solid #eee; border-radius: 8px;">
                                                     <h4 class="title font-weight-bold">Write a Review</h4>
-                                                    <form method="post" action="add-review.php" class="form review-form">
+
+                                                    
+                                                    <form method="post" action="add-review" class="form review-form">
                                                         <input type="hidden" name="product_uin" value="<?php echo $uin; ?>">
                                                         <div class="form-group mb-3">
                                                             <label class="d-block mb-1">Your Rating *</label>
@@ -546,7 +563,7 @@ $quantity = $product_row['quantity'];
                             <section class="related-product-section">
                                 <div class="title-link-wrapper mb-4">
                                     <h4 class="title">Related Products</h4>
-                                    <a href="shop.php" class="btn btn-dark btn-link btn-slide-right btn-icon-right">More
+                                    <a href="shop" class="btn btn-dark btn-link btn-slide-right btn-icon-right">More
                                         Products<i class="w-icon-long-arrow-right"></i></a>
                                 </div>
                                 <div class="swiper-container swiper-theme" data-swiper-options="{
@@ -575,19 +592,21 @@ $quantity = $product_row['quantity'];
 
                                         <div class="swiper-slide product">
                                             <figure class="product-media">
-                                                <a href="product.php?uin=<?php echo $row['uin']; ?>">
-                                                    <img src="<?php echo getProductImgUrl($row['productimage']); ?>" alt="Product"
-                                                        width="300" height="338" />
+                                                <a href="product?uin=<?php echo $row['uin']; ?>">
+                                                    <?php if (!empty($row['productimage']) && file_exists("vendor/vendorupload/" . $row['productimage'])): ?>
+                                                        <img src="vendor/vendorupload/<?php echo htmlspecialchars($row['productimage']); ?>" alt="Product" width="300" height="300" />
+                                                    <?php else: ?>
+                                                        <img src="assets/images/products/1.jpg" alt="Product" width="300" height="300" />
+                                                    <?php endif; ?>
                                                 </a>
-                                                
-                                                <div class="product-action">
-                                                    <a href="product.php?uin=<?php echo $row['uin']; ?>" class="btn-product btn-quickview" title="Quick View">Quick
+                                                <div class="product-action-vertical">
+                                                    <a href="product?uin=<?php echo $row['uin']; ?>" class="btn-product btn-quickview" title="Quick View">Quick
                                                         View</a>
                                                 </div>
                                             </figure>
 
                                             <div class="product-details">
-                                                <h4 class="product-name"><a href="product.php?uin=<?php echo $row['uin']; ?>"><?php echo htmlspecialchars($row['productname']); ?></a></h4>
+                                                <h4 class="product-name"><a href="product?uin=<?php echo $row['uin']; ?>"><?php echo htmlspecialchars($row['productname']); ?></a></h4>
 
                                                 <div class="ratings-container">
                                                     <div class="ratings-full">
@@ -646,13 +665,13 @@ $quantity = $product_row['quantity'];
                                             <div class="product-wrap mb-4">
                                                 <div class="product text-center border p-2 rounded" style="border-radius: 6px;">
                                                     <figure class="product-media mb-2">
-                                                        <a href="product.php?uin=<?php echo $rv_row['uin']; ?>">
-                                                            <img src="vendor/vendorupload/<?php echo htmlspecialchars($rv_row['productimage']); ?>" alt="Product" style="height: 160px; object-fit: cover; width: 100%;">
+                                                        <a href="product?uin=<?php echo $rv_row['uin']; ?>">
+                                                            <img src="vendor/vendorupload/<?php echo htmlspecialchars($rv_row['productimage']); ?>" alt="Product" width="300" height="300" />
                                                         </a>
                                                     </figure>
                                                     <div class="product-details">
                                                         <h4 class="product-name font-size-sm mb-1">
-                                                            <a href="product.php?uin=<?php echo $rv_row['uin']; ?>"><?php echo htmlspecialchars($rv_row['productname']); ?></a>
+                                                            <a href="product?uin=<?php echo $rv_row['uin']; ?>"><?php echo htmlspecialchars($rv_row['productname']); ?></a>
                                                         </h4>
                                                         <div class="product-price text-primary font-weight-bold">
                                                             &#8358;<?php echo number_format($rv_row['sellingprice'], 2); ?>
@@ -734,15 +753,18 @@ $quantity = $product_row['quantity'];
      ?>
                                                         <div class="product product-widget">
                                                             <figure class="product-media">
-                                                                <a href="product.php?uin=<?php echo $row['uin']; ?>">
-                                                                    <img src="<?php echo getProductImgUrl($row['productimage']); ?>" alt="Product"
-                                                                        width="100" height="113" />
+                                                                <a href="product?uin=<?php echo $row['uin']; ?>">
+                                                                    <?php if (!empty($row['productimage']) && file_exists("vendor/vendorupload/" . $row['productimage'])): ?>
+                                                                        <img src="vendor/vendorupload/<?php echo htmlspecialchars($row['productimage']); ?>" alt="Product" width="300" height="300" />
+                                                                    <?php else: ?>
+                                                                        <img src="assets/images/products/1.jpg" alt="Product" width="300" height="300" />
+                                                                    <?php endif; ?>
                                                                 </a>
                                                             </figure>
                                                             
                                                             <div class="product-details">
                                                                 <h4 class="product-name">
-                                                                    <a href="product.php?uin=<?php echo $row['uin']; ?>"><?php echo $row['productname']; ?></a>
+                                                                    <a href="product?uin=<?php echo $row['uin']; ?>"><?php echo $row['productname']; ?></a>
                                                                 </h4>
                                                                 
                                                                 <div class="ratings-container">

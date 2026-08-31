@@ -71,7 +71,7 @@ ini_set('display_errors', '1');
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Forgot Password</li>
                     </ul>
                 </div>
@@ -237,7 +237,7 @@ ini_set('display_errors', '1');
 	$mail->addAddress("$customer_email");
 //Finally send email
 	if ( $mail->send() ) {
-                                                    echo "<script>alert('Dear $customer_email, a new otp has been sent to your email. Kindly check to reset your password.');window.location.href='user-newotp.php'</script>";
+                                                    echo "<script>alert('Dear $customer_email, a new otp has been sent to your email. Kindly check to reset your password.');window.location.href='user-newotp'</script>";
                                                     exit();
                                                 }
                                             }
@@ -253,7 +253,7 @@ ini_set('display_errors', '1');
                                         <button type="submit" name="submit" class="btn btn-primary w-100 mt-4">Continue</button>
                                     </form>
 
-                                    <p class="text-center mt-4">Return to <a href="user-login.php" class="text-primary">Sign In</a></p>
+                                    <p class="text-center mt-4">Return to <a href="user-login" class="text-primary">Sign In</a></p>
                                 </div>
                             </div>
                         </div>

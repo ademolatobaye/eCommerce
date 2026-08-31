@@ -3,7 +3,7 @@ include("session-check.php");
 include("db_conn.php");
 
 if (!isset($_REQUEST['id'])) {
-    header("Location: blog.php");
+    header("Location: blog");
     exit();
 }
 
@@ -17,7 +17,7 @@ $result = mysqli_stmt_get_result($stmt);
 $blog = mysqli_fetch_assoc($result);
 
 if (!$blog) {
-    echo "<script>alert('Blog post not found.'); window.location.href='blog.php';</script>";
+    echo "<script>alert('Blog post not found.'); window.location.href='blog';</script>";
     exit();
 }
 ?>
@@ -52,7 +52,7 @@ if (!$blog) {
                             <h1 class="page-title">Edit Blog</h1>
                             <div>
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="blog.php">Blogs</a></li>
+                                    <li class="breadcrumb-item"><a href="blog">Blogs</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Edit Blog</li>
                                 </ol>
                             </div>
@@ -75,7 +75,7 @@ if (!$blog) {
 
                                             $update_sql = "UPDATE blog SET headline='$headline', category='$category', content='$content', photocredit='$photocredit', staff='$staff' WHERE id='$blog_id'";
                                             if (mysqli_query($conn, $update_sql)) {
-                                                echo "<script>alert('Blog details updated successfully.'); window.location.href='blog.php';</script>";
+                                                echo "<script>alert('Blog details updated successfully.'); window.location.href='blog';</script>";
                                             } else {
                                                 echo "<script>alert('Error updating blog post.');</script>";
                                             }
@@ -84,7 +84,7 @@ if (!$blog) {
 
                                         <div class="card-header d-flex justify-content-between align-items-center">
                                             <div class="card-title">Edit Blog Details</div>
-                                            <a href="edit-blog-images.php?id=<?php echo $blog['id']; ?>" class="btn btn-info btn-sm">
+                                            <a href="edit-blog-images?id=<?php echo $blog['id']; ?>" class="btn btn-info btn-sm">
                                                 <i class="fa fa-image me-1"></i> Edit Blog Images
                                             </a>
                                         </div>

@@ -147,9 +147,9 @@ $rows = mysqli_fetch_array($result);
                                                         }
                                                     } else {
                                                         if(isset($_POST["check"])){
-                                                            echo "<script>alert('Oops! No products found for that date range.'); window.location.href='index.php'</script>";
+                                                            echo "<script>alert('Oops! No products found for that date range.'); window.location.href='index'</script>";
                                                         } else {
-                                                            echo "<script>alert('Oops! Product not found.'); window.location.href='index.php'</script>";
+                                                            echo "<script>alert('Oops! Product not found.'); window.location.href='index'</script>";
                                                         }
                                                         exit();
                                                     }

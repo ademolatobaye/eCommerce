@@ -3,11 +3,26 @@ include('db_conn.php');
 include("customer-session-check.php");
 date_default_timezone_set('Africa/Lagos');
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
+
 $timeout_duration = 600;
 $current_url = $_SERVER['REQUEST_URI'];
 
 if (!isset($_SESSION['customer_email'])) {
-    header("Location: reg/user-login.php");
+    header("Location: reg/user-login");
     exit();
 }
 
@@ -15,7 +30,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) >
     $_SESSION['redirect_after_login'] = $current_url;
     session_unset();
     session_destroy();
-    echo "<script>alert('Session expired due to inactivity. Please log in again.'); window.location.href = 'reg/user-login.php';</script>";
+    echo "<script>alert('Session expired due to inactivity. Please log in again.'); window.location.href = 'reg/user-login';</script>";
     exit();
 }
 
@@ -38,7 +53,7 @@ if ($stmt) {
         $session_phone        = $row['phone'];
     } else {
         session_unset(); session_destroy();
-        header("Location: reg/user-login.php"); exit();
+        header("Location: reg/user-login"); exit();
     }
 } else {
     die("Error preparing query.");
@@ -62,7 +77,7 @@ if ($order_query) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>DEE MART || MY ACCOUNT</title>
+    <title><?php echo $business_name;?> || MY ACCOUNT</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="D-THEMES">
@@ -106,7 +121,7 @@ if ($order_query) {
             <nav class="breadcrumb-nav">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="index.php">Home</a></li>
+                        <li><a href="index">Home</a></li>
                         <li>My Account</li>
                     </ul>
                 </div>
@@ -126,10 +141,10 @@ if ($order_query) {
                                 <a href="#account-details" class="nav-link">Account Details</a>
                             </li>
                             <li class="link-item">
-                                <a href="wishlist.php">Wishlist</a>
+                                <a href="wishlist">Wishlist</a>
                             </li>
                             <li class="link-item">
-                                <a href="signout.php">Sign Out</a>
+                                <a href="signout">Sign Out</a>
                             </li>
                         </ul>
 
@@ -169,7 +184,7 @@ if ($order_query) {
                                        
                                     </div>
                                     <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 mb-4">
-                                        <a href="signout.php">
+                                        <a href="signout">
                                             <div class="icon-box text-center">
                                                 <span class="icon-box-icon icon-logout"><i class="w-icon-logout"></i></span>
                                                 <div class="icon-box-content"><p class="text-uppercase mb-0">Sign Out</p></div>
@@ -215,7 +230,7 @@ if ($order_query) {
                                                 <span class="order-price">&#8358;<?php echo number_format($order['amount'], 2); ?></span>
                                             </td>
                                             <td class="order-action">
-                                                <a href="track-order.php?order_id=<?php echo urlencode($ordIdentifier); ?>" class="btn btn-outline btn-default btn-block btn-sm btn-rounded"><i class="w-icon-map-marker mr-1"></i>Track</a>
+                                                <a href="track-order?order_id=<?php echo urlencode($ordIdentifier); ?>" class="btn btn-outline btn-default btn-block btn-sm btn-rounded"><i class="w-icon-map-marker mr-1"></i>Track</a>
                                             </td>
                                         </tr>
                                         <?php endforeach; ?>
@@ -223,7 +238,7 @@ if ($order_query) {
                                 </table>
                                 <?php endif; ?>
 
-                                <a href="shop.php" class="btn btn-dark btn-rounded btn-icon-right">Go Shop<i class="w-icon-long-arrow-right"></i></a>
+                                <a href="shop" class="btn btn-dark btn-rounded btn-icon-right">Go Shop<i class="w-icon-long-arrow-right"></i></a>
                             </div>
 
                             <!-- Account Details -->
@@ -320,26 +335,26 @@ if ($order_query) {
                                                     $mail->SMTPSecure = 'ssl';
                                                     $mail->Port       = 465;
 
-                                                    $mail->setFrom('ademolaomomeji@pocketvest.com.ng', 'DEE MART');
+                                                    $mail->setFrom('ademolaomomeji@pocketvest.com.ng', '<?php echo $business_name;?>');
                                                     $mail->addAddress($new_email, $new_fullname);
 
                                                     $mail->isHTML(true);
-                                                    $mail->Subject = "Account Profile Updated - DEE MART";
+                                                    $mail->Subject = "Account Profile Updated - <?php echo $business_name;?>";
                                                     $mail->Body = "
                                                     <div style='font-family: Arial, sans-serif; background-color: #f5f6fa; padding: 20px;'>
                                                         <div style='max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);'>
                                                             <div style='background-color: #4B0082; padding: 20px; text-align: center; color: #ffffff;'>
-                                                                <h2 style='margin: 0;'>DEE MART</h2>
+                                                                <h2 style='margin: 0;'><?php echo $business_name;?></h2>
                                                                 <p style='margin: 5px 0 0 0; font-size: 14px;'>Profile Update Notification</p>
                                                             </div>
                                                             <div style='padding: 30px; color: #333333;'>
                                                                 <p>Hello <strong>" . htmlspecialchars($new_fullname) . "</strong>,</p>
-                                                                <p>Your DEE MART account profile details were successfully updated.</p>
+                                                                <p>Your <?php echo $business_name;?> account profile details were successfully updated.</p>
                                                                 <p>If you did not make these changes, please contact our support team immediately.</p>
-                                                                <p style='margin-top: 20px;'>Thank you,<br>DEE MART Team</p>
+                                                                <p style='margin-top: 20px;'>Thank you,<br><?php echo $business_name;?> Team</p>
                                                             </div>
                                                             <div style='background-color: #f9f9f9; padding: 15px; text-align: center; font-size: 12px; color: #777777;'>
-                                                                <p style='margin: 0;'>This email was automatically sent from DEE MART.</p>
+                                                                <p style='margin: 0;'>This email was automatically sent from <?php echo $business_name;?>.</p>
                                                             </div>
                                                         </div>
                                                     </div>";

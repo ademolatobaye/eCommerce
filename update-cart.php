@@ -11,7 +11,7 @@ if (!isset($_SESSION['customer_email']) || !isset($_SESSION['invoicenumber'])) {
         echo json_encode(array('success' => false, 'message' => 'Session expired. Please log in again.'));
         exit();
     }
-    header("Location: reg/user-login.php");
+    header("Location: reg/user-login");
     exit();
 }
 
@@ -30,7 +30,7 @@ if (empty($quantities)) {
         echo json_encode(array('success' => false, 'message' => 'No items provided to update.'));
         exit();
     }
-    header("Location: cart.php");
+    header("Location: cart");
     exit();
 }
 
@@ -43,12 +43,10 @@ foreach ($quantities as $cart_product_id => $new_qty) {
 
     if ($cart_product_id <= 0) continue;
 
-    // Fetch existing item in invoiceorder
+    // STEP 1: Fetch item directly from invoiceorder (Cart)
     $item_stmt = mysqli_prepare($conn, "
-        SELECT io.*, pt.quantity AS available_stock, pt.costprice, pt.sellingprice 
-        FROM invoiceorder io
-        LEFT JOIN product_table pt ON (io.uin = pt.uin OR io.product_id = pt.product_id)
-        WHERE io.product_id = ? AND io.invoicenumber = ? AND io.paymentstatus = 'Pending'
+        SELECT * FROM invoiceorder 
+        WHERE product_id = ? AND invoicenumber = ? AND paymentstatus = 'Pending'
         LIMIT 1
     ");
     
@@ -62,30 +60,59 @@ foreach ($quantities as $cart_product_id => $new_qty) {
 
     if (!$item_row) continue;
 
-    // If new quantity is 0 or less, remove item from cart
+    $old_qty  = (int)$item_row['quantity'];
+    $item_uin = mysqli_real_escape_string($conn, $item_row['uin']);
+
+    // If new quantity is 0 or less, remove item from cart and restore stock
     if ($new_qty <= 0) {
         $del_stmt = mysqli_prepare($conn, "DELETE FROM invoiceorder WHERE product_id = ? AND invoicenumber = ? AND paymentstatus = 'Pending'");
         if ($del_stmt) {
             mysqli_stmt_bind_param($del_stmt, 'is', $cart_product_id, $invoiceNumber);
             mysqli_stmt_execute($del_stmt);
             mysqli_stmt_close($del_stmt);
+
+            if ($old_qty > 0) {
+                mysqli_query($conn, "UPDATE product_table SET quantity = quantity + $old_qty WHERE uin = '$item_uin' OR product_id = '$cart_product_id'");
+            }
+
             $updated_count++;
         }
         continue;
     }
 
-    $available_stock = isset($item_row['available_stock']) ? (int)$item_row['available_stock'] : 999999;
-    if ($new_qty > $available_stock) {
-        $new_qty = $available_stock;
-        $messages[] = "Quantity for {$item_row['productname']} adjusted to available stock ({$available_stock}).";
+    // STEP 2: Fetch stock and pricing directly from product_table (Warehouse)
+    $available_stock = 999999;
+    $costPrice       = 0;
+    $sellingPrice    = (float)$item_row['amount'] / (int)$item_row['quantity'];
+
+    $prod_stmt = mysqli_prepare($conn, "SELECT quantity, costprice, sellingprice FROM product_table WHERE uin = ? OR product_id = ? LIMIT 1");
+    if ($prod_stmt) {
+        mysqli_stmt_bind_param($prod_stmt, 'si', $item_uin, $cart_product_id);
+        mysqli_stmt_execute($prod_stmt);
+        $prod_res = mysqli_stmt_get_result($prod_stmt);
+        if ($prod_row = mysqli_fetch_assoc($prod_res)) {
+            $available_stock = (int)$prod_row['quantity'];
+            $costPrice       = (float)$prod_row['costprice'];
+            if ((float)$prod_row['sellingprice'] > 0) {
+                $sellingPrice = (float)$prod_row['sellingprice'];
+            }
+        }
+        mysqli_stmt_close($prod_stmt);
     }
 
-    $costPrice    = isset($item_row['costprice']) ? (float)$item_row['costprice'] : 0;
-    $sellingPrice = isset($item_row['sellingprice']) ? (float)$item_row['sellingprice'] : ((float)$item_row['amount'] / (int)$item_row['quantity']);
+    $max_allowed = $old_qty + $available_stock;
+
+    if ($new_qty > $max_allowed) {
+        $new_qty = $max_allowed;
+        $messages[] = "Quantity for {$item_row['productname']} adjusted to available stock ({$max_allowed}).";
+    }
+
+    $delta = $new_qty - $old_qty;
 
     $newAmount = $sellingPrice * $new_qty;
     $newProfit = ($sellingPrice - $costPrice) * $new_qty;
 
+    // STEP 3: Update cart item in invoiceorder
     $upd_stmt = mysqli_prepare($conn, "
         UPDATE invoiceorder 
         SET quantity = ?, amount = ?, profit = ? 
@@ -96,6 +123,15 @@ foreach ($quantities as $cart_product_id => $new_qty) {
         mysqli_stmt_bind_param($upd_stmt, 'iddis', $new_qty, $newAmount, $newProfit, $cart_product_id, $invoiceNumber);
         mysqli_stmt_execute($upd_stmt);
         mysqli_stmt_close($upd_stmt);
+
+        // Adjust stock in product_table according to delta
+        if ($delta > 0) {
+            mysqli_query($conn, "UPDATE product_table SET quantity = GREATEST(0, quantity - $delta) WHERE uin = '$item_uin' OR product_id = '$cart_product_id'");
+        } elseif ($delta < 0) {
+            $restore = abs($delta);
+            mysqli_query($conn, "UPDATE product_table SET quantity = quantity + $restore WHERE uin = '$item_uin' OR product_id = '$cart_product_id'");
+        }
+
         $updated_count++;
     }
 }
@@ -115,6 +151,6 @@ if (!empty($messages)) {
     $alert_msg .= ' ' . implode(' ', $messages);
 }
 
-echo "<script>alert('{$alert_msg}'); window.location.href='cart.php';</script>";
+echo "<script>alert('{$alert_msg}'); window.location.href='cart';</script>";
 exit();
 ?>

@@ -5,7 +5,7 @@ if(isset($_REQUEST['id'])){
     $sql = "UPDATE vendor_table SET `status` = 'Suspended' WHERE id='$vendor_id'";
     if(mysqli_query($conn, $sql)){
         echo "<script>alert('Vendor successfully suspended.'); 
-        window.location.href='vendors.php';
+        window.location.href='vendors';
         </script>";
     } else {
         echo "Error suspending record: " . mysqli_error($conn);

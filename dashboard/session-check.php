@@ -16,7 +16,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) >
     session_destroy();
     echo "<script>
         alert('Session expired due to inactivity. Please log in again.');
-        window.location.href = '../reg/staff-login.php';
+        window.location.href = '../reg/staff-login';
     </script>";
     exit();
 }
@@ -27,7 +27,7 @@ $_SESSION['LAST_ACTIVITY'] = time();
 // 🚫 Redirect if not logged in
 if (!isset($_SESSION['email']) || !isset($_SESSION['role'])) {
     $_SESSION['redirect_after_login'] = $current_url;
-    header("Location: ../reg/staff-login.php");
+    header("Location: ../reg/staff-login");
     exit();
 }
 
@@ -51,7 +51,7 @@ if ($stmt) {
         if ($row['role'] !== $staff_role) {
             echo "<script>
                 alert('Invalid role. Please contact administrator.');
-                window.location.href = '../reg/staff-login.php';
+                window.location.href = '../reg/staff-login';
             </script>";
             exit();
         }
@@ -67,7 +67,7 @@ if ($stmt) {
     } else {
         echo "<script>
             alert('Unauthorized access or inactive account.');
-            window.location.href = '../reg/staff-login.php';
+            window.location.href = '../reg/staff-login';
         </script>";
         exit();
     }
@@ -83,7 +83,7 @@ function check_access($allowed_roles) {
     if (!in_array($staff_role, $allowed_roles)) {
         echo "<script>
             alert('You do not have access to this page.');
-            window.location.href = '../reg/staff-login.php';
+            window.location.href = '../reg/staff-login';
         </script>";
         exit();
     }

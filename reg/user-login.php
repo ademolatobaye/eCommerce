@@ -55,14 +55,14 @@ ini_set('display_errors', 1);
                     $_SESSION['invoicenumber'] = $invoice_row['invoicenumber'];
                 }
 
-                header("Location: ../index.php");
+                header("Location: ../index");
                 exit();
 
             } else {
-                echo "<script>alert('Invalid customer login credential.'); window.location.href='user-login.php';</script>";
+                echo "<script>alert('Invalid customer login credential.'); window.location.href='user-login';</script>";
             }
         } else {
-            echo "<script>alert('Invalid customer login credential.'); window.location.href='user-login.php';</script>";
+            echo "<script>alert('Invalid customer login credential.'); window.location.href='user-login';</script>";
         }
     }
 ?>
@@ -127,7 +127,7 @@ ini_set('display_errors', 1);
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Sign In</li>
                     </ul>
                 </div>
@@ -170,11 +170,11 @@ ini_set('display_errors', 1);
                                         <div class="form-checkbox d-flex align-items-center justify-content-between">
                                             <input type="checkbox" class="custom-checkbox" id="remember" name="remember">
                                             <label for="remember">Keep me signed in</label>
-                                            <a href="user-forgot-password.php">Forgot Password?</a>
+                                            <a href="user-forgot-password">Forgot Password?</a>
                                         </div>
 
                                         <button type="submit" name="submit" class="btn btn-primary w-100">Sign In</button>
-                                         <a href="index.php">Don't have an account? Register Here</a>
+                                         <a href="index">Don't have an account? Register Here</a>
                                     </form>
 
                                     <script>

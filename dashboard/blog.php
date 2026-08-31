@@ -135,11 +135,11 @@ $rows = mysqli_fetch_array($result);
                                                                 <i class="fe fe-action me-2"></i>Action
                                                             </button>
                                                          <div class="dropdown-menu">
-                                                             <a class="dropdown-item" href="delete-blog.php?id=<?php echo $row['id']?>" onclick="return confirm('Are you sure to delete this blog?')"><i class="fa fa-trash me-1"></i> Delete Blog</a>
+                                                             <a class="dropdown-item" href="delete-blog?id=<?php echo $row['id']?>" onclick="return confirm('Are you sure to delete this blog?')"><i class="fa fa-trash me-1"></i> Delete Blog</a>
 
-                                                             <a class="dropdown-item" href="edit-blog.php?id=<?php echo $row['id']?>"><i class="fa fa-edit me-1"></i> Edit Blog Details</a>
+                                                             <a class="dropdown-item" href="edit-blog?id=<?php echo $row['id']?>"><i class="fa fa-edit me-1"></i> Edit Blog Details</a>
 
-                                                             <a class="dropdown-item" href="edit-blog-images.php?id=<?php echo $row['id']?>"><i class="fa fa-image me-1"></i> Edit Blog Images</a>
+                                                             <a class="dropdown-item" href="edit-blog-images?id=<?php echo $row['id']?>"><i class="fa fa-image me-1"></i> Edit Blog Images</a>
                                                          </div>
                                                     </div>
                                                         </td>

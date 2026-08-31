@@ -52,7 +52,7 @@ session_start();
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Registration Successful</li>
                     </ul>
                 </div>
@@ -75,7 +75,7 @@ session_start();
                         </p>
 
                         <div class="pt-2 text-center" style="text-align: center !important;">
-                            <a href="../index.php" class="btn btn-primary btn-rounded" style="padding: 12px 35px; font-size: 15px; font-weight: 600; text-transform: uppercase; display: inline-block;">
+                            <a href="../index" class="btn btn-primary btn-rounded" style="padding: 12px 35px; font-size: 15px; font-weight: 600; text-transform: uppercase; display: inline-block;">
                                 Go Back Home <i class="w-icon-long-arrow-right ml-2"></i>
                             </a>
                         </div>

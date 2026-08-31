@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(!isset($_SESSION["email"])){
-  header("Location: staff-newotp.php");
+  header("Location: staff-newotp");
   exit();
 }
 
@@ -74,7 +74,7 @@ if(!isset($_SESSION["email"])){
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Staff Reset Password</li>
                     </ul>
                 </div>
@@ -112,7 +112,7 @@ if(!isset($_SESSION["email"])){
                                             $result=mysqli_query($conn, $sql);
                                             if($result){
                                                 echo "<script>alert('Password successfully changed!');
-                                                window.location.href='staff-login.php'</script>";
+                                                window.location.href='staff-login'</script>";
                                             }
                                         }
                                         ?>

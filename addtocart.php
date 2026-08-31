@@ -6,7 +6,7 @@ date_default_timezone_set("Africa/Lagos");
 
 // Check Login Status
 if (!isset($_SESSION['customer_email'])) {
-    header("Location: reg/user-login.php");
+    header("Location: reg/user-login");
     exit();
 }
 
@@ -121,6 +121,16 @@ if ($existingProduct) {
     mysqli_stmt_execute($insert);
 }
 
-echo "<script>alert('Item added to cart successfully!'); window.location='product.php?uin=$uin';</script>";
+// Deduct added quantity from product_table stock
+$deduct_stock = mysqli_prepare($conn, "UPDATE product_table SET quantity = GREATEST(0, quantity - ?)
+ WHERE product_id = ? OR uin = ?");
+if ($deduct_stock) {
+    mysqli_stmt_bind_param($deduct_stock, 'iis', $quantity, $product_id, $uin);
+    mysqli_stmt_execute($deduct_stock);
+    mysqli_stmt_close($deduct_stock);
+}
+
+echo "<script>alert('Item added to cart successfully!');
+ window.location.href='product?uin=$uin';</script>";
 exit();
 ?>

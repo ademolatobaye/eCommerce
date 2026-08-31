@@ -2,8 +2,23 @@
 session_start();
 include("db_conn.php");
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
+
 if (!isset($_GET['vendor_uin']) || empty($_GET['vendor_uin'])) {
-    header("Location: shop.php");
+    header("Location: shop");
     exit();
 }
 
@@ -17,7 +32,7 @@ $v_res = mysqli_stmt_get_result($v_query);
 $vendor = mysqli_fetch_assoc($v_res);
 
 if (!$vendor) {
-    echo "<script>alert('Vendor store not found or account is inactive.'); window.location.href='shop.php';</script>";
+    echo "<script>alert('Vendor store not found or account is inactive.'); window.location.href='shop';</script>";
     exit();
 }
 
@@ -32,7 +47,7 @@ $products = mysqli_stmt_get_result($p_query);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title><?php echo htmlspecialchars($vendor['store_name']); ?> - Storefront | DEE MART</title>
+    <title><?php echo htmlspecialchars($vendor['store_name']); ?> - Storefront | <?php echo $business_name;?></title>
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/icons/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
@@ -105,8 +120,8 @@ $products = mysqli_stmt_get_result($p_query);
             <nav class="breadcrumb-nav">
                 <div class="container">
                     <ul class="breadcrumb bb-no">
-                        <li><a href="index.php">Home</a></li>
-                        <li><a href="shop.php">Shop</a></li>
+                        <li><a href="index">Home</a></li>
+                        <li><a href="shop">Shop</a></li>
                         <li><?php echo htmlspecialchars($vendor['store_name']); ?></li>
                     </ul>
                 </div>
@@ -158,7 +173,7 @@ $products = mysqli_stmt_get_result($p_query);
                                     <div class="product-wrap">
                                         <div class="product text-center border-rounded">
                                             <figure class="product-media">
-                                                <a href="product.php?uin=<?php echo urlencode($p['uin']); ?>">
+                                                <a href="product?uin=<?php echo urlencode($p['uin']); ?>">
                                                     <?php if (!empty($p['productimage']) && file_exists("vendor/vendorupload/" . $p['productimage'])): ?>
                                                         <img src="vendor/vendorupload/<?php echo htmlspecialchars($p['productimage']); ?>" alt="product" width="300" height="300" />
                                                     <?php else: ?>
@@ -168,16 +183,16 @@ $products = mysqli_stmt_get_result($p_query);
                                             </figure>
                                             <div class="product-details p-3">
                                                 <div class="product-cat">
-                                                    <a href="cat.php?category=<?php echo urlencode($p['category']); ?>"><?php echo htmlspecialchars($p['category']); ?></a>
+                                                    <a href="cat?category=<?php echo urlencode($p['category']); ?>"><?php echo htmlspecialchars($p['category']); ?></a>
                                                 </div>
                                                 <h4 class="product-name">
-                                                    <a href="product.php?uin=<?php echo urlencode($p['uin']); ?>"><?php echo htmlspecialchars($p['productname']); ?></a>
+                                                    <a href="product?uin=<?php echo urlencode($p['uin']); ?>"><?php echo htmlspecialchars($p['productname']); ?></a>
                                                 </h4>
                                                 <div class="product-price">
                                                     <ins class="new-price">₦<?php echo number_format((float)$p['sellingprice'], 2); ?></ins>
                                                 </div>
                                                 <div class="mt-2">
-                                                    <a href="product.php?uin=<?php echo urlencode($p['uin']); ?>" class="btn btn-sm btn-dark btn-rounded">View Product</a>
+                                                    <a href="product?uin=<?php echo urlencode($p['uin']); ?>" class="btn btn-sm btn-dark btn-rounded">View Product</a>
                                                 </div>
                                             </div>
                                         </div>

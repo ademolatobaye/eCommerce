@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(!isset($_SESSION["email"])){
-  header("Location: staff-otp.php");
+  header("Location: staff-otp");
   exit();
 }
 
@@ -74,7 +74,7 @@ if(!isset($_SESSION["email"])){
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Staff Account Registration</li>
                     </ul>
                 </div>
@@ -129,7 +129,7 @@ if(!isset($_SESSION["email"])){
                                                 $message = "Error inserting record into database.";
                                             } else {
                                                 echo "<script>alert('Dear $fullname, your staff account has been successfully created.');
-                                                window.location.href='staff-login.php'</script>";
+                                                window.location.href='staff-login'</script>";
                                             }
                                         }
                                         ?>
@@ -265,7 +265,7 @@ if(!isset($_SESSION["email"])){
 								}
                                     </script>
 
-                                    <p class="text-center mt-4">Already have an account? <a href="staff-login.php" class="text-primary">Sign In</a></p>
+                                    <p class="text-center mt-4">Already have an account? <a href="staff-login" class="text-primary">Sign In</a></p>
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,22 @@
 <?php
 session_start();
 include("db_conn.php");
+
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,11 +25,11 @@ include("db_conn.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title>DEE MART || ABOUT US</title>
+    <title><?php echo $business_name;?> || ABOUT US</title>
 
-    <meta name="keywords" content="DEE MART, ecommerce, online shopping, Nigeria">
-    <meta name="description" content="Learn more about DEE MART, our mission, and how we make online shopping simple for customers.">
-    <meta name="author" content="DEE MART">
+    <meta name="keywords" content="<?php echo $business_name;?>, ecommerce, online shopping, Nigeria">
+    <meta name="description" content="Learn more about <?php echo $business_name;?>, our mission, and how we make online shopping simple for customers.">
+    <meta name="author" content="<?php echo $business_name;?>">
 
     <link rel="icon" type="image/png" href="assets/images/icons/favicon.png">
 
@@ -108,15 +124,15 @@ include("db_conn.php");
                 <div class="container">
                     <section class="introduce mb-10 pb-10">
                         <h2 class="title title-center">
-                            DEE MART makes shopping easier,
+                            <?php echo $business_name;?> makes shopping easier,
                             faster, and more reliable
                         </h2>
                         <p class="mx-auto text-center">
-                            We built DEE MART to connect customers with quality products in one place, with simple browsing,
+                            We built <?php echo $business_name;?> to connect customers with quality products in one place, with simple browsing,
                             secure checkout, and support that stays helpful from first click to final delivery.
                         </p>
                         <figure class="br-lg">
-                            <img src="assets/images/pages/about_us/1.jpg" alt="DEE MART banner"
+                            <img src="assets/images/pages/about_us/1.jpg" alt="<?php echo $business_name;?> banner"
                                 width="1240" height="540" style="background-color: #D0C1AE;" />
                         </figure>
                     </section>
@@ -124,7 +140,7 @@ include("db_conn.php");
                     <section class="customer-service mb-10">
                         <div class="row align-items-center">
                             <div class="col-md-6 pr-lg-8 mb-8">
-                                <h2 class="title text-left">What DEE MART is built around</h2>
+                                <h2 class="title text-left">What <?php echo $business_name;?> is built around</h2>
                                 <div class="accordion accordion-simple accordion-plus">
                                     <div class="card border-no">
                                         <div class="card-header">
@@ -132,7 +148,7 @@ include("db_conn.php");
                                         </div>
                                         <div class="card-body expanded" id="collapse3-1">
                                             <p class="mb-0">
-                                                From the homepage to product pages and checkout, DEE MART is designed to help
+                                                From the homepage to product pages and checkout, <?php echo $business_name;?> is designed to help
                                                 shoppers find what they need quickly and place orders without confusion.
                                             </p>
                                         </div>
@@ -163,7 +179,7 @@ include("db_conn.php");
                             </div>
                             <div class="col-md-6 mb-8">
                                 <figure class="br-lg">
-                                    <img src="assets/images/pages/about_us/2.jpg" alt="DEE MART service"
+                                    <img src="assets/images/pages/about_us/2.jpg" alt="<?php echo $business_name;?> service"
                                         width="610" height="500" style="background-color: #CECECC;" />
                                 </figure>
                             </div>
@@ -212,7 +228,7 @@ include("db_conn.php");
                                         ?>
                                         <span class="count-to" data-to="<?php echo $customerCount; ?>">0</span>
                                         <h4 class="title title-center">Registered Shoppers</h4>
-                                        <p>A growing customer base choosing DEE MART.</p>
+                                        <p>A growing customer base choosing <?php echo $business_name;?>.</p>
                                     </div>
                                 </div>
                                 <div class="swiper-slide counter-wrap">
@@ -238,14 +254,14 @@ include("db_conn.php");
                         <div class="row align-items-center mb-10">
                             <div class="col-md-6 mb-8">
                                 <figure class="br-lg">
-                                    <img src="assets/images/pages/about_us/3.jpg" alt="DEE MART mission"
+                                    <img src="assets/images/pages/about_us/3.jpg" alt="<?php echo $business_name;?> mission"
                                         width="610" height="450" style="background-color: #9E9DA2;" />
                                 </figure>
                             </div>
                             <div class="col-md-6 pl-lg-8 mb-8">
                                 <h4 class="title text-left">Our mission is simple: make online shopping feel dependable</h4>
                                 <p class="mb-3">
-                                    DEE MART is more than a product catalog. It is a practical e-commerce platform created
+                                    <?php echo $business_name;?> is more than a product catalog. It is a practical e-commerce platform created
                                     to help people browse confidently, shop conveniently, and return whenever they need
                                     trusted products and a familiar experience.
                                 </p>
@@ -259,7 +275,7 @@ include("db_conn.php");
                         </div>
 
                         <div class="awards-wrapper">
-                            <h4 class="title title-center font-weight-bold mb-10 pb-1 ls-25">Why Customers Choose DEE MART</h4>
+                            <h4 class="title title-center font-weight-bold mb-10 pb-1 ls-25">Why Customers Choose <?php echo $business_name;?>?</h4>
                             <div class="swiper-container swiper-theme" data-swiper-options="{
                                 'spaceBetween': 20,
                                 'slidesPerView': 1,
@@ -342,7 +358,7 @@ include("db_conn.php");
                                     </div>
                                     <h4 class="title mb-2">Support that stays available</h4>
                                     <p class="mb-0">
-                                        DEE MART is built to feel approachable, with clear contact points and a customer
+                                        <?php echo $business_name;?> is built to feel approachable, with clear contact points and a customer
                                         service mindset throughout the app.
                                     </p>
                                 </div>
@@ -355,7 +371,7 @@ include("db_conn.php");
                     <div class="container">
                         <div class="row align-items-start">
                             <div class="col-lg-7 mb-8">
-                                <h4 class="title mb-3">Popular departments on DEE MART</h4>
+                                <h4 class="title mb-3">Popular departments on <?php echo $business_name;?></h4>
                                 <p class="mb-5">
                                     Customers shop across multiple categories, and these sections help them discover products
                                     faster without losing track of what they need.

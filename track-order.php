@@ -2,6 +2,21 @@
 include('customer-session-check.php');
 include('db_conn.php');
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
+
 date_default_timezone_set('Africa/Lagos');
 
 // Fetch user's orders from invoicesales
@@ -79,7 +94,7 @@ if ($status_clean === 'processing') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>DEE MART || TRACK ORDER</title>
+    <title><?php echo $business_name;?> || TRACK ORDER</title>
     <link rel="icon" type="image/png" href="assets/images/icons/favicon.png">
     
     <script>
@@ -217,8 +232,8 @@ if ($status_clean === 'processing') {
             <nav class="breadcrumb-nav">
                 <div class="container">
                     <ul class="breadcrumb shop-breadcrumb bb-no">
-                        <li class="passed"><a href="index.php">Home</a></li>
-                        <li class="passed"><a href="my-account.php">My Account</a></li>
+                        <li class="passed"><a href="index">Home</a></li>
+                        <li class="passed"><a href="my-account">My Account</a></li>
                         <li class="active">Track Order</li>
                     </ul>
                 </div>
@@ -232,7 +247,7 @@ if ($status_clean === 'processing') {
                             <i class="w-icon-orders" style="font-size: 64px; color: #ccc;"></i>
                             <h3 class="mt-4">No Confirmed Orders Found</h3>
                             <p class="mb-6">You haven't placed any paid orders yet.</p>
-                            <a href="shop.php" class="btn btn-dark btn-rounded">Start Shopping</a>
+                            <a href="shop" class="btn btn-dark btn-rounded">Start Shopping</a>
                         </div>
                     <?php else: ?>
 
@@ -246,7 +261,7 @@ if ($status_clean === 'processing') {
                                             $oid = !empty($uord['order_id']) ? $uord['order_id'] : $uord['invoicenumber'];
                                             $is_selected = ($selected_order && ($selected_order['order_id'] === $oid || $selected_order['invoicenumber'] === $oid)) ? 'selected' : '';
                                         ?>
-                                            <option value="track-order.php?order_id=<?php echo urlencode($oid); ?>" <?php echo $is_selected; ?>>
+                                            <option value="track-order?order_id=<?php echo urlencode($oid); ?>" <?php echo $is_selected; ?>>
                                                 Order #<?php echo htmlspecialchars($oid); ?> — <?php echo date('M d, Y', strtotime($uord['date'])); ?> (&#8358;<?php echo number_format($uord['amount'], 2); ?>)
                                             </option>
                                         <?php endforeach; ?>
@@ -383,7 +398,7 @@ if ($status_clean === 'processing') {
                                                             <img src="dashboard/productupload/<?php echo htmlspecialchars($item['productimage']); ?>" alt="product" width="60" height="60" class="mr-4 style-rounded" style="object-fit:cover; border-radius:6px;">
                                                         <?php endif; ?>
                                                         <div>
-                                                            <a href="product.php?uin=<?php echo urlencode($item['uin']); ?>" class="font-weight-bold text-dark">
+                                                            <a href="product?uin=<?php echo urlencode($item['uin']); ?>" class="font-weight-bold text-dark">
                                                                 <?php echo htmlspecialchars($item['productname']); ?>
                                                             </a>
                                                             <br><small class="text-muted">Category: <?php echo htmlspecialchars($item['category']); ?></small>

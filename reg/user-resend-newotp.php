@@ -10,7 +10,7 @@ require 'includes/PHPMailer.php';
 require 'includes/SMTP.php';
 
 if(!isset($_SESSION['customer_email'])){
-    header("Location: user-otp.php");
+    header("Location: user-otp");
     exit();
 }
 
@@ -144,7 +144,7 @@ mysqli_query($conn, $sql);
 	$mail->addAddress("$customer_email");
 //Finally send email
 	if ($mail->send()) {
-    header("Location: user-newotp.php");
+    header("Location: user-newotp");
     exit();
 }
 ?>

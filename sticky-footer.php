@@ -1,20 +1,20 @@
     <!-- Start of Sticky Footer -->
     <div class="sticky-footer sticky-content fix-bottom">
-    <a href="index.php" class="sticky-link">
+    <a href="index" class="sticky-link">
         <i class="w-icon-home"></i>
         <p>Home</p>
     </a>
-    <a href="shop.php" class="sticky-link">
+    <a href="shop" class="sticky-link">
         <i class="w-icon-category"></i>
         <p>Shop</p>
     </a>
-    <a href="my-account.php" class="sticky-link">
+    <a href="my-account" class="sticky-link">
         <i class="w-icon-account"></i>
         <p>Account</p>
     </a>
 
     <div class="cart-dropdown dir-up">
-        <a href="cart.php" class="sticky-link">
+        <a href="cart" class="sticky-link">
             <i class="w-icon-cart"></i>
             <?php if (count($cartItems) > 0): ?>
                 <span class="cart-count"><?php echo count($cartItems); ?></span>
@@ -27,7 +27,7 @@
                     <?php foreach ($cartItems as $row): ?>
                         <div class="product product-cart">
                             <div class="product-detail">
-                                <a href="product.php?uin=<?php echo $row['uin']; ?>" class="product-name">
+                                <a href="product?uin=<?php echo $row['uin']; ?>" class="product-name">
                                     <?php echo $row['productname']; ?>
                                 </a>
                                 <div class="price-box">
@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                             <figure class="product-media">
-                                <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                <a href="product?uin=<?php echo $row['uin']; ?>">
                                     <img src="dashboard/productupload/<?php echo $row['productimage']; ?>"
                                         alt="product" height="84" width="94" />
                                 </a>
@@ -57,8 +57,8 @@
             </div>
 
             <div class="cart-action">
-                <a href="cart.php" class="btn btn-dark btn-outline btn-rounded">View Cart</a>
-                <a href="checkout.php" class="btn btn-primary btn-rounded">Checkout</a>
+                <a href="cart" class="btn btn-dark btn-outline btn-rounded">View Cart</a>
+                <a href="checkout" class="btn btn-primary btn-rounded">Checkout</a>
             </div>
         </div>
     </div>
@@ -68,7 +68,7 @@
             <i class="w-icon-search"></i>
             <p>Search</p>
         </a>
-        <form action="search.php" method="POST" class="input-wrapper">
+        <form action="search" method="POST" class="input-wrapper">
             <input type="text" class="form-control" name="search" autocomplete="off"
                 placeholder="Search" required />
             <button class="btn btn-search" type="submit">

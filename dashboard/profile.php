@@ -3,7 +3,7 @@ include("session-check.php");
 include("db_conn.php");
 
 if (!isset($_REQUEST['id'])) {
-    header("Location: view-staff.php");
+    header("Location: view-staff");
     exit();
 }
 

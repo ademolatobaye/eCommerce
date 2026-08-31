@@ -3,7 +3,7 @@ session_start();
 include("db_conn.php");
 
 if(!isset($_SESSION['email'])){
-    header("Location: staff-otp.php");
+    header("Location: staff-otp");
     exit();
 }
 
@@ -17,6 +17,6 @@ mysqli_query($conn, $sql);
 
 $otp = $_SESSION['otp'];
 
-header("Location: staff-otp.php");
+header("Location: staff-otp");
 exit();
 ?>

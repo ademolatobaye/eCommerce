@@ -3,7 +3,7 @@ include("session-check.php");
 include("db_conn.php");
 
 if (!isset($_REQUEST['product_id'])) {
-    header("Location: product.php");
+    header("Location: product");
     exit();
 }
 
@@ -115,7 +115,7 @@ $product = mysqli_fetch_assoc($result);
                                                     CacheManager::flush();
                                                 }
                                                 echo "<script>alert('Product details successfully updated.');
-                                                window.location.href='product.php';</script>";
+                                                window.location.href='product';</script>";
                                             } else {
                                                 echo "<script>alert('Error updating details.');</script>";
                                             }
@@ -124,7 +124,7 @@ $product = mysqli_fetch_assoc($result);
 
                                     <div class="card-header d-flex justify-content-between align-items-center">
                                         <div class="card-title">Edit Product Details</div>
-                                        <a href="edit-product-images.php?product_id=<?php echo $product['product_id']; ?>" class="btn btn-info btn-sm">
+                                        <a href="edit-product-images?product_id=<?php echo $product['product_id']; ?>" class="btn btn-info btn-sm">
                                             <i class="fa fa-image me-1"></i> Edit Product Images
                                         </a>
                                     </div>

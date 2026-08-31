@@ -71,7 +71,7 @@ session_start();
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Register Account</li>
                     </ul>
                 </div>
@@ -214,7 +214,7 @@ session_start();
                                                             // </center>";
 
                                                             // if ($mail->send()) {
-                                                                echo "<script>alert('An OTP has been sent to $customer_email. Kindly check your email to verify your account.'); window.location.href = 'user-otp.php';</script>";
+                                                                echo "<script>alert('An OTP has been sent to $customer_email. Kindly check your email to verify your account.'); window.location.href = 'user-otp';</script>";
                                                             // } else {
                                                             //     echo "<script>alert('Failed to send OTP email. Please try again.')</script>";
                                                             // }
@@ -251,7 +251,7 @@ session_start();
 
                                         <button type="submit" name="continue" class="btn btn-primary w-100">Continue</button>
                                     </form>
-                                    <p class="text-center mt-4">Have an account already? <a href="user-login.php" class="text-primary">Sign in</a></p>
+                                    <p class="text-center mt-4">Have an account already? <a href="user-login" class="text-primary">Sign in</a></p>
                                 </div>
                             </div>
                         </div>

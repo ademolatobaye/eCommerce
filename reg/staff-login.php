@@ -56,7 +56,7 @@ if (isset($_POST['identifier']) && isset($_POST['password'])) {
 
             // Role-based redirection fallback
             if ($staff['role'] == 'Super Admin') {
-                header("Location: ../dashboard/index.php");
+                header("Location: ../dashboard/index");
             // } elseif ($staff['role'] == 'Supervisor') {
             //     header("Location: supervisor_dashboard");
             // } elseif ($staff['role'] == 'Admin'){
@@ -66,13 +66,13 @@ if (isset($_POST['identifier']) && isset($_POST['password'])) {
             }
             
             else {
-                echo "<script>alert('Unauthorized role. Please contact admin.'); location.href='staff-login.php';</script>";
+                echo "<script>alert('Unauthorized role. Please contact admin.'); location.href='staff-login';</script>";
             }
         } else {
-            echo "<script>alert('Invalid Staff Login Credential.'); location.href='staff-login.php';</script>";
+            echo "<script>alert('Invalid Staff Login Credential.'); location.href='staff-login';</script>";
         }
     } else {
-        echo "<script>alert('Invalid Staff Login Credential.'); location.href='staff-login.php';</script>";
+        echo "<script>alert('Invalid Staff Login Credential.'); location.href='staff-login';</script>";
     }
 }
 ?>
@@ -138,7 +138,7 @@ if (isset($_POST['identifier']) && isset($_POST['password'])) {
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Staff Login</li>
                     </ul>
                 </div>
@@ -179,7 +179,7 @@ if (isset($_POST['identifier']) && isset($_POST['password'])) {
                                         <div class="form-checkbox d-flex align-items-center justify-content-between mt-4">
                                             <input type="checkbox" class="custom-checkbox" id="remember-me" name="remember" required>
                                             <label for="remember-me">Keep me signed in</label>
-                                            <a href="staff-forgot-password.php">Forgot your password?</a>
+                                            <a href="staff-forgot-password">Forgot your password?</a>
                                         </div>
                                         
                                         <button type="submit" name="submit" class="btn btn-primary w-100 mt-4">Sign In</button>

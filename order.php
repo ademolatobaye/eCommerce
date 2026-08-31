@@ -2,8 +2,23 @@
 include('customer-session-check.php');
 include('db_conn.php');
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
+
 if (!isset($_SESSION['invoicenumber'])) {
-    header("Location: index.php");
+    header("Location: index");
     exit();
 }
 
@@ -67,8 +82,8 @@ while ($row = mysqli_fetch_assoc($result)) {
             <nav class="breadcrumb-nav">
                 <div class="container">
                     <ul class="breadcrumb shop-breadcrumb bb-no">
-                        <li class="passed"><a href="cart.php">Shopping Cart</a></li>
-                        <li class="passed"><a href="checkout.php">Checkout</a></li>
+                        <li class="passed"><a href="cart">Shopping Cart</a></li>
+                        <li class="passed"><a href="checkout">Checkout</a></li>
                         <li class="active">Order Complete</li>
                     </ul>
                 </div>
@@ -84,7 +99,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                     </div>
 
                     <div class="text-center mb-6">
-                        <a href="track-order.php?order_id=<?php echo urlencode($order_id); ?>" class="btn btn-dark btn-rounded"><i class="w-icon-map-marker mr-2"></i>Track Your Order</a>
+                        <a href="track-order?order_id=<?php echo urlencode($order_id); ?>" class="btn btn-dark btn-rounded"><i class="w-icon-map-marker mr-2"></i>Track Your Order</a>
                     </div>
 
                     <!-- Order Summary Strip -->
@@ -196,7 +211,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                         </div>
                     </div>
 
-                    <a href="shop.php" class="btn btn-dark btn-rounded btn-icon-left btn-back mt-6">
+                    <a href="shop" class="btn btn-dark btn-rounded btn-icon-left btn-back mt-6">
                         <i class="w-icon-long-arrow-left"></i>Continue Shopping
                     </a>
 

@@ -71,7 +71,7 @@ session_start();
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Staff Registration</li>
                     </ul>
                 </div>
@@ -211,7 +211,7 @@ session_start();
                                                             // </center>";
 
                                                             // if ($mail->send()) {
-                                                                echo "<script>alert('An OTP has been sent to $email. Kindly check your email to verify your account.'); window.location.href = 'staff-otp.php';</script>";
+                                                                echo "<script>alert('An OTP has been sent to $email. Kindly check your email to verify your account.'); window.location.href = 'staff-otp';</script>";
                                                             // } else {
                                                             //     echo "<script>alert('Failed to send OTP email. Please try again.')</script>";
                                                             // }
@@ -246,7 +246,7 @@ session_start();
                                         <button type="submit" name="submit" class="btn btn-primary w-100 mt-4">Continue</button>
                                     </form>
 
-                                    <p class="text-center mt-4">Have an account already? <a href="staff-login.php" class="text-primary">Sign In</a></p>
+                                    <p class="text-center mt-4">Have an account already? <a href="staff-login" class="text-primary">Sign In</a></p>
                                 </div>
                             </div>
                         </div>

@@ -64,7 +64,7 @@ session_start();
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="index.php">Home</a></li>
+                        <li><a href="index">Home</a></li>
                         <li>Create an Account</li>
                     </ul>
                 </div>
@@ -198,7 +198,7 @@ session_start();
 // //Finally send email
 // 	if ($mail->send()) {
     echo "<script>alert('Dear $business_name, your account has been successfully created.');
-     window.location.href='thank-you.php'</script>";
+     window.location.href='thank-you'</script>";
                                             }
 // } else {
 //     error_log("Mailer Error: " . $mail->ErrorInfo);

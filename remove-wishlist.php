@@ -19,7 +19,7 @@ if (!empty($product_uin)) {
     }
 }
 
-$redirect_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'wishlist.php';
+$redirect_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'wishlist';
 header("Location: " . $redirect_url);
 exit();
 ?>

@@ -5,6 +5,21 @@ $product_id = 1;
 $sql = "SELECT * FROM product_table WHERE product_id='$product_id'";
 $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 $rows = mysqli_fetch_array($result);
+
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +28,7 @@ $rows = mysqli_fetch_array($result);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>DEE MART || PRODUCT SEARCH</title>
+    <title><?php echo $business_name?> || PRODUCT SEARCH</title>
 
     <link rel="icon" type="image/png" href="assets/images/icons/favicon.png">
 
@@ -54,7 +69,7 @@ $rows = mysqli_fetch_array($result);
             <nav class="breadcrumb-nav">
                 <div class="container">
                     <ul class="breadcrumb bb-no">
-                        <li><a href="index.php">Home</a></li>
+                        <li><a href="index">Home</a></li>
                         <li>Shop Now</li>
                     </ul>
                 </div>
@@ -90,17 +105,17 @@ $rows = mysqli_fetch_array($result);
                                     <div class="product-wrap">
                                         <div class="product text-center">
                                             <figure class="product-media">
-                                                <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                                <a href="product?uin=<?php echo $row['uin']; ?>">
                                                     <img src="dashboard/productupload/<?php echo $row['productimage'];?>" alt="Product" />
                                                 </a>
                                             </figure>
 
                                             <div class="product-details">
                                                 <div class="product-cat">
-                                                    <a href="cat.php?category=<?php echo urlencode($row['category']); ?>"><?php echo $row['category']; ?></a>
+                                                    <a href="cat?category=<?php echo urlencode($row['category']); ?>"><?php echo $row['category']; ?></a>
                                                 </div>
                                                 <h3 class="product-name">
-                                                    <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                                    <a href="product?uin=<?php echo $row['uin']; ?>">
                                                         <?php echo $row['productname']; ?>
                                                     </a>
                                                 </h3>
@@ -113,7 +128,7 @@ $rows = mysqli_fetch_array($result);
                                 <?php
                                     }
                                 } else {
-                                     echo"<script>alert('Product not available.'); window.location.href='index.php'</script>";
+                                     echo"<script>alert('Product not available.'); window.location.href='index'</script>";
                                 }}
                                 ?>
                             </div>

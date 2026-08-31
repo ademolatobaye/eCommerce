@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(!isset($_SESSION["customer_email"])){
-  header("Location: user-newotp.php");
+  header("Location: user-newotp");
   exit();
 }
 
@@ -74,7 +74,7 @@ if(!isset($_SESSION["customer_email"])){
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Set New Password</li>
                     </ul>
                 </div>
@@ -111,7 +111,7 @@ if(!isset($_SESSION["customer_email"])){
                                             $result=mysqli_query($conn, $sql);
                                             if($result){
                                                 echo "<script>alert('Password successfully changed!');
-                                                window.location.href='user-login.php'</script>";
+                                                window.location.href='user-login'</script>";
                                             } else {
                                                 // END
                                             }

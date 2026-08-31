@@ -12,7 +12,7 @@ include("db_conn.php");
 // 	use PHPMailer\PHPMailer\Exception;
 
 if (!isset($_REQUEST['invoicenumber'])){
-    header("Location: orders.php");
+    header("Location: orders");
     exit();
 }
 
@@ -24,7 +24,7 @@ $result = mysqli_query($conn, $sql);
 $order = mysqli_fetch_array($result);
 
 if (!$order) {
-    echo "<script>alert('Order not found.'); window.location.href='orders.php';</script>";
+    echo "<script>alert('Order not found.'); window.location.href='orders';</script>";
     exit();
 }
 
@@ -84,7 +84,7 @@ $tracking_val = isset($order['tracking_number']) ? $order['tracking_number'] : '
                             <h1 class="page-title">Update Order Status</h1>
                             <div>
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="orders.php">Orders</a></li>
+                                    <li class="breadcrumb-item"><a href="orders">Orders</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Update Order</li>
                                 </ol>
                             </div>
@@ -143,7 +143,7 @@ $tracking_val = isset($order['tracking_number']) ? $order['tracking_number'] : '
                                                     }
 
                                                     echo "<script>alert('Order status successfully updated to {$order_status} and notification email queued for delivery.');
-                                                    window.location.href='orders.php';</script>";
+                                                    window.location.href='orders';</script>";
                                                     exit();
                                                 } else {
                                                     echo "<div class='alert alert-danger'>Error updating order status: " . mysqli_error($conn) . "</div>";
@@ -183,7 +183,7 @@ $tracking_val = isset($order['tracking_number']) ? $order['tracking_number'] : '
 
                                             <div class="mt-5">
                                                 <button type="submit" name="submit" class="btn btn-primary" onclick="return confirm('Are you sure to update order status?')">Update Order Status</button>
-                                                <a href="orders.php" class="btn btn-secondary ms-2">Cancel</a>
+                                                <a href="orders" class="btn btn-secondary ms-2">Cancel</a>
                                             </div>
                                         </form>
                                     </div>

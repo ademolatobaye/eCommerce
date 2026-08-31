@@ -3,7 +3,7 @@ include("session-check.php");
 include("db_conn.php");
 
 if (!isset($_REQUEST['product_id'])) {
-    header("Location: product.php");
+    header("Location: product");
     exit();
 }
 
@@ -17,7 +17,7 @@ $result = mysqli_stmt_get_result($stmt);
 $product = mysqli_fetch_assoc($result);
 
 if (!$product) {
-    echo "<script>alert('Product not found.'); window.location.href='product.php';</script>";
+    echo "<script>alert('Product not found.'); window.location.href='product';</script>";
     exit();
 }
 
@@ -55,7 +55,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['img_id
             CacheManager::flush();
         }
 
-        echo "<script>alert('Image deleted successfully.'); window.location.href='edit-product-images.php?product_id=$product_id';</script>";
+        echo "<script>alert('Image deleted successfully.'); window.location.href='edit-product-images?product_id=$product_id';</script>";
         exit();
     }
 }
@@ -67,7 +67,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'set_cover' && isset($_GET['img
     if (class_exists('CacheManager')) {
         CacheManager::flush();
     }
-    echo "<script>alert('Cover image updated.'); window.location.href='edit-product-images.php?product_id=$product_id';</script>";
+    echo "<script>alert('Cover image updated.'); window.location.href='edit-product-images?product_id=$product_id';</script>";
     exit();
 }
 
@@ -109,7 +109,7 @@ if (isset($_POST['upload_images'])) {
             CacheManager::flush();
         }
 
-        echo "<script>alert('$uploaded_count image(s) uploaded successfully.'); window.location.href='edit-product-images.php?product_id=$product_id';</script>";
+        echo "<script>alert('$uploaded_count image(s) uploaded successfully.'); window.location.href='edit-product-images?product_id=$product_id';</script>";
         exit();
     }
 }

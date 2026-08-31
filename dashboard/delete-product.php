@@ -16,7 +16,7 @@ if(isset($_REQUEST['product_id'])){
         if (class_exists('CacheManager')) {
             CacheManager::flush();
         }
-        echo "<script>alert('Product successfully deleted.'); window.location.href='product.php';</script>";
+        echo "<script>alert('Product successfully deleted.'); window.location.href='product';</script>";
     } else {
         echo "Error deleting record: " . mysqli_error($conn);
     }

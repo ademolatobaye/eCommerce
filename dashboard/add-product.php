@@ -153,7 +153,7 @@ $rows = mysqli_fetch_array($result);
                                                      CacheManager::flush();
 
                                                      echo "<script>alert('Product successfully added.');
-                                                         window.location.href='product.php'</script>";
+                                                         window.location.href='product'</script>";
                                                 } else {
                                                     echo "<script>alert('Error inserting record.');</script>";
                                                 }

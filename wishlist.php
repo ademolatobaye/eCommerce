@@ -2,26 +2,33 @@
 session_start();
 include('db_conn.php');
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
+
 $customer_uin = isset($_SESSION['customer_uin']) ? $_SESSION['customer_uin'] : '';
 
 $wishlist_products = array();
 
 if (!empty($customer_uin)) {
-    // Logged in user: fetch from database
-    $stmt = mysqli_prepare($conn, "
-        SELECT p.*, w.timestamp AS added_at 
-        FROM wishlist w 
-        JOIN product_table p ON w.product_uin = p.uin 
-        WHERE w.customer_uin = ? 
-        ORDER BY w.id DESC
-    ");
-    mysqli_stmt_bind_param($stmt, 's', $customer_uin);
-    mysqli_stmt_execute($stmt);
-    $res = mysqli_stmt_get_result($stmt);
-    while ($row = mysqli_fetch_assoc($res)) {
-        $wishlist_products[] = $row;
+    // Logged in user: fetch from database joined with product_table for stock status
+    $stmt = mysqli_query($conn, "SELECT w.*, p.quantity FROM wishlist w LEFT JOIN product_table p ON w.product_uin = p.uin WHERE w.customer_uin='$customer_uin' ORDER BY w.id DESC");
+    if ($stmt) {
+        while ($row = mysqli_fetch_assoc($stmt)) {
+            $wishlist_products[] = $row;
+        }
     }
-    mysqli_stmt_close($stmt);
 } else {
     // Guest user: fetch from session array
     if (isset($_SESSION['wishlist']) && is_array($_SESSION['wishlist']) && count($_SESSION['wishlist']) > 0) {
@@ -47,7 +54,7 @@ if (!empty($customer_uin)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>DEE MART || MY WISHLIST</title>
+    <title><?php echo $business_name;?> || MY WISHLIST</title>
 
     <link rel="icon" type="image/png" href="assets/images/icons/favicon.png">
 
@@ -74,6 +81,21 @@ if (!empty($customer_uin)) {
             object-fit: cover;
             border-radius: 6px;
         }
+        .wishlist-table .product-thumbnail {
+            text-align: center;
+        }
+        .wishlist-table .product-thumbnail > div,
+        .wishlist-table .product-thumbnail .p-relative {
+            display: inline-block !important;
+            width: 80px !important;
+            max-width: 80px !important;
+            position: relative !important;
+            margin: 0 auto !important;
+        }
+        .wishlist-table .btn-close {
+            top: -8px !important;
+            right: -8px !important;
+        }
         .stock-status.in-stock {
             color: #28a745;
             font-weight: 600;
@@ -88,14 +110,16 @@ if (!empty($customer_uin)) {
 <body>
     <div class="page-wrapper">
 
-        <?php include("header.php"); ?>
+        <?php 
+        include("header.php");
+         ?>
 
         <main class="main wishlist-page">
             <nav class="breadcrumb-nav">
                 <div class="container">
                     <ul class="breadcrumb bb-no">
-                        <li><a href="index.php">Home</a></li>
-                        <li><a href="shop.php">Shop</a></li>
+                        <li><a href="index">Home</a></li>
+                        <li><a href="shop">Shop</a></li>
                         <li>Wishlist</li>
                     </ul>
                 </div>
@@ -114,23 +138,22 @@ if (!empty($customer_uin)) {
                                         <th></th>
                                         <th class="product-price"><span>Price</span></th>
                                         <th class="product-stock-status"><span>Stock Status</span></th>
-                                        <th class="wishlist-action"><span>Actions</span></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($wishlist_products as $item) { 
-                                        $in_stock = (int)$item['quantity'] > 0;
+                                        $in_stock = isset($item['quantity']) && (int)$item['quantity'] > 0;
                                     ?>
                                         <tr>
                                             <td class="product-thumbnail">
                                                 <div class="p-relative">
-                                                    <a href="product.php?uin=<?php echo $item['uin']; ?>">
+                                                    <a href="product?uin=<?php echo $item['product_uin']; ?>">
                                                         <figure>
-                                                            <img src="dashboard/productupload/<?php echo htmlspecialchars($item['productimage']); ?>" 
-                                                                 alt="<?php echo htmlspecialchars($item['productname']); ?>">
+                                                            <img src="vendor/vendorupload/<?php echo $item['product_image']; ?>" 
+                                                                 alt="<?php echo $item['productname']; ?>">
                                                         </figure>
                                                     </a>
-                                                    <a href="remove-wishlist.php?uin=<?php echo $item['uin']; ?>" 
+                                                    <a href="remove-wishlist?product_uin=<?php echo $item['product_uin']; ?>" 
                                                        class="btn btn-close" 
                                                        title="Remove item" 
                                                        onclick="return confirm('Remove this item from your wishlist?')">
@@ -139,14 +162,14 @@ if (!empty($customer_uin)) {
                                                 </div>
                                             </td>
                                             <td class="product-name">
-                                                <a href="product.php?uin=<?php echo $item['uin']; ?>">
-                                                    <?php echo htmlspecialchars($item['productname']); ?>
+                                                <a href="product?uin=<?php echo $item['product_uin']; ?>">
+                                                    <?php echo $item['productname']; ?>
                                                 </a>
                                                 <br>
-                                                <small class="text-muted">Category: <?php echo htmlspecialchars($item['category']); ?></small>
+                                                <small class="text-muted">Category: <?php echo $item['category']; ?></small>
                                             </td>
                                             <td class="product-price">
-                                                <ins class="new-price">&#8358;<?php echo number_format($item['sellingprice'], 2); ?></ins>
+                                                <ins class="new-price">&#8358;<?php echo number_format((float)($item['sellingprice'] ?? 0), 2); ?></ins>
                                             </td>
                                             <td class="product-stock-status">
                                                 <?php if ($in_stock) { ?>
@@ -155,23 +178,7 @@ if (!empty($customer_uin)) {
                                                     <span class="stock-status out-stock"><i class="fa fa-times-circle mr-1"></i>Out of Stock</span>
                                                 <?php } ?>
                                             </td>
-                                            <td class="wishlist-action">
-                                                <div class="custom-radio">
-                                                    <?php if ($in_stock) { ?>
-                                                        <form method="post" action="addtocart.php" style="display:inline-block;">
-                                                            <input type="hidden" name="uin" value="<?php echo $item['uin']; ?>">
-                                                            <input type="hidden" name="product_id" value="<?php echo $item['product_id']; ?>">
-                                                            <input type="hidden" name="quantity" value="1">
-                                                            <button type="submit" class="btn btn-dark btn-rounded btn-sm">
-                                                                <i class="w-icon-cart mr-1"></i> Add to Cart
-                                                            </button>
-                                                        </form>
-                                                    <?php } else { ?>
-                                                        <button class="btn btn-disabled btn-rounded btn-sm" disabled>Out of Stock</button>
-                                                    <?php } ?>
-                                                    
-                                                </div>
-                                            </td>
+                                            
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -182,7 +189,7 @@ if (!empty($customer_uin)) {
                             <i class="w-icon-heart" style="font-size: 64px; color: #ccc;"></i>
                             <h3 class="mt-4">Your Wishlist is Empty</h3>
                             <p class="mb-6">Explore our catalog and add items you love to your wishlist!</p>
-                            <a href="shop.php" class="btn btn-primary btn-rounded"><i class="w-icon-bag mr-2"></i> Continue Shopping</a>
+                            <a href="shop" class="btn btn-primary btn-rounded"><i class="w-icon-bag mr-2"></i> Continue Shopping</a>
                         </div>
                     <?php } ?>
                 </div>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(!isset($_SESSION['customer_email'])){
-  header("Location: index.php");
+  header("Location: index");
   exit();
 
 }
@@ -75,7 +75,7 @@ if(!isset($_SESSION['customer_email'])){
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="../index.php">Home</a></li>
+                        <li><a href="../index">Home</a></li>
                         <li>Validate OTP</li>
                     </ul>
                 </div>
@@ -109,7 +109,7 @@ if(!isset($_SESSION['customer_email'])){
                                         if(isset($_REQUEST["verify"])){
                                             if (isset($_SESSION['otp_time']) && (time() - $_SESSION['otp_time']) > 300) {
                                                 echo "<script>alert('OTP has expired after 5 minutes! Please request a new one.');
-                                                 window.location.href='user-otp.php';</script>";
+                                                 window.location.href='user-otp';</script>";
                                                 exit();
                                             }
                                             $n1=$_REQUEST["n1"];
@@ -127,7 +127,7 @@ if(!isset($_SESSION['customer_email'])){
                                                 $result=mysqli_query($conn, $sql);
                                                 if($result){
                                                     echo "<script>alert('OTP successfully verified!');
-                                                    window.location.href='user-register.php'</script>";
+                                                    window.location.href='user-register'</script>";
                                                 }
                                             }
                                         }
@@ -151,7 +151,7 @@ if(!isset($_SESSION['customer_email'])){
                                     </form>
 
                                     <p class="text-center mt-4">Not received your code? 
-    <a href="user-resendotp.php" class="text-primary" id="resend-link" style="pointer-events: none; opacity: 0.4;">Resend code</a>
+    <a href="user-resendotp" class="text-primary" id="resend-link" style="pointer-events: none; opacity: 0.4;">Resend code</a>
     <span id="resend-timer" class="text-muted"> (available in <span id="resend-countdown">60</span>s)</span>
 </p>
 
@@ -194,7 +194,7 @@ if(!isset($_SESSION['customer_email'])){
                 clearInterval(otpInterval);
                 countdownEl.textContent = "0";
                 alert('OTP has expired after 5 minutes! Please request a new one.');
-                window.location.href = 'user-otp.php';
+                window.location.href = 'user-otp';
             }
         }, 1000);
     }

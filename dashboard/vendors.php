@@ -135,7 +135,7 @@ $result = mysqli_query($conn, $sql);
                             <h1 class="page-title">Vendor Applications & Stores</h1>
                             <div>
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Vendors</li>
                                 </ol>
                             </div>
@@ -214,20 +214,20 @@ $result = mysqli_query($conn, $sql);
                                                                         </button>
                                                                         <div class="dropdown-menu">
                                                                             <?php if ($v['status'] === 'Pending'): ?>
-                                                                                <a class="dropdown-item text-success" href="approve.php?id=<?php echo urlencode($v['id']); ?>" onclick="return confirm('Approve this vendor account? This will send an approval email.')">
+                                                                                <a class="dropdown-item text-success" href="approve?id=<?php echo urlencode($v['id']); ?>" onclick="return confirm('Approve this vendor account? This will send an approval email.')">
                                                                                     <i class="fe fe-check me-1"></i> Approve Vendor
                                                                                 </a>
                                                                             <?php elseif ($v['status'] === 'Active'): ?>
-                                                                                <a class="dropdown-item text-warning" href="suspend.php?id=<?php echo urlencode($v['id']); ?>" onclick="return confirm('Suspend this vendor account?')">
+                                                                                <a class="dropdown-item text-warning" href="suspend?id=<?php echo urlencode($v['id']); ?>" onclick="return confirm('Suspend this vendor account?')">
                                                                                     <i class="fe fe-slash me-1"></i> Suspend Vendor
                                                                                 </a>
                                                                             <?php elseif ($v['status'] === 'Suspended'): ?>
-                                                                                <a class="dropdown-item text-success" href="activate.php?id=<?php echo urlencode($v['id']); ?>" onclick="return confirm('Activate this vendor account? This will send an activation email.')">
+                                                                                <a class="dropdown-item text-success" href="activate?id=<?php echo urlencode($v['id']); ?>" onclick="return confirm('Activate this vendor account? This will send an activation email.')">
                                                                                     <i class="fe fe-check me-1"></i> Activate Vendor
                                                                                 </a>
                                                                             <?php endif; ?>
 
-                                                                            <a class="dropdown-item text-info" href="../vendor-store.php?vendor_uin=<?php echo urlencode($v['vendor_uin']); ?>" target="_blank">
+                                                                            <a class="dropdown-item text-info" href="../vendor-store?vendor_uin=<?php echo urlencode($v['vendor_uin']); ?>" target="_blank">
                                                                                 <i class="fe fe-eye me-1"></i> View Store
                                                                             </a>
                                                                         </div>

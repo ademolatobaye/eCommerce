@@ -2,6 +2,21 @@
 session_start();
 include('db_conn.php');
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
+
 date_default_timezone_set("Africa/Lagos");
 
 // Only run logic for logged-in customers
@@ -39,7 +54,7 @@ if (isset($_SESSION['customer_email'])) {
             $rand = rand(1000, 9999);
             $randTime = date("his");
             $randToday = date("dmy");
-            $_SESSION['invoicenumber'] = "DEE-" . $randToday . $randTime . $rand;
+            $_SESSION['invoicenumber'] = "$business_name-" . $randToday . $randTime . $rand;
         }
     }
 }
@@ -52,7 +67,7 @@ if (isset($_SESSION['customer_email'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title>DEE MART - Multipurpose E-Commerce Web Application</title>
+    <title><?php echo $business_name; ?> - Multipurpose E-Commerce Web Application</title>
 
     <meta name="keywords" content="" />
     <meta name="description" content="">
@@ -161,7 +176,7 @@ if (isset($_SESSION['customer_email'])) {
 
 <body class="home">
     <div class="page-wrapper">
-        <h1 class="d-none">DEE MART - Multipurpose E-Commerce Web Application</h1>
+        <h1 class="d-none"><?php echo $business_name; ?> - Multipurpose E-Commerce Web Application</h1>
 
         <?php
         include("header.php");
@@ -212,7 +227,7 @@ if (isset($_SESSION['customer_email'])) {
                                 }">
                                     </p>
 
-                                    <a href="shop.php"
+                                    <a href="shop"
                                         class="btn btn-dark btn-outline btn-rounded btn-icon-right slide-animate"
                                         data-animation-options="{
                                     'name': 'fadeInRightShorter',
@@ -262,7 +277,7 @@ if (isset($_SESSION['customer_email'])) {
                                     }">
 
                                     </p>
-                                    <a href="shop.php"
+                                    <a href="shop"
                                         class="btn btn-dark btn-outline btn-rounded btn-icon-right slide-animate"
                                         data-animation-options="{
                                         'name': 'fadeInUpShorter',
@@ -501,7 +516,7 @@ if (isset($_SESSION['customer_email'])) {
                                                 <div class="col-md-6">
                                                     <div class="product-details scrollable">
                                                         <h2 class="product-title mb-1"><a
-                                                                href="product.php?uin=<?php echo $row['uin']; ?>"><?php echo $row['productname']; ?></a>
+                                                                href="product?uin=<?php echo $row['uin']; ?>"><?php echo $row['productname']; ?></a>
                                                             </h2>
                                                             
 
@@ -597,7 +612,7 @@ if (isset($_SESSION['customer_email'])) {
         ?>
         <div class="product product-widget <?php if ($item_count != $total_items_in_slide) { echo 'bb-no'; } ?>">
             <figure class="product-media">
-                <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                <a href="product?uin=<?php echo $row['uin']; ?>">
                     <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>"
                         alt="Product" width="105" height="118" />
                 </a>
@@ -605,7 +620,7 @@ if (isset($_SESSION['customer_email'])) {
             
             <div class="product-details">
                 <h4 class="product-name">
-                    <a href="product.php?uin=<?php echo $row['uin']; ?>"><?php echo $row['productname']; ?></a>
+                    <a href="product?uin=<?php echo $row['uin']; ?>"><?php echo $row['productname']; ?></a>
                 </h4>
 
                 <?php
@@ -685,13 +700,13 @@ if (isset($_SESSION['customer_email'])) {
 
                                 <div class="swiper-slide">
                                     <div class="top-category-card">
-                                        <a href="cat.php?category=<?php echo urlencode($row['category']); ?>" class="category-media">
+                                        <a href="cat?category=<?php echo urlencode($row['category']); ?>" class="category-media">
                                             <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>" alt="Category"
                                                 width="130" height="80">
                                         </a>
                                         <div class="category-content">
                                             <h4 class="category-name"><?php echo $row['category']; ?></h4>
-                                            <a href="cat.php?category=<?php echo urlencode($row['category']); ?>" class="btn btn-primary btn-link btn-underline">Shop Now</a>
+                                            <a href="cat?category=<?php echo urlencode($row['category']); ?>" class="btn btn-primary btn-link btn-underline">Shop Now</a>
                                         </div>
                                     </div>
                                 </div>
@@ -719,7 +734,7 @@ if (isset($_SESSION['customer_email'])) {
                         $row = mysqli_fetch_array($result);
                     ?>
                     <h2 class="title ls-normal mb-0"><?php echo $row['category']; ?></h2>
-                    <a href="shop.php" class="font-size-normal font-weight-bold ls-25 mb-0">More Products
+                    <a href="shop" class="font-size-normal font-weight-bold ls-25 mb-0">More Products
                         <i class="w-icon-long-arrow-right"></i>
                     </a>
                     <?php } ?>
@@ -741,7 +756,7 @@ if (isset($_SESSION['customer_email'])) {
                                     <h3 class="banner-title font-weight-bolder ls-25 text-uppercase">
                                         New Arrival<br>
                                     </h3>
-                                    <a href="shop.php"
+                                    <a href="shop"
                                         class="btn btn-dark btn-outline btn-rounded btn-sm">Shop Now</a>
                                 </div>
                             </div>
@@ -776,21 +791,21 @@ if (isset($_SESSION['customer_email'])) {
                                     <div class="swiper-slide product-col">
                                         <div class="product-wrap product text-center">
                                             <figure class="product-media">
-                                                <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                                <a href="product?uin=<?php echo $row['uin']; ?>">
                                                     <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>" alt="Product"
                                                         width="216" height="243">
                                                 </a>
 
                                                 <div class="product-action-vertical">
-                                                    <a href="addtowishlist.php?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-wishlist w-icon-heart btn-add-wishlist-ajax" title="Add to Wishlist" data-uin="<?php echo $row['uin']; ?>"></a>
-                                                    <a href="product.php?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-quickview w-icon-search" title="Quickview"></a>
+                                                    <a href="addtowishlist?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-wishlist w-icon-heart btn-add-wishlist-ajax" title="Add to Wishlist" data-uin="<?php echo $row['uin']; ?>"></a>
+                                                    <a href="product?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-quickview w-icon-search" title="Quickview"></a>
                                                 </div>
                                                 <div class="product-action">
                                                 </div>
                                             </figure>
 
                                             <div class="product-details">
-                                                <h4 class="product-name"><a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                                <h4 class="product-name"><a href="product?uin=<?php echo $row['uin']; ?>">
                                                     <?php echo $row['productname']; ?>
                                                 </a>
                                                 </h4>
@@ -829,7 +844,7 @@ if (isset($_SESSION['customer_email'])) {
         $row = mysqli_fetch_array($result);
         ?>
                         <h2 class="title ls-normal mb-0"><?php echo $row['category']; ?></h2>
-                        <a href="shop.php" class="font-size-normal font-weight-bold ls-25 mb-0">More
+                        <a href="shop" class="font-size-normal font-weight-bold ls-25 mb-0">More
                             Products<i class="w-icon-long-arrow-right"></i></a>
                             <?php 
                             }
@@ -846,7 +861,7 @@ if (isset($_SESSION['customer_email'])) {
                                     <h3 class="banner-title text-white font-weight-bolder text-uppercase ls-25">
                                         Laptops, iPhones, Headsets <br>
                                     </h3>
-                                    <a href="shop.php"
+                                    <a href="shop"
                                         class="btn btn-white btn-outline btn-rounded btn-sm">Shop now</a>
                                 </div>
                             </div>
@@ -878,21 +893,21 @@ if (isset($_SESSION['customer_email'])) {
                                     <div class="swiper-slide product-col">
                                         <div class="product-wrap product text-center">
                                             <figure class="product-media">
-                                                <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                                <a href="product?uin=<?php echo $row['uin']; ?>">
                                                     <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>"
                                                         alt="Product" width="216" height="243" />
                                                 </a>
 
                                                 <div class="product-action-vertical">
-                                                    <a href="addtowishlist.php?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-wishlist w-icon-heart btn-add-wishlist-ajax" title="Add to Wishlist" data-uin="<?php echo $row['uin']; ?>"></a>
-                                                    <a href="product.php?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-quickview w-icon-search" title="Quickview"></a>
+                                                    <a href="addtowishlist?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-wishlist w-icon-heart btn-add-wishlist-ajax" title="Add to Wishlist" data-uin="<?php echo $row['uin']; ?>"></a>
+                                                    <a href="product?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-quickview w-icon-search" title="Quickview"></a>
                                                 </div>
                                                 <div class="product-action">
                                                 </div>
                                             </figure>
                                             
                                             <div class="product-details">
-                                                <h4 class="product-name"><a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                                <h4 class="product-name"><a href="product?uin=<?php echo $row['uin']; ?>">
                                                     <?php echo $row['productname']; ?>
                                                 </a></h4>
                                                
@@ -929,7 +944,7 @@ if (isset($_SESSION['customer_email'])) {
         $row = mysqli_fetch_array($result);
         ?>
                         <h2 class="title ls-normal mb-0"><?php echo $row['category']; ?></h2>
-                        <a href="shop.php" class="font-size-normal font-weight-bold ls-25 mb-0">More
+                        <a href="shop" class="font-size-normal font-weight-bold ls-25 mb-0">More
                             Products<i class="w-icon-long-arrow-right"></i></a>
                             <?php } ?>
                     </div>
@@ -950,7 +965,7 @@ if (isset($_SESSION['customer_email'])) {
                                     <h3 class="banner-title font-weight-bolder text-uppercase ls-25 text-white">
                                     Latest Kicks<br>
                                     </h3>
-                                    <a href="shop.php"
+                                    <a href="shop"
                                         class="btn btn-dark btn-outline btn-rounded btn-sm text-white">Shop now</a>
                                 </div>
                             </div>
@@ -981,14 +996,14 @@ if (isset($_SESSION['customer_email'])) {
                             <div class="swiper-slide product-col">
                                 <div class="product-wrap product text-center">
                                     <figure class="product-media">
-                                        <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                        <a href="product?uin=<?php echo $row['uin']; ?>">
                                             <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>" alt="Product"
                                                 width="216" height="243" />
                                         </a>
 
                                         <div class="product-action-vertical">
-                                            <a href="addtowishlist.php?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-wishlist w-icon-heart btn-add-wishlist-ajax" title="Add to Wishlist" data-uin="<?php echo $row['uin']; ?>"></a>
-                                            <a href="product.php?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-quickview w-icon-search" title="Quickview"></a>
+                                            <a href="addtowishlist?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-wishlist w-icon-heart btn-add-wishlist-ajax" title="Add to Wishlist" data-uin="<?php echo $row['uin']; ?>"></a>
+                                            <a href="product?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-quickview w-icon-search" title="Quickview"></a>
                                         </div>
                                         <div class="product-action">
                                             
@@ -997,7 +1012,7 @@ if (isset($_SESSION['customer_email'])) {
 
                                     <div class="product-details">
                                         <h4 class="product-name">
-                                            <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                            <a href="product?uin=<?php echo $row['uin']; ?>">
                                                 <?php echo $row['productname']; ?>
                                             </a>
                                         </h4>
@@ -1025,7 +1040,7 @@ if (isset($_SESSION['customer_email'])) {
                 <div class="post-wrapper appear-animate mb-4">
                     <div class="title-link-wrapper pb-1 mb-4">
                         <h2 class="title ls-normal mb-0">Our Blog</h2>
-                        <a href="blog.php" class="font-weight-bold font-size-normal">View All Articles</a>
+                        <a href="blog" class="font-weight-bold font-size-normal">View All Articles</a>
                     </div>
                     <div class="swiper">
                         <div class="swiper-container swiper-theme" data-swiper-options="{
@@ -1052,21 +1067,21 @@ if (isset($_SESSION['customer_email'])) {
                             ?>
                                 <div class="swiper-slide post text-center overlay-zoom">
                                     <figure class="post-media br-sm">
-                                        <a href="blog.php">
+                                        <a href="blog">
                                             <img src="dashboard/blogupload/<?php echo $row['blogimage']; ?>" alt="Post" width="280"
                                                 height="180" style="background-color: #4b6e91;" />
                                         </a>
                                     </figure>
                                     <div class="post-details">
                                         <div class="post-meta">
-                                            by <a href="blog.php" class="post-author"><?php echo $row['photocredit']; ?></a>
-                                            - <a href="blog.php" class="post-date mr-0"><?php echo $row['date']; ?></a>
+                                            by <a href="blog" class="post-author"><?php echo $row['photocredit']; ?></a>
+                                            - <a href="blog" class="post-date mr-0"><?php echo $row['date']; ?></a>
                                         </div>
                                         <h4 class="post-title"><a href="">
                                             <?php echo $row['headline']; ?>
                                         </a>
                                         </h4>
-                                        <a href="blog.php" class="btn btn-link btn-dark btn-underline">Read
+                                        <a href="blog" class="btn btn-link btn-dark btn-underline">Read
                                             More<i class="w-icon-long-arrow-right"></i></a>
                                     </div>
                                 </div>

@@ -129,13 +129,13 @@ $rows = mysqli_fetch_array($result);
                                                                 <i class="fe fe-action me-2"></i>Action
                                                             </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="delete-staff.php?id=<?php echo $row['id']?>" onclick="return confirm('Are you sure to delete this staff?')">Delete Staff</a>
+                                                            <a class="dropdown-item" href="delete-staff?id=<?php echo $row['id']?>" onclick="return confirm('Are you sure to delete this staff?')">Delete Staff</a>
 
-                                                            <a class="dropdown-item" href="profile.php?id=<?php echo $row['id']?>">View Staff</a>
+                                                            <a class="dropdown-item" href="profile?id=<?php echo $row['id']?>">View Staff</a>
 
-                                                            <a class="dropdown-item" href="edit-staff.php?id=<?php echo $row['id']?>"> Edit Staff</a>
+                                                            <a class="dropdown-item" href="edit-staff?id=<?php echo $row['id']?>"> Edit Staff</a>
 
-                                                            <a class="dropdown-item" href="idcard.php?uin=<?php echo $row['uin']?>" target="_blank">Generate Staff ID Card</a>
+                                                            <a class="dropdown-item" href="idcard?uin=<?php echo $row['uin']?>" target="_blank">Generate Staff ID Card</a>
                                                         </div>
                                                     </div>
                                                         </td>

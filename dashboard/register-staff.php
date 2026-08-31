@@ -125,8 +125,8 @@ $rows = mysqli_fetch_array($result);
                                                 }
                                                 else{
 
-                                                echo "<script>alert('Staff successfully registered.');
-                                                 window.location.href='view-staff.php'</script>";
+                                                 echo "<script>alert('Staff successfully registered.');
+                                                  window.location.href='view-staff'</script>";
                                             }
                                                 }
                                             }

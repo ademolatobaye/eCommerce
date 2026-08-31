@@ -1,6 +1,21 @@
 <?php
 session_start();
 include("db_conn.php");
+
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +25,7 @@ include("db_conn.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title>DEE MART - CONTACT US</title>
+    <title><?php echo $business_name;?> - CONTACT US</title>
 
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -74,7 +89,7 @@ include("db_conn.php");
             <nav class="breadcrumb-nav mb-10 pb-1">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="index.php">Home</a></li>
+                        <li><a href="index">Home</a></li>
                         <li>Contact Us</li>
                     </ul>
                 </div>

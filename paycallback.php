@@ -61,7 +61,7 @@ if ($paymentData['status'] && $paymentData['data']['status'] == 'success') {
     // Check if this order was already processed
     $checkPayment = mysqli_query($conn, "SELECT * FROM invoicesales WHERE order_id = '$order_id' LIMIT 1");
     if (mysqli_num_rows($checkPayment) > 0) {
-        echo "<script>alert('Payment already processed.'); window.location.href='index.php';</script>";
+        echo "<script>alert('Payment already processed.'); window.location.href='index';</script>";
         exit;
     }
 
@@ -80,13 +80,7 @@ if ($paymentData['status'] && $paymentData['data']['status'] == 'success') {
 
         if ($updateUser && $insertOrder) {
 
-            // Deduct stock for each item in this invoice
-            $stockResult = mysqli_query($conn, "SELECT * FROM invoiceorder WHERE invoicenumber='$invoicenumber' AND customer_uin='$customer_uin'");
-            while ($stockRow = mysqli_fetch_assoc($stockResult)) {
-                $quantity = (int)$stockRow['quantity'];
-                $product_id = mysqli_real_escape_string($conn, $stockRow['product_id']);
-                mysqli_query($conn, "UPDATE product_table SET quantity = GREATEST(0, quantity - $quantity) WHERE product_id='$product_id'");
-            }
+            // Stock was already reserved/deducted when items were added to cart.
 
             // Send confirmation email
             $mail = new PHPMailer(true);
@@ -162,18 +156,18 @@ if ($paymentData['status'] && $paymentData['data']['status'] == 'success') {
                 error_log("Mailer Error: " . $mail->ErrorInfo);
             }
 
-            echo "<script>alert('Payment successful.'); window.location.href='order.php';</script>";
+            echo "<script>alert('Payment successful.'); window.location.href='order';</script>";
             exit;
 
         } else {
-            echo "<script>alert('Payment was successful but failed to update records. Please contact support.'); window.location.href='index.php';</script>";
+            echo "<script>alert('Payment was successful but failed to update records. Please contact support.'); window.location.href='index';</script>";
         }
 
     } else {
-        echo "<script>alert('Payment successful but user not found. Please contact support.'); window.location.href='index.php';</script>";
+        echo "<script>alert('Payment successful but user not found. Please contact support.'); window.location.href='index';</script>";
     }
 
 } else {
-    echo "<script>alert('Payment failed or was cancelled.'); window.location.href='checkout.php';</script>";
+    echo "<script>alert('Payment failed or was cancelled.'); window.location.href='checkout';</script>";
 }
 ?>

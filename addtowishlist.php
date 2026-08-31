@@ -21,6 +21,19 @@ if (mysqli_num_rows($res) === 0) {
     exit();
 }
 
+// 1. Fetch product details from product_table
+$stmt = mysqli_prepare($conn, "SELECT productname, productimage, category, sellingprice FROM product_table WHERE uin = ?");
+mysqli_stmt_bind_param($stmt, 's', $product_uin);
+mysqli_stmt_execute($stmt);
+$res = mysqli_stmt_get_result($stmt);
+
+if ($row = mysqli_fetch_assoc($res)) {
+    $productname  = $row['productname'];
+    $productimage = $row['productimage'];
+    $category     = $row['category'];
+    $sellingprice = $row['sellingprice'];
+}
+
 $customer_uin = isset($_SESSION['customer_uin']) ? $_SESSION['customer_uin'] : '';
 
 if (!empty($customer_uin)) {
@@ -39,12 +52,16 @@ if (!empty($customer_uin)) {
         $message = 'Item removed from your wishlist.';
     } else {
         // Insert item
-        $ins_stmt = mysqli_prepare($conn, "INSERT INTO wishlist (customer_uin, product_uin, `timestamp`) VALUES (?, ?, NOW())");
-        mysqli_stmt_bind_param($ins_stmt, 'ss', $customer_uin, $product_uin);
+        $ins_stmt = mysqli_prepare($conn, "INSERT INTO wishlist (customer_uin, product_uin, productname, product_image, category, sellingprice)
+         VALUES (?, ?, ?, ?, ?, ?)");
+        mysqli_stmt_bind_param($ins_stmt, 'sssssd', $customer_uin, $product_uin, $productname, $productimage, $category, $sellingprice);
         mysqli_stmt_execute($ins_stmt);
         $action = 'added';
         $message = 'Item added to your wishlist!';
     }
+
+    // Clean up any orphan rows with empty customer_uin
+    mysqli_query($conn, "DELETE FROM wishlist WHERE customer_uin = '' OR customer_uin IS NULL");
 
     // Get total count
     $cnt_stmt = mysqli_prepare($conn, "SELECT COUNT(*) AS total FROM wishlist WHERE customer_uin = ?");
@@ -79,7 +96,7 @@ if (!empty($customer_uin)) {
 $is_ajax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') || isset($_GET['ajax']);
 
 if (!$is_ajax) {
-    $redirect_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'wishlist.php';
+    $redirect_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'wishlist';
     header("Location: " . $redirect_url);
     exit();
 }

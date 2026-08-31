@@ -2,7 +2,7 @@
 include_once("session-check.php");
 
 if (!isset($_GET['id'])) {
-    header("Location: products.php");
+    header("Location: products");
     exit();
 }
 
@@ -16,7 +16,7 @@ $res = mysqli_stmt_get_result($stmt);
 $product = mysqli_fetch_assoc($res);
 
 if (!$product) {
-    echo "<script>alert('Product not found or access denied.'); window.location.href='products.php';</script>";
+    echo "<script>alert('Product not found or access denied.'); window.location.href='products';</script>";
     exit();
 }
 
@@ -41,7 +41,7 @@ if (isset($_POST['update_product'])) {
             CacheManager::flush();
         }
         echo "<script>alert('Product details updated successfully!');
-         window.location.href='products.php';</script>";
+         window.location.href='products';</script>";
         exit();
     } else {
         echo "<script>alert('Error updating product details.');</script>";
@@ -77,7 +77,7 @@ if (isset($_POST['update_product'])) {
                         <div class="page-header">
                             <h1 class="page-title">Edit Product Details</h1>
                             <div>
-                                <a href="products.php" class="btn btn-secondary"><i class="fe fe-arrow-left me-1"></i> Back to Products</a>
+                                <a href="products" class="btn btn-secondary"><i class="fe fe-arrow-left me-1"></i> Back to Products</a>
                             </div>
                         </div>
 
