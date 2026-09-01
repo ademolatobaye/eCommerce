@@ -17,7 +17,7 @@
                         </a>
                         <!-- LOGO -->
                         <div class="main-header-center ms-3 d-none d-lg-block">
-                            <form action="search" method="post">
+                            <form action="search" method="get">
                                 <input type="text" class="form-control" id="typehead" placeholder="Search for products..." required name="search">
                             <button class="btn px-0 pt-2"><i class="fe fe-search" aria-hidden="true"></i></button>
                             </form>
@@ -41,7 +41,7 @@
                                             </a>
                                             <div class="dropdown-menu header-search dropdown-menu-start">
                                                 <div class="input-group w-100 p-2">
-                                                    <form action="search" method="post">
+                                                    <form action="search" method="get">
                                                         <input type="text" class="form-control" placeholder="Search...." name="search">
                                                     </form>
                                                     <div class="input-group-text btn btn-primary">

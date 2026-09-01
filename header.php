@@ -106,7 +106,7 @@ if (!empty($customerUin)) {
                     <img src="assets/images/logo.png" alt="logo" width="144" height="45" />
                 </a>
 
-                <form method="post" action="search" class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
+                <form method="get" action="search" class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
                     <div class="select-box">
                         <select id="category" name="category">
                             <option value="">All Categories</option>

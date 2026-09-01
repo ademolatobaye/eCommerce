@@ -95,36 +95,76 @@ if (empty($setting_row['business_name'])) {
                                                 include("db_conn.php");
                                                 if(isset($_REQUEST["search"]) && !empty($_REQUEST["search"])){
                                                     $search = mysqli_real_escape_string($conn, trim($_REQUEST["search"]));
-                                                    $sql = "SELECT * FROM product_table WHERE productname LIKE '%$search%' OR category LIKE '%$search%' ORDER BY product_id DESC";
+                                                    $sql = "SELECT * FROM product_table WHERE productname LIKE '%$search%' OR category LIKE '%$search%' OR vendor_storename LIKE '%$search%' ORDER BY product_id DESC";
                                                     $result = mysqli_query($conn, $sql);
                                                 if(mysqli_num_rows($result)>0){
                                                 $count=1;
                                                 while($row=mysqli_fetch_array($result)){
                                                 
                                                 ?>
-                                    <div class="product-wrap">
-                                        <div class="product text-center">
-                                            <figure class="product-media">
-                                                <a href="product?uin=<?php echo $row['uin']; ?>">
-                                                    <img src="dashboard/productupload/<?php echo $row['productimage'];?>" alt="Product" />
-                                                </a>
-                                            </figure>
+                                     <div class="product-wrap">
+                                         <div class="product text-center">
+                                             <figure class="product-media">
+                                                 <a href="product?uin=<?php echo $row['uin']; ?>">
+                                                     <img src="vendor/vendorupload/<?php echo htmlspecialchars($row['productimage']);?>" alt="Product" />
+                                                 </a>
+                                                 <div class="product-action-vertical">
+                                                     <a href="addtowishlist?uin=<?php echo $row['uin']; ?>" class="btn-product-icon btn-wishlist w-icon-heart btn-add-wishlist-ajax" title="Add to Wishlist" data-uin="<?php echo $row['uin']; ?>"></a>
+                                                 </div>
+                                                 <div class="product-action">
+                                                     
+                                                 </div>
+                                             </figure>
 
-                                            <div class="product-details">
-                                                <div class="product-cat">
-                                                    <a href="cat?category=<?php echo urlencode($row['category']); ?>"><?php echo $row['category']; ?></a>
-                                                </div>
-                                                <h3 class="product-name">
-                                                    <a href="product?uin=<?php echo $row['uin']; ?>">
-                                                        <?php echo $row['productname']; ?>
-                                                    </a>
-                                                </h3>
-                                                <div class="product-price">
-                                                    &#8358; <?php echo number_format($row['sellingprice'], 2); ?>   
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                             <div class="product-details">
+                                                 <div class="product-cat">
+                                                     <a href="cat?category=<?php echo urlencode($row['category']); ?>"><?php echo htmlspecialchars($row['category']); ?></a>
+                                                 </div>
+                                                 <h3 class="product-name">
+                                                     <a href="product?uin=<?php echo $row['uin']; ?>">
+                                                         <?php echo htmlspecialchars($row['productname']); ?>
+                                                     </a>
+                                                 </h3>
+                                                 <!-- Vendor Badge on Card -->
+                                                 <div class="product-vendor-mini mt-1 mb-1" style="font-size: 12px; color: #666;">
+                                                     <?php if (!empty($row['vendor_uin'])): ?>
+                                                         <i class="fas fa-store text-primary me-1"></i>
+                                                         <a href="vendor-store?vendor_uin=<?php echo $row['vendor_uin']; ?>" class="text-primary font-weight-bold" style="text-decoration: underline;">
+                                                             <?php echo htmlspecialchars($row['vendor_storename']); ?>
+                                                         </a>
+                                                     <?php else: ?>
+                                                         <span class="text-muted"><i class="fas fa-shield-alt text-success me-1"></i> <?php echo $business_name;?></span>
+                                                     <?php endif; ?>
+                                                 </div>
+                                                 <?php
+                                                 $p_uin = $row['uin'];
+                                                 $r_stmt = mysqli_prepare($conn, "SELECT AVG(rating) as avg_r, COUNT(*) as cnt FROM product_reviews WHERE product_uin = ?");
+                                                 $card_rating = 0;
+                                                 $card_count = 0;
+                                                 if ($r_stmt) {
+                                                     mysqli_stmt_bind_param($r_stmt, 's', $p_uin);
+                                                     mysqli_stmt_execute($r_stmt);
+                                                     $r_res = mysqli_stmt_get_result($r_stmt);
+                                                     if ($r_row = mysqli_fetch_assoc($r_res)) {
+                                                         $card_rating = round((float)$r_row['avg_r'], 1);
+                                                         $card_count = (int)$r_row['cnt'];
+                                                     }
+                                                     mysqli_stmt_close($r_stmt);
+                                                 }
+                                                 $card_stars = ($card_rating / 5) * 100;
+                                                 ?>
+                                                 <div class="ratings-container">
+                                                     <div class="ratings-full">
+                                                         <span class="ratings" style="width: <?php echo $card_stars; ?>%;"></span>
+                                                     </div>
+                                                     <a href="product?uin=<?php echo $row['uin']; ?>#product-tab-reviews" class="rating-reviews">(<?php echo $card_count; ?>)</a>
+                                                 </div>
+                                                 <div class="product-price">
+                                                     &#8358; <?php echo number_format($row['sellingprice'], 2); ?>   
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
                                 <?php
                                     }
                                 } else {
@@ -363,6 +403,68 @@ if (empty($setting_row['business_name'])) {
 
     <!-- Main JS -->
     <script src="assets/js/main.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $(document).on('click', '.btn-add-wishlist-ajax', function(e) {
+            e.preventDefault();
+            var $btn = $(this);
+            var url = $btn.attr('href');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                data: { ajax: 1 },
+                success: function(res) {
+                    if (res.success) {
+                        if (res.action === 'added') {
+                            $btn.addClass('added').attr('title', 'Remove from Wishlist').css('color', '#e3342f');
+                        } else {
+                            $btn.removeClass('added').attr('title', 'Add to Wishlist').css('color', '');
+                        }
+                        if ($('#header-wishlist-count').length) {
+                            $('#header-wishlist-count').text(res.count);
+                        }
+                        alert(res.message);
+                    }
+                },
+                error: function() {
+                    window.location.href = url;
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-add-cart-ajax', function(e) {
+            e.preventDefault();
+            var $btn = $(this);
+            var url = $btn.attr('href');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                data: { ajax: 1 },
+                success: function(res) {
+                    if (res.success) {
+                        if ($('.cart-count').length) {
+                            $('.cart-count').text(res.cartCount);
+                        }
+                        alert(res.message);
+                    } else {
+                        if (res.redirect) {
+                            window.location.href = res.redirect;
+                        } else {
+                            alert(res.message);
+                        }
+                    }
+                },
+                error: function() {
+                    window.location.href = url;
+                }
+            });
+        });
+    });
+    </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9da9ebcbff3c62f4',t:'MTc3MzIyNTQxNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"ecd4920e43e14654b78e65dbf8311922","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 

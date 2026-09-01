@@ -7,7 +7,7 @@
         <!-- End of .mobile-menu-close -->
 
         <div class="mobile-menu-container scrollable">
-            <form action="search" method="post" class="input-wrapper">
+            <form action="search" method="get" class="input-wrapper">
                 <input type="text" class="form-control" name="search" autocomplete="off" placeholder="Search"
                     required />
                 <button class="btn btn-search" type="submit">
