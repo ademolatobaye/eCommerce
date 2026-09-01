@@ -114,7 +114,7 @@ if (empty($setting_row['business_name'])) {
             <nav class="breadcrumb-nav mb-10 pb-2">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="index.php">Home</a></li>
+                        <li><a href="index">Home</a></li>
                         <li>About Us</li>
                     </ul>
                 </div>
@@ -269,8 +269,8 @@ if (empty($setting_row['business_name'])) {
                                     Whether someone is shopping for everyday needs, fashion, accessories, gadgets, or new arrivals,
                                     we want the journey to stay clear, fast, and customer-friendly.
                                 </p>
-                                <a href="shop.php" class="btn btn-dark btn-rounded mr-2">Visit Our Store</a>
-                                <a href="contact-us.php" class="btn btn-outline btn-dark btn-rounded">Contact Us</a>
+                                <a href="shop" class="btn btn-dark btn-rounded mr-2">Visit Our Store</a>
+                                <a href="contact-us" class="btn btn-outline btn-dark btn-rounded">Contact Us</a>
                             </div>
                         </div>
 
@@ -377,12 +377,12 @@ if (empty($setting_row['business_name'])) {
                                     faster without losing track of what they need.
                                 </p>
                                 <?php
-                                $categoryResult = mysqli_query($conn, "SELECT * FROM `category` ORDER BY id ASC LIMIT 6");
+                                $categoryResult = mysqli_query($conn, "SELECT * FROM `category` ORDER BY id ASC LIMIT 7");
                                 if ($categoryResult && mysqli_num_rows($categoryResult) > 0) {
                                 ?>
                                     <div>
                                         <?php while ($row = mysqli_fetch_array($categoryResult)) { ?>
-                                            <a class="category-pill" href="cat.php?cat=<?php echo $row['id']; ?>">
+                                            <a class="category-pill" href="cat?cat=<?php echo $row['id']; ?>">
                                                 <?php echo $row['categoryname']; ?>
                                             </a>
                                         <?php } ?>
@@ -402,7 +402,7 @@ if (empty($setting_row['business_name'])) {
                     <div class="container">
                         <div class="title-link-wrapper mb-4">
                             <h4 class="title">Recently Added Products</h4>
-                            <a href="shop.php" class="btn btn-dark btn-link btn-slide-right btn-icon-right">View All Products<i class="w-icon-long-arrow-right"></i></a>
+                            <a href="shop" class="btn btn-dark btn-link btn-slide-right btn-icon-right">View All Products<i class="w-icon-long-arrow-right"></i></a>
                         </div>
 
                         <div class="product-wrapper row cols-lg-4 cols-md-3 cols-sm-2 cols-2">
@@ -415,17 +415,17 @@ if (empty($setting_row['business_name'])) {
                             <div class="product-wrap">
                                 <div class="product text-center">
                                     <figure class="product-media">
-                                        <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                        <a href="product?uin=<?php echo $row['uin']; ?>">
                                             <img src="vendor/vendorupload/<?php echo $row['productimage']; ?>" alt="Product" />
                                         </a>
                                     </figure>
 
                                     <div class="product-details">
                                         <div class="product-cat">
-                                            <a href="shop.php"><?php echo $row['category']; ?></a>
+                                            <a href="shop"><?php echo $row['category']; ?></a>
                                         </div>
                                         <h3 class="product-name">
-                                            <a href="product.php?uin=<?php echo $row['uin']; ?>">
+                                            <a href="product?uin=<?php echo $row['uin']; ?>">
                                                 <?php echo $row['productname']; ?>
                                             </a>
                                         </h3>

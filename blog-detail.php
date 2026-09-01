@@ -104,8 +104,8 @@ $blog_uin = $blog_row['uin'];
             <nav class="breadcrumb-nav mb-6">
                 <div class="container">
                     <ul class="breadcrumb">
-                        <li><a href="index.php">Home</a></li>
-                        <li><a href="blog.php">Blog</a></li>
+                        <li><a href="index">Home</a></li>
+                        <li><a href="blog">Blog</a></li>
                         <li><?php echo htmlspecialchars($blog_row['headline']); ?></li>
                     </ul>
                 </div>
@@ -184,7 +184,7 @@ $blog_uin = $blog_row['uin'];
 
                             <!-- NAV POSTS -->
                             <div class="post-navigation d-flex justify-content-between align-items-center border-top border-bottom pt-4 pb-4 mt-8">
-                                <a href="blog.php" class="btn btn-dark btn-rounded"><i class="w-icon-long-arrow-left"></i> Back to Blog</a>
+                                <a href="blog" class="btn btn-dark btn-rounded"><i class="w-icon-long-arrow-left"></i> Back to Blog</a>
                             </div>
                         </div>
 
@@ -209,7 +209,7 @@ $blog_uin = $blog_row['uin'];
                                             ?>
                                                     <div class="post post-widget d-flex align-items-center mb-3">
                                                         <figure class="post-media br-sm mr-3" style="width:70px; height:70px; flex-shrink:0;">
-                                                            <a href="blog-detail.php?uin=<?php echo $rec['uin']; ?>">
+                                                            <a href="blog-detail?uin=<?php echo $rec['uin']; ?>">
                                                                 <img src="dashboard/blogupload/<?php echo htmlspecialchars($rec['blogimage']); ?>" width="70" height="70" alt="post" style="width:70px; height:70px; object-fit:cover; border-radius:4px;">
                                                             </a>
                                                         </figure>
@@ -218,7 +218,7 @@ $blog_uin = $blog_row['uin'];
                                                                 <span class="post-date"><?php echo htmlspecialchars($rec['date']); ?></span>
                                                             </div>
                                                             <h4 class="post-title">
-                                                                <a href="blog-detail.php?uin=<?php echo $rec['uin']; ?>"><?php echo htmlspecialchars($rec['headline']); ?></a>
+                                                                <a href="blog-detail?uin=<?php echo $rec['uin']; ?>"><?php echo htmlspecialchars($rec['headline']); ?></a>
                                                             </h4>
                                                         </div>
                                                     </div>

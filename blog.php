@@ -104,7 +104,7 @@ if (empty($setting_row['business_name'])) {
                             $result = mysqli_query($conn, $sql);
                             if (mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_array($result)) {
-                                    $detail_url = "blog-detail.php?uin=" . urlencode($row['uin']);
+                                    $detail_url = "blog-detail?uin=" . urlencode($row['uin']);
                                     $excerpt = strip_tags($row['content']);
                                     if (strlen($excerpt) > 180) {
                                         $excerpt = substr($excerpt, 0, 180) . '...';
