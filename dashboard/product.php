@@ -109,12 +109,12 @@ if (isset($_GET['action']) && isset($_GET['product_id'])) {
                                                         <th class="border-bottom-0">Product ID</th>
                                                         <th class="border-bottom-0">Product Name</th>
                                                         <th class="border-bottom-0">Date</th>
-                                                        <th class="border-bottom-0">Cost Price</th>
+                                                        <!-- <th class="border-bottom-0">Cost Price</th> -->
                                                         <th class="border-bottom-0">Selling Price</th>
                                                         <th class="border-bottom-0">Quantity</th>
                                                         <th class="border-bottom-0">Low Level</th>
                                                         <th class="border-bottom-0" style="width:90px;">Product Image</th>
-                                                        <th class="border-bottom-0">Profit</th>
+                                                        <!-- <th class="border-bottom-0">Profit</th> -->
                                                         <th class="border-bottom-0">Category</th>
                                                         <th class="border-bottom-0">Description</th>
                                                         <th class="border-bottom-0">Vendor</th>
@@ -140,12 +140,12 @@ if (isset($_GET['action']) && isset($_GET['product_id'])) {
                                                         <td><?php echo $row['uin']?></td>
                                                         <td style="text-align:center;"><?php echo $row['productname']?></td>
                                                         <td><?php echo date('jS-F-Y', strtotime($row['date']) )?></td>
-                                                        <td style="text-align:center;">&#8358;<?php echo number_format($row['costprice'], 2); ?></td>
+                                                        <!-- <td style="text-align:center;">&#8358;<?php //echo number_format($row['costprice'], 2); ?></td> -->
                                                         <td style="text-align:center;">&#8358;<?php echo number_format($row['sellingprice'], 2); ?></td>
                                                         <td style="text-align:center;"><?php echo $row['quantity']?></td>
                                                         <td><?php echo $row['lowlevel']?></td>
                                                          <td><img src="../vendor/vendorupload/<?php echo $row['productimage']?>" style="height:70px; width:150px; object-fit:cover; border-radius:5px;"></td>
-                                                        <td style="text-align:center;">&#8358;<?php echo number_format($row['profit'], 2); ?></td>
+                                                        <!-- <td style="text-align:center;">&#8358;<?php //echo number_format($row['profit'], 2); ?></td> -->
                                                         <td style="text-align:center;"><?php echo $row['category']?></td>
                                                         <td><?php echo $row['description']?></td>
                                                         <td><strong><?php echo htmlspecialchars($vendor_name); ?></strong></td>

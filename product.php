@@ -19,7 +19,8 @@ if (empty($setting_row['business_name'])) {
 ?>
 
 <?php
-if(isset($_REQUEST['uin'])){
+$product_row = null;
+if(isset($_REQUEST['uin']) && !empty($_REQUEST['uin'])){
     $req_uin = mysqli_real_escape_string($conn, $_REQUEST['uin']);
     $sql = "SELECT * FROM product_table WHERE uin='$req_uin' LIMIT 1";
     $result = mysqli_query($conn, $sql);
@@ -89,6 +90,13 @@ if(isset($_REQUEST['uin'])){
         $avg_rating = $review_count > 0 ? round($total_rating_sum / $review_count, 1) : 0;
         $star_percentage = $review_count > 0 ? ($avg_rating / 5) * 100 : 0;
     }
+}
+
+// If product is not found or uin is missing/invalid, show alert and redirect
+if (!$product_row) {
+    echo "<script>alert('Product not available.');
+     window.location.href='shop';</script>";
+    exit();
 }
 ?>
 <!DOCTYPE html>
