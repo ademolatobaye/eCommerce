@@ -214,7 +214,8 @@ session_start();
                                                             // </center>";
 
                                                             // if ($mail->send()) {
-                                                                echo "<script>alert('An OTP has been sent to $customer_email. Kindly check your email to verify your account.'); window.location.href = 'user-otp';</script>";
+                                                                echo "<script>alert('An OTP has been sent to $customer_email. Kindly check your email to verify your account.');
+                                                                 window.location.href = 'user-otp';</script>";
                                                             // } else {
                                                             //     echo "<script>alert('Failed to send OTP email. Please try again.')</script>";
                                                             // }
