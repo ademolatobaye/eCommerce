@@ -2,13 +2,29 @@
 include('session-check.php');
 include('db_conn.php');
 
-// use PHPMailer\PHPMailer\PHPMailer;
-// use PHPMailer\PHPMailer\SMTP;
-// use PHPMailer\PHPMailer\Exception;
 
-// require 'includes/Exception.php';
-// require 'includes/PHPMailer.php';
-// require 'includes/SMTP.php';
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: management/");
+    exit();
+}
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require 'includes/Exception.php';
+require 'includes/PHPMailer.php';
+require 'includes/SMTP.php';
 
 // Enforce access control for Super Admin / Admin
 check_access(array('Super Admin', 'Admin', 'Manager'));
@@ -31,69 +47,69 @@ if (isset($_GET['action']) && isset($_GET['vendor_uin'])){
                 $vendor_email = $vendor_data['vendor_email'];
                 $store_name   = $vendor_data['store_name'];
                 $vendor_name  = $vendor_data['vendor_name'];
-                $login_url    = "http://" . $_SERVER['HTTP_HOST'] . "/eCommerce/vendor/login.php";
+                $login_url    = "http://" . $_SERVER['HTTP_HOST'] . "/e-commerce/vendor/login";
 
                 // Create instance of PHPMailer
-                // $mail = new PHPMailer();
-                // // Set mailer to use smtp
-                // $mail->isSMTP();
-                // // Define smtp host
-                // $mail->Host = "mail.pocketvest.com.ng";
-                // // Enable smtp authentication
-                // $mail->SMTPAuth = true;
-                // // Set smtp encryption type (ssl/tls)
-                // $mail->SMTPSecure = "ssl";
-                // // Port to connect smtp
-                // $mail->Port = "465";
-                // // Set gmail username
-                // $mail->Username = "ademolaomomeji@pocketvest.com.ng";
-                // // Set gmail password
-                // $mail->Password = "Omomejih08";
-                // // Email subject
-                // $mail->Subject = "Vendor Account Approved - Welcome to DEE MART!";
-                // // Set sender email
-                // $mail->setFrom('ademolaomomeji@pocketvest.com.ng', 'DEE MART');
-                // // Enable HTML
-                // $mail->isHTML(true);
+                $mail = new PHPMailer();
+                // Set mailer to use smtp
+                $mail->isSMTP();
+                // Define smtp host
+                $mail->Host = "mail.pocketvest.com.ng";
+                // Enable smtp authentication
+                $mail->SMTPAuth = true;
+                // Set smtp encryption type (ssl/tls)
+                $mail->SMTPSecure = "ssl";
+                // Port to connect smtp
+                $mail->Port = "465";
+                // Set username
+                $mail->Username = "noreply@pocketvest.com.ng";
+                // Set password
+                $mail->Password = "ecommerce@2026";
+                // Email subject
+                $mail->Subject = "Vendor Account Approved - Welcome to $business_name!";
+                // Set sender email
+                $mail->setFrom('noreply@pocketvest.com.ng', "$business_name");
+                // Enable HTML
+                $mail->isHTML(true);
 
-                // // Email body
-                // $mail->Body = "
-                // <html>
-                // <head>
-                //     <style>
-                //         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
-                //         .container { max-width: 600px; background-color: #ffffff; margin: 0 auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-                //         .header { background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%); color: #ffffff; text-align: center; padding: 20px; border-radius: 8px 8px 0 0; }
-                //         .content { padding: 25px 0; color: #333333; line-height: 1.6; }
-                //         .btn { display: inline-block; background-color: #4f46e5; color: #ffffff !important; text-decoration: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; margin-top: 15px; }
-                //         .footer { margin-top: 25px; font-size: 12px; color: #888888; text-align: center; }
-                //     </style>
-                // </head>
-                // <body>
-                //     <div class='container'>
-                //         <div class='header'>
-                //             <h2>DEE MART VENDOR PORTAL</h2>
-                //         </div>
-                //         <div class='content'>
-                //             <h3>Congratulations, " . htmlspecialchars($vendor_name) . "!</h3>
-                //             <p>We are excited to inform you that your vendor account for <strong>" . htmlspecialchars($store_name) . "</strong> has been officially <strong>APPROVED</strong> by the Super Admin team!</p>
-                //             <p>You can now log in to your vendor dashboard to start uploading products, managing inventory, and tracking customer orders.</p>
-                //             <div style='text-align: center;'>
-                //                 <a href='" . $login_url . "' class='btn'>Log In to Vendor Portal</a>
-                //             </div>
-                //             <p style='margin-top: 25px;'>If you have any questions or require assistance setting up your store, please contact our vendor support desk.</p>
-                //         </div>
-                //         <div class='footer'>
-                //             <p>&copy; " . date('Y') . " DEE MART E-Commerce Platform. All rights reserved.</p>
-                //         </div>
-                //     </div>
-                // </body>
-                // </html>";
+                // Email body
+                $mail->Body = "
+                <html>
+                <head>
+                    <style>
+                        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
+                        .container { max-width: 600px; background-color: #ffffff; margin: 0 auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+                        .header { background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%); color: #ffffff; text-align: center; padding: 20px; border-radius: 8px 8px 0 0; }
+                        .content { padding: 25px 0; color: #333333; line-height: 1.6; }
+                        .btn { display: inline-block; background-color: #4f46e5; color: #ffffff !important; text-decoration: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; margin-top: 15px; }
+                        .footer { margin-top: 25px; font-size: 12px; color: #888888; text-align: center; }
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            <h2>$business_name VENDOR PORTAL</h2>
+                        </div>
+                        <div class='content'>
+                            <h3>Congratulations, " . htmlspecialchars($vendor_name) . "!</h3>
+                            <p>We are excited to inform you that your vendor account for <strong>" . htmlspecialchars($store_name) . "</strong> has been officially <strong>APPROVED</strong> by the Super Admin team!</p>
+                            <p>You can now log in to your vendor dashboard to start uploading products, managing inventory, and tracking customer orders.</p>
+                            <div style='text-align: center;'>
+                                <a href='" . $login_url . "' class='btn'>Log In to Vendor Portal</a>
+                            </div>
+                            <p style='margin-top: 25px;'>If you have any questions or require assistance setting up your store, please contact our vendor support desk.</p>
+                        </div>
+                        <div class='footer'>
+                            <p>&copy; " . date('Y') . " $business_name E-Commerce Platform. All rights reserved.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>";
 
-                // // Add recipient
-                // $mail->addAddress($vendor_email);
-                // // Send email
-                // $mail->send();
+                // Add recipient
+                $mail->addAddress($vendor_email);
+                // Send email
+                $mail->send();
 
                 $message = "Vendor store <strong>" . htmlspecialchars($vendor_data['store_name']) . "</strong> has been APPROVED and an approval email notification has been dispatched!";
                 $messageType = "success";
@@ -106,13 +122,14 @@ if (isset($_GET['action']) && isset($_GET['vendor_uin'])){
 $sql = "SELECT * FROM vendor_table ORDER BY id DESC";
 $result = mysqli_query($conn, $sql);
 ?>
+
 <!doctype html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/brand/favicon.png">
-    <title>DEE MART – Vendor Management</title>
+    <title><?php echo $business_name; ?> – Vendor Management</title>
 
     <link id="style" href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
@@ -214,14 +231,20 @@ $result = mysqli_query($conn, $sql);
                                                                         </button>
                                                                         <div class="dropdown-menu">
                                                                             <?php if ($v['status'] === 'Pending'): ?>
+                                                                                <a class="dropdown-item text-success" href="accept?id=<?php echo urlencode($v['id']); ?>" onclick="return confirm('Accept this vendor account? This will send an acceptance email.')">
+                                                                                    <i class="fe fe-check-circle me-1"></i> Accept Vendor
+                                                                                </a>
                                                                                 <a class="dropdown-item text-success" href="approve?id=<?php echo urlencode($v['id']); ?>" onclick="return confirm('Approve this vendor account? This will send an approval email.')">
                                                                                     <i class="fe fe-check me-1"></i> Approve Vendor
+                                                                                </a>
+                                                                                <a class="dropdown-item text-danger" href="reject?id=<?php echo urlencode($v['id']); ?>" onclick="return confirm('Reject this vendor application? This will send a rejection email.')">
+                                                                                    <i class="fe fe-x-circle me-1"></i> Reject Vendor
                                                                                 </a>
                                                                             <?php elseif ($v['status'] === 'Active'): ?>
                                                                                 <a class="dropdown-item text-warning" href="suspend?id=<?php echo urlencode($v['id']); ?>" onclick="return confirm('Suspend this vendor account?')">
                                                                                     <i class="fe fe-slash me-1"></i> Suspend Vendor
                                                                                 </a>
-                                                                            <?php elseif ($v['status'] === 'Suspended'): ?>
+                                                                            <?php elseif ($v['status'] === 'Suspended' || $v['status'] === 'Rejected'): ?>
                                                                                 <a class="dropdown-item text-success" href="activate?id=<?php echo urlencode($v['id']); ?>" onclick="return confirm('Activate this vendor account? This will send an activation email.')">
                                                                                     <i class="fe fe-check me-1"></i> Activate Vendor
                                                                                 </a>

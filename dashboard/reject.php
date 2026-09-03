@@ -27,18 +27,16 @@ use PHPMailer\PHPMailer\Exception;
 
 if(isset($_REQUEST['id'])){
     $vendor_id = intval($_REQUEST['id']);
-    
-    // Fetch vendor info before update
+
     $v_query = mysqli_query($conn, "SELECT * FROM vendor_table WHERE id = '$vendor_id' LIMIT 1");
     $vendor = mysqli_fetch_assoc($v_query);
 
-    $sql = "UPDATE vendor_table SET `status` = 'Active' WHERE id='$vendor_id'";
+    $sql = "UPDATE vendor_table SET `status` = 'Rejected' WHERE id='$vendor_id'";
     if(mysqli_query($conn, $sql)){
         if ($vendor && !empty($vendor['vendor_email'])) {
             $vendor_email = $vendor['vendor_email'];
             $vendor_name  = $vendor['vendor_name'];
             $store_name   = $vendor['store_name'];
-            $login_url    = "http://" . $_SERVER['HTTP_HOST'] . "/e-commerce/vendor/login";
 
             $mail = new PHPMailer();
             $mail->isSMTP();
@@ -48,7 +46,7 @@ if(isset($_REQUEST['id'])){
             $mail->Port       = "465";
             $mail->Username   = "noreply@pocketvest.com.ng";
             $mail->Password   = "ecommerce@2026";
-            $mail->Subject    = "Vendor Account Approved - Welcome to $business_name!";
+            $mail->Subject    = "Notice: Vendor Application Rejected";
             $mail->setFrom('noreply@pocketvest.com.ng', "$business_name");
             $mail->isHTML(true);
             $mail->addAddress($vendor_email);
@@ -57,11 +55,10 @@ if(isset($_REQUEST['id'])){
             <html>
             <body style='font-family: Arial, sans-serif; background-color: #f4f6f9; padding: 20px;'>
                 <div style='max-width: 600px; background: #fff; margin: 0 auto; padding: 30px; border-radius: 8px;'>
-                    <h2 style='color: #4B0082;'>Account Approved!</h2>
+                    <h2 style='color: #d9534f;'>Vendor Application Status Update</h2>
                     <p>Dear <b>" . htmlspecialchars($vendor_name) . "</b>,</p>
-                    <p>Great news! Your vendor account for <b>" . htmlspecialchars($store_name) . "</b> has been officially <b>APPROVED</b>.</p>
-                    <p>You can now log in to your vendor dashboard to start selling your products.</p>
-                    <p><a href='" . $login_url . "' style='background: #4B0082; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Log In to Vendor Portal</a></p>
+                    <p>We regret to inform you that your application for store <b>" . htmlspecialchars($store_name) . "</b> has been <b>REJECTED</b> after review.</p>
+                    <p>If you have any questions regarding this decision, please feel free to reach out to our management team.</p>
                     <hr style='border: none; border-top: 1px solid #eee; margin-top: 20px;'>
                     <p style='font-size: 12px; color: #888;'>&copy; " . date('Y') . " $business_name. All rights reserved.</p>
                 </div>
@@ -71,11 +68,11 @@ if(isset($_REQUEST['id'])){
             $mail->send();
         }
 
-        echo "<script>alert('Vendor successfully approved.'); 
+        echo "<script>alert('Vendor application successfully rejected.'); 
         window.location.href='vendors';
         </script>";
     } else {
-        echo "Error approving record: " . mysqli_error($conn);
+        echo "Error updating record: " . mysqli_error($conn);
     }
     mysqli_close($conn);
 }

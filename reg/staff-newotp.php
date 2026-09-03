@@ -1,17 +1,32 @@
 <?php
 session_start();
+include("db_conn.php");
+
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: ../management/");
+    exit();
+}
+
 if(!isset($_SESSION['email'])){
   header("Location: staff-forgot-password");
   exit();
-
 }
 
- include("db_conn.php");
-  $sql="SELECT * FROM stafftable WHERE email='$_SESSION[email]'";
-  $result=mysqli_query($conn, $sql);
-  $row=mysqli_fetch_array($result);
-  $dbotp=$row['otp'];
-  $email=$row['email'];
+$sql="SELECT * FROM stafftable WHERE email='$_SESSION[email]'";
+$result=mysqli_query($conn, $sql);
+$row=mysqli_fetch_array($result);
+$dbotp=$row['otp'];
+$email=$row['email'];
 
 ?>
 
@@ -21,7 +36,7 @@ if(!isset($_SESSION['email'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title>DEE MART - STAFF NEW OTP</title>
+    <title><?php echo $business_name; ?> - STAFF NEW OTP</title>
 
     <meta name="description" content="">
     <meta name="author" content="">

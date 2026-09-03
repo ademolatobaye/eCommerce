@@ -1,14 +1,30 @@
 <?php
 session_start();
+include("db_conn.php");
+
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: ../management/");
+    exit();
+}
 
 ini_set('display_errors', '1');
-	require 'includes/PHPMailer.php';
-	require 'includes/SMTP.php';
-	require 'includes/Exception.php';
+require 'includes/PHPMailer.php';
+require 'includes/SMTP.php';
+require 'includes/Exception.php';
 //Define name spaces
-	use PHPMailer\PHPMailer\PHPMailer;
-	use PHPMailer\PHPMailer\SMTP;
-	use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +33,7 @@ ini_set('display_errors', '1');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title>DEE MART - FORGOT PASSWORD</title>
+    <title><?php echo $business_name; ?> - FORGOT PASSWORD</title>
 
     <meta name="description" content="L">
     <meta name="author" content="">
@@ -128,14 +144,14 @@ ini_set('display_errors', '1');
 	$mail->SMTPSecure = "ssl";
 //Port to connect smtp
 	$mail->Port = "465";
-//Set gmail username
-	$mail->Username = "ademolaomomeji@pocketvest.com.ng";
-//Set gmail password
-	$mail->Password = "Omomejih08";
+//Set username
+	$mail->Username = "noreply@pocketvest.com.ng";
+//Set password
+	$mail->Password = "ecommerce@2026";
 //Email subject
 	$mail->Subject = "RESET PASSWORD OTP";
 //Set sender email
-	$mail->setFrom('ademolaomomeji@pocketvest.com.ng', 'DEE MART');
+	$mail->setFrom('noreply@pocketvest.com.ng', "$business_name");
 //Enable HTML
 	$mail->isHTML(true);
 //Attachment
@@ -192,7 +208,7 @@ ini_set('display_errors', '1');
                         <tbody>
                             <tr>
                                 <td style='text-align: center; padding-bottom:25px'>
-                                    <a href='#'><img style='height: 60px' src='https://pocketvest.com.ng/ademola/e-commerce/assets/images/logo.png' alt='DEE MART'></a>
+                                    <a href='#'><img style='height: 60px' src='https://ademolathedev.name.ng/e-commerce/assets/images/logo.png' alt='$business_name'></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -207,7 +223,7 @@ ini_set('display_errors', '1');
                             <tr>
                                 <td style='padding: 0 30px 20px; text-align: center;'>
                                     <p style='margin-bottom: 10px;'>Hi,</p>
-                                    <p style='margin-bottom: 10px;'>Your OTP to reset your password on DEE MART is:</p>
+                                    <p style='margin-bottom: 10px;'>Your OTP to reset your password on $business_name is:</p>
                                     <h1 style='font-size: 35px; color: #4B0082; font-weight: 600; margin: 0;'> $OTP</h1>
                                     
                                     <h1 style='font-size: 35px; color: #4B0082; font-weight: 600; margin: 0;'> Your OTP expires in 5 minutes!</h1>
@@ -223,7 +239,7 @@ ini_set('display_errors', '1');
                         <tbody>
                             <tr>
                                 <td style='text-align: center; padding:25px 20px 0;'>
-                                    <p style='font-size: 13px;'>Copyright © $year DEE MART. All rights reserved. <br> </p>
+                                    <p style='font-size: 13px;'>Copyright © $year $business_name. All rights reserved. <br> </p>
                                     
                                 </td>
                             </tr>
@@ -237,7 +253,8 @@ ini_set('display_errors', '1');
 	$mail->addAddress("$customer_email");
 //Finally send email
 	if ( $mail->send() ) {
-                                                    echo "<script>alert('Dear $customer_email, a new otp has been sent to your email. Kindly check to reset your password.');window.location.href='user-newotp'</script>";
+                                                    echo "<script>alert('Dear $customer_email, a new otp has been sent to your email. Kindly check to reset your password.');
+                                                    window.location.href='user-newotp'</script>";
                                                     exit();
                                                 }
                                             }

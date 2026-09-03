@@ -1,5 +1,21 @@
 <?php
 session_start();
+include("db_conn.php");
+
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: ../management/");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -8,7 +24,7 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title>DEE MART - FORGOT PASSWORD</title>
+    <title><?php echo $business_name; ?> - FORGOT PASSWORD</title>
 
     <meta name="description" content="L">
     <meta name="author" content="">

@@ -1,5 +1,29 @@
 <?php
 session_start();
+include("db_conn.php");
+
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: ../management/");
+    exit();
+}
+
+require '../reg/includes/PHPMailer.php';
+require '../reg/includes/SMTP.php';
+require '../reg/includes/Exception.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 ?>
 
 <!DOCTYPE html>
@@ -7,7 +31,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>DEE MART - VENDOR REGISTER</title>
+    <title><?php echo $business_name; ?> - VENDOR REGISTER</title>
     <link rel="icon" type="image/png" href="../assets/images/icons/favicon.png">
 
     <!-- WebFont.js -->
@@ -100,62 +124,116 @@ session_start();
                                         $raw_pass     = trim($_POST["password"]);
                                         $confirm_pass = trim($_POST["confirm_password"]);
 
-                                        // Check for duplicate email
-                                        $check = mysqli_query($conn, "SELECT * FROM vendor_table WHERE vendor_email = '$vendor_email'
-                                         OR vendor_phone = '$vendor_phone'");
-                                         $checkrows = mysqli_num_rows($check);
+                                        $secret = "6LdQZt4sAAAAAEx-4cMFFfDmy08DeuYCwgG7D3ZK";
+                                        $response = isset($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
 
-                                        if ($checkrows > 0) {
-                                            echo "<script>alert('Invalid email.')</script>";
-                                        } else if ($raw_pass !== $confirm_pass) {
-                                            $message = "Passwords do not match!";
-                                            $messageType = "danger";
-                                        } else if (!filter_var($vendor_email, FILTER_VALIDATE_EMAIL)) {
-                                            $message = "Invalid email address.";
+                                        if (empty($response)) {
+                                            $message = "Please complete the reCAPTCHA verification.";
                                             $messageType = "danger";
                                         } else {
-                                            $hashed_password = password_hash($raw_pass, PASSWORD_DEFAULT);
+                                            $ch = curl_init();
+                                            curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+                                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                            curl_setopt($ch, CURLOPT_POST, true);
+                                            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+                                                'secret'   => $secret,
+                                                'response' => $response,
+                                                'remoteip' => $_SERVER['REMOTE_ADDR']
+                                            ]));
+                                            $verify = curl_exec($ch);
+                                            curl_close($ch);
+                                            $captcha_success = json_decode($verify);
 
-                                            // Generate UIN and Store Slug
-                                            $prefix = "VNDR";
-                                            $random_part = strtoupper(substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6));
-                                            $vendor_uin = $prefix . $random_part;
-                                            $store_slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $store_name)));
-
-                                            // File uploads: logo & banner
-                                            $uploadDir = "vendorupload/";
-                                            if (!file_exists($uploadDir)) {
-                                                mkdir($uploadDir, 0777, true);
-                                            }
-
-                                            $logo_filename = "";
-                                            if (isset($_FILES['logo']) && $_FILES['logo']['error'] == 0) {
-                                                $ext = pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION);
-                                                $logo_filename = "logo_" . $vendor_uin . "_" . time() . "." . $ext;
-                                                move_uploaded_file($_FILES['logo']['tmp_name'], $uploadDir . $logo_filename);
-                                            }
-
-                                            $banner_filename = "";
-                                            if (isset($_FILES['banner']) && $_FILES['banner']['error'] == 0) {
-                                                $ext = pathinfo($_FILES['banner']['name'], PATHINFO_EXTENSION);
-                                                $banner_filename = "banner_" . $vendor_uin . "_" . time() . "." . $ext;
-                                                move_uploaded_file($_FILES['banner']['tmp_name'], $uploadDir . $banner_filename);
-                                            }
-
-                                            $status = "Pending";
-
-                                            $sql = "INSERT INTO vendor_table(vendor_uin, store_name, store_slug, vendor_name, vendor_email, vendor_phone, `password`, store_address, `date`, `status`, logo, banner, `description`)
-                                                    VALUES ('$vendor_uin', '$store_name', '$store_slug', '$vendor_name', '$vendor_email', '$vendor_phone', '$hashed_password', '$address', '$date', '$status', '$logo_filename', '$banner_filename', '$description')";
-
-                                            if (mysqli_query($conn, $sql)) {
-                                                echo "<script>
-                                                    alert('Registration successful! Your vendor account is currently PENDING approval. The management will review your application, and you will receive an email once approved.');
-                                                    window.location.href = 'login';
-                                                </script>";
-                                                exit();
-                                            } else {
-                                                $message = "Error registering vendor account: " . mysqli_error($conn);
+                                            if (!$captcha_success || !$captcha_success->success) {
+                                                $message = "reCAPTCHA verification failed. Please try again.";
                                                 $messageType = "danger";
+                                            } else {
+                                                // Check for duplicate email or phone
+                                                $check = mysqli_query($conn, "SELECT * FROM vendor_table WHERE vendor_email = '$vendor_email' OR vendor_phone = '$vendor_phone'");
+                                                $checkrows = mysqli_num_rows($check);
+
+                                                if ($checkrows > 0) {
+                                                    echo "<script>alert('Account with this email or phone number already exists.')</script>";
+                                                } else if ($raw_pass !== $confirm_pass) {
+                                                    $message = "Passwords do not match!";
+                                                    $messageType = "danger";
+                                                } else if (!filter_var($vendor_email, FILTER_VALIDATE_EMAIL)) {
+                                                    $message = "Invalid email address.";
+                                                    $messageType = "danger";
+                                                } else {
+                                                    $hashed_password = password_hash($raw_pass, PASSWORD_DEFAULT);
+
+                                                    // Generate UIN and Store Slug
+                                                    $prefix = "VNDR";
+                                                    $random_part = strtoupper(substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6));
+                                                    $vendor_uin = $prefix . $random_part;
+                                                    $store_slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $store_name)));
+
+                                                    // File uploads: logo & banner
+                                                    $uploadDir = "vendorupload/";
+                                                    if (!file_exists($uploadDir)) {
+                                                        mkdir($uploadDir, 0777, true);
+                                                    }
+
+                                                    $logo_filename = "";
+                                                    if (isset($_FILES['logo']) && $_FILES['logo']['error'] == 0) {
+                                                        $ext = pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION);
+                                                        $logo_filename = "logo_" . $vendor_uin . "_" . time() . "." . $ext;
+                                                        move_uploaded_file($_FILES['logo']['tmp_name'], $uploadDir . $logo_filename);
+                                                    }
+
+                                                    $banner_filename = "";
+                                                    if (isset($_FILES['banner']) && $_FILES['banner']['error'] == 0) {
+                                                        $ext = pathinfo($_FILES['banner']['name'], PATHINFO_EXTENSION);
+                                                        $banner_filename = "banner_" . $vendor_uin . "_" . time() . "." . $ext;
+                                                        move_uploaded_file($_FILES['banner']['tmp_name'], $uploadDir . $banner_filename);
+                                                    }
+
+                                                    $status = "Pending";
+
+                                                    $sql = "INSERT INTO vendor_table(vendor_uin, store_name, store_slug, vendor_name, vendor_email, vendor_phone, `password`, store_address, `date`, `status`, logo, banner, `description`)
+                                                            VALUES ('$vendor_uin', '$store_name', '$store_slug', '$vendor_name', '$vendor_email', '$vendor_phone', '$hashed_password', '$address', '$date', '$status', '$logo_filename', '$banner_filename', '$description')";
+
+                                                    if (mysqli_query($conn, $sql)) {
+                                                        // Send confirmation email via PHPMailer
+                                                        $mail = new PHPMailer();
+                                                        $mail->isSMTP();
+                                                        $mail->Host       = "mail.pocketvest.com.ng";
+                                                        $mail->SMTPAuth   = true;
+                                                        $mail->SMTPSecure = "ssl";
+                                                        $mail->Port       = "465";
+                                                        $mail->Username   = "noreply@pocketvest.com.ng";
+                                                        $mail->Password   = "ecommerce@2026";
+                                                        $mail->Subject    = "Vendor Registration Received - Pending Approval";
+                                                        $mail->setFrom('noreply@pocketvest.com.ng', "$business_name");
+                                                        $mail->isHTML(true);
+                                                        $mail->addAddress($vendor_email);
+
+                                                        $mail->Body = "
+                                                        <div style='font-family: Arial, sans-serif; background-color: #f4f6f9; padding: 20px;'>
+                                                            <div style='max-width: 600px; background-color: #ffffff; margin: 0 auto; padding: 30px; border-radius: 8px;'>
+                                                                <h2 style='color: #4B0082;'>Vendor Registration Application Received</h2>
+                                                                <p>Dear <b>" . htmlspecialchars($vendor_name) . "</b>,</p>
+                                                                <p>Thank you for registering your store <b>" . htmlspecialchars($store_name) . "</b> on " . htmlspecialchars($business_name) . "!</p>
+                                                                <p>Your application is currently <b>PENDING</b> review by our management team. You will receive an email once your vendor account has been reviewed and approved.</p>
+                                                                <p>Your Vendor Unique Identification Number (UIN) is: <b>" . htmlspecialchars($vendor_uin) . "</b></p>
+                                                                <hr style='border: none; border-top: 1px solid #eeeeee;'>
+                                                                <p style='font-size: 12px; color: #777777;'>&copy; " . date('Y') . " " . htmlspecialchars($business_name) . ". All rights reserved.</p>
+                                                            </div>
+                                                        </div>";
+
+                                                        $mail->send();
+
+                                                        echo "<script>
+                                                            alert('Registration successful! Your vendor account is currently PENDING approval. The management will review your application, and you will receive an email once approved.');
+                                                            window.location.href = 'login';
+                                                        </script>";
+                                                        exit();
+                                                    } else {
+                                                        $message = "Error registering vendor account: " . mysqli_error($conn);
+                                                        $messageType = "danger";
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -234,6 +312,14 @@ session_start();
                                             </div>
                                         </div>
                                         <span id="error" class="d-block mb-3 font-weight-bold"></span>
+
+                                        <!-- Google reCAPTCHA -->
+                                        <div class="form-group mb-4">
+                                            <div class="g-recaptcha" data-sitekey="6LdQZt4sAAAAAGWf_Yi998aSfvPa6oHPbbgauFnN"></div>
+                                        </div>
+
+                                        <!-- Load reCAPTCHA API -->
+                                        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
                                         <button type="submit" name="register_vendor" class="btn btn-primary btn-block my-4" onclick="return confirm('Register account?')">
                                             Register Vendor Account

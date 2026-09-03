@@ -2,6 +2,21 @@
 include('customer-session-check.php');
 include('db_conn.php');
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: ../management/");
+    exit();
+}
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -89,16 +104,16 @@ if ($paymentData['status'] && $paymentData['data']['status'] == 'success') {
                 $mail->isSMTP();
                 $mail->Host       = 'mail.pocketvest.com.ng';
                 $mail->SMTPAuth   = true;
-                $mail->Username   = 'ademolaomomeji@pocketvest.com.ng';
-                $mail->Password   = 'Omomejih08';
+                $mail->Username   = 'noreply@pocketvest.com.ng';
+                $mail->Password   = 'ecommerce@2026';
                 $mail->SMTPSecure = 'ssl';
                 $mail->Port       = 465;
 
-                $mail->setFrom('ademolaomomeji@pocketvest.com.ng', 'DEE MART');
+                $mail->setFrom('noreply@pocketvest.com.ng', $business_name);
                 $mail->addAddress($customer_email, $customername);
 
                 $mail->isHTML(true);
-                $mail->Subject = 'Order Confirmation - DEE MART';
+                $mail->Subject = 'Order Confirmation - ' . $business_name;
                 $mail->Body    = "
     <style>
         html, body { margin: 0 auto !important; padding: 0 !important; height: 100% !important; width: 100% !important; font-family: 'Roboto', sans-serif !important; font-size: 14px; margin-bottom: 10px; line-height: 24px; color: #4B0082; font-weight: 400; }
@@ -115,8 +130,8 @@ if ($paymentData['status'] && $paymentData['data']['status'] == 'success') {
                 <td style='padding: 40px 0;'>
                     <table style='width:100%;max-width:620px;margin:0 auto;'>
                         <tbody align='center'>
-                            <a href='https://pocketvest.com.ng' target='_blank'>
-                                <img style='height: 60px' src='https://pocketvest.com.ng/e-commerce/assets/images/logo.png' alt='DEE MART'>
+                            <a href='https://ademolathedev.name.ng' target='_blank'>
+                                <img style='height: 60px' src='https://ademolathedev.name.ng/e-commerce/assets/images/logo.png' alt='DEE MART'>
                             </a>
                         </tbody>
                     </table>
@@ -129,9 +144,9 @@ if ($paymentData['status'] && $paymentData['data']['status'] == 'success') {
                                     <p style='margin-bottom: 10px;'>Your order has been received. Kindly wait while we process it.</p>
                                     <p style='margin-bottom: 10px;'>Your payment of <strong>&#8358;$amount</strong> was successfully received on <strong>$formatted_date</strong>.</p>
                                     <hr>
-                                    <p style='margin-bottom: 10px;'>If you have any questions or need help, feel free to contact us. Thank you for shopping with us at <strong>DEE MART</strong>.</p>
+                                    <p style='margin-bottom: 10px;'>If you have any questions or need help, feel free to contact us. Thank you for shopping with us at <strong>$business_name</strong>.</p>
                                     <hr>
-                                    <p style='margin-bottom: 10px;'><em>Warm regards,</em><br><b>DEE MART.</b></p>
+                                    <p style='margin-bottom: 10px;'><em>Warm regards,</em><br><b>$business_name.</b></p>
                                 </td>
                             </tr>
                         </tbody>
@@ -140,8 +155,8 @@ if ($paymentData['status'] && $paymentData['data']['status'] == 'success') {
                         <tbody>
                             <tr>
                                 <td style='text-align: center; padding:25px 20px 0;'>
-                                    <p style='font-size: 13px;'>Copyright &copy; $year <strong>DEE MART</strong>. All Rights Reserved.</p>
-                                    <p style='padding-top: 15px; font-size: 12px;'>This email was sent to you as a registered member on <a style='color: #4B0082; text-decoration:none;' href='#'><strong>DEE MART</strong></a>.</p>
+                                    <p style='font-size: 13px;'>Copyright &copy; $year <strong>$business_name</strong>. All Rights Reserved.</p>
+                                    <p style='padding-top: 15px; font-size: 12px;'>This email was sent to you as a registered member on <a style='color: #4B0082; text-decoration:none;' href='#'><strong>$business_name</strong></a>.</p>
                                 </td>
                             </tr>
                         </tbody>

@@ -2,9 +2,24 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-    require('db_conn.php');
+require('db_conn.php');
 
-    if (isset($_POST['identifier']) && isset($_POST['password'])) {
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: ../management/");
+    exit();
+}
+
+if (isset($_POST['identifier']) && isset($_POST['password'])) {
         $identifier = stripslashes($_POST['identifier']);
         $identifier = mysqli_real_escape_string($conn, $identifier);
 
@@ -73,7 +88,7 @@ ini_set('display_errors', 1);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title>DEE MART - CUSTOMER LOGIN</title>
+    <title><?php echo $business_name; ?> - CUSTOMER LOGIN</title>
 
     <meta name="description" content="">
     <meta name="author" content="">

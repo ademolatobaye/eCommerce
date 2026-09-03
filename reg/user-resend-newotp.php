@@ -2,6 +2,21 @@
 session_start();
 include("db_conn.php");
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: ../management/");
+    exit();
+}
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -35,14 +50,14 @@ mysqli_query($conn, $sql);
 	$mail->SMTPSecure = "ssl";
 //Port to connect smtp
 	$mail->Port = "465";
-//Set gmail username
-	$mail->Username = "ademolaomomeji@pocketvest.com.ng";
-//Set gmail password
-	$mail->Password = "Omomejih08";
+//Set username
+	$mail->Username = "noreply@pocketvest.com.ng";
+//Set password
+	$mail->Password = "ecommerce@2026";
 //Email subject
 	$mail->Subject = "NEW OTP";
 //Set sender email
-	$mail->setFrom('ademolaomomeji@pocketvest.com.ng', 'DEE MART');
+	$mail->setFrom('noreply@pocketvest.com.ng', "$business_name");
 //Enable HTML
 	$mail->isHTML(true);
 //Attachment
@@ -99,7 +114,7 @@ mysqli_query($conn, $sql);
                         <tbody>
                             <tr>
                                 <td style='text-align: center; padding-bottom:25px'>
-                                    <a href='#'><img style='height: 60px' src='https://pocketvest.com.ng/e-commerce/assets/images/logo.png' alt='DEE MART'></a>
+                                    <a href='#'><img style='height: 60px' src='https://ademolathedev.name.ng/e-commerce/assets/images/logo.png' alt='$business_name'></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -114,7 +129,7 @@ mysqli_query($conn, $sql);
                             <tr>
                                 <td style='padding: 0 30px 20px; text-align: center;'>
                                     <p style='margin-bottom: 10px;'>Hi,</p>
-                                    <p style='margin-bottom: 10px;'>Your NEW OTP to reset your password on DEE MART is:</p>
+                                    <p style='margin-bottom: 10px;'>Your NEW OTP to reset your password on $business_name is:</p>
                                     <h1 style='font-size: 35px; color: #4B0082; font-weight: 600; margin: 0;'> $otp</h1>
                                     
                                     <h1 style='font-size: 35px; color: #4B0082; font-weight: 600; margin: 0;'> Your OTP expires in 5 minutes!</h1>
@@ -130,7 +145,7 @@ mysqli_query($conn, $sql);
                         <tbody>
                             <tr>
                                 <td style='text-align: center; padding:25px 20px 0;'>
-                                    <p style='font-size: 13px;'>Copyright © $year DEE MART. All rights reserved. <br> </p>
+                                    <p style='font-size: 13px;'>Copyright © $year $business_name. All rights reserved. <br> </p>
                                     
                                 </td>
                             </tr>

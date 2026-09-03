@@ -24,11 +24,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-
 if(isset($_REQUEST['id'])){
     $vendor_id = intval($_REQUEST['id']);
-    
-    // Fetch vendor info before update
+
     $v_query = mysqli_query($conn, "SELECT * FROM vendor_table WHERE id = '$vendor_id' LIMIT 1");
     $vendor = mysqli_fetch_assoc($v_query);
 
@@ -48,7 +46,7 @@ if(isset($_REQUEST['id'])){
             $mail->Port       = "465";
             $mail->Username   = "noreply@pocketvest.com.ng";
             $mail->Password   = "ecommerce@2026";
-            $mail->Subject    = "Vendor Account Approved - Welcome to $business_name!";
+            $mail->Subject    = "Vendor Application Accepted - Welcome to $business_name!";
             $mail->setFrom('noreply@pocketvest.com.ng', "$business_name");
             $mail->isHTML(true);
             $mail->addAddress($vendor_email);
@@ -57,10 +55,10 @@ if(isset($_REQUEST['id'])){
             <html>
             <body style='font-family: Arial, sans-serif; background-color: #f4f6f9; padding: 20px;'>
                 <div style='max-width: 600px; background: #fff; margin: 0 auto; padding: 30px; border-radius: 8px;'>
-                    <h2 style='color: #4B0082;'>Account Approved!</h2>
+                    <h2 style='color: #4B0082;'>Vendor Application Accepted!</h2>
                     <p>Dear <b>" . htmlspecialchars($vendor_name) . "</b>,</p>
-                    <p>Great news! Your vendor account for <b>" . htmlspecialchars($store_name) . "</b> has been officially <b>APPROVED</b>.</p>
-                    <p>You can now log in to your vendor dashboard to start selling your products.</p>
+                    <p>We are delighted to inform you that your application for store <b>" . htmlspecialchars($store_name) . "</b> has been <b>ACCEPTED</b>!</p>
+                    <p>You can now log in to your vendor dashboard and begin setting up your shop and listing your items.</p>
                     <p><a href='" . $login_url . "' style='background: #4B0082; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Log In to Vendor Portal</a></p>
                     <hr style='border: none; border-top: 1px solid #eee; margin-top: 20px;'>
                     <p style='font-size: 12px; color: #888;'>&copy; " . date('Y') . " $business_name. All rights reserved.</p>
@@ -71,11 +69,11 @@ if(isset($_REQUEST['id'])){
             $mail->send();
         }
 
-        echo "<script>alert('Vendor successfully approved.'); 
+        echo "<script>alert('Vendor application successfully accepted.'); 
         window.location.href='vendors';
         </script>";
     } else {
-        echo "Error approving record: " . mysqli_error($conn);
+        echo "Error accepting record: " . mysqli_error($conn);
     }
     mysqli_close($conn);
 }
