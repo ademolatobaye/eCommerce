@@ -122,32 +122,33 @@ if ($status_clean === 'processing') {
             padding: 30px 20px;
             margin-bottom: 30px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            overflow: hidden;
         }
         .tracker-steps {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             position: relative;
             margin: 40px 0 20px;
         }
         .tracker-steps::before {
             content: '';
             position: absolute;
-            top: 25px;
-            left: 50px;
-            right: 50px;
+            top: 27px;
+            left: 12.5%;
+            right: 12.5%;
             height: 4px;
             background: #e9ecef;
             z-index: 1;
         }
         .tracker-progress-line {
             position: absolute;
-            top: 25px;
-            left: 50px;
+            top: 27px;
+            left: 12.5%;
             height: 4px;
             background: #336699;
             z-index: 2;
-            transition: width 0.4s ease;
+            transition: width 0.4s ease, height 0.4s ease;
         }
         .tracker-step {
             position: relative;
@@ -180,6 +181,11 @@ if ($status_clean === 'processing') {
             transform: scale(1.1);
             box-shadow: 0 4px 14px rgba(40,167,69,0.4);
         }
+        .tracker-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         .tracker-title {
             font-size: 14px;
             font-weight: 600;
@@ -203,20 +209,47 @@ if ($status_clean === 'processing') {
             .tracker-steps {
                 flex-direction: column;
                 align-items: flex-start;
+                margin: 25px 0 10px;
+                padding-left: 0;
             }
-            .tracker-steps::before, .tracker-progress-line {
-                display: none;
+            .tracker-steps::before {
+                top: 27px;
+                bottom: 27px;
+                left: 27px;
+                right: auto;
+                width: 4px;
+                height: auto;
+            }
+            .tracker-progress-line {
+                top: 27px;
+                left: 27px;
+                width: 4px !important;
+                height: var(--mobile-height, 0%);
+                right: auto;
             }
             .tracker-step {
                 display: flex;
                 align-items: center;
                 text-align: left;
-                margin-bottom: 20px;
+                margin-bottom: 25px;
                 width: 100%;
+            }
+            .tracker-step:last-child {
+                margin-bottom: 0;
             }
             .tracker-icon {
                 margin-bottom: 0;
-                margin-right: 15px;
+                margin-right: 16px;
+                flex-shrink: 0;
+            }
+            .tracker-text {
+                align-items: flex-start;
+            }
+        }
+        @media (min-width: 768px) {
+            .tracker-progress-line {
+                width: var(--desktop-width, 0%);
+                height: 4px !important;
             }
         }
     </style>
@@ -289,23 +322,33 @@ if ($status_clean === 'processing') {
 
                             <!-- Progress Line Calculation -->
                             <?php 
-                            $line_width = "0%";
-                            if ($status_level == 2) $line_width = "33%";
-                            if ($status_level == 3) $line_width = "66%";
-                            if ($status_level == 4) $line_width = "100%";
+                            $desktop_width = "0%";
+                            $mobile_height = "0%";
+                            if ($status_level == 2) {
+                                $desktop_width = "25%";
+                                $mobile_height = "33.33%";
+                            } else if ($status_level == 3) {
+                                $desktop_width = "50%";
+                                $mobile_height = "66.66%";
+                            } else if ($status_level >= 4) {
+                                $desktop_width = "75%";
+                                $mobile_height = "100%";
+                            }
                             ?>
 
                             <!-- Interactive Visual Progress Timeline -->
                             <div class="tracker-steps">
-                                <div class="tracker-progress-line d-none d-md-block" style="width: <?php echo $line_width; ?>;"></div>
+                                <div class="tracker-progress-line" style="--desktop-width: <?php echo $desktop_width; ?>; --mobile-height: <?php echo $mobile_height; ?>;"></div>
 
                                 <!-- Step 1 -->
                                 <div class="tracker-step <?php echo ($status_level > 1) ? 'completed' : (($status_level == 1) ? 'active' : ''); ?>">
                                     <div class="tracker-icon">
                                         <i class="fas fa-check-circle"></i>
                                     </div>
-                                    <div class="tracker-title">Payment Confirmed</div>
-                                    <div class="tracker-desc">Order Received</div>
+                                    <div class="tracker-text">
+                                        <div class="tracker-title">Payment Confirmed</div>
+                                        <div class="tracker-desc">Order Received</div>
+                                    </div>
                                 </div>
 
                                 <!-- Step 2 -->
@@ -313,8 +356,10 @@ if ($status_clean === 'processing') {
                                     <div class="tracker-icon">
                                         <i class="fas fa-box-open"></i>
                                     </div>
-                                    <div class="tracker-title">Processing</div>
-                                    <div class="tracker-desc">Packaging Order</div>
+                                    <div class="tracker-text">
+                                        <div class="tracker-title">Processing</div>
+                                        <div class="tracker-desc">Packaging Order</div>
+                                    </div>
                                 </div>
 
                                 <!-- Step 3 -->
@@ -322,8 +367,10 @@ if ($status_clean === 'processing') {
                                     <div class="tracker-icon">
                                         <i class="fas fa-truck"></i>
                                     </div>
-                                    <div class="tracker-title">Out for Delivery</div>
-                                    <div class="tracker-desc">Dispatched to Courier</div>
+                                    <div class="tracker-text">
+                                        <div class="tracker-title">Out for Delivery</div>
+                                        <div class="tracker-desc">Dispatched to Courier</div>
+                                    </div>
                                 </div>
 
                                 <!-- Step 4 -->
@@ -331,8 +378,10 @@ if ($status_clean === 'processing') {
                                     <div class="tracker-icon">
                                         <i class="fas fa-home"></i>
                                     </div>
-                                    <div class="tracker-title">Delivered</div>
-                                    <div class="tracker-desc">Order Completed</div>
+                                    <div class="tracker-text">
+                                        <div class="tracker-title">Delivered</div>
+                                        <div class="tracker-desc">Order Completed</div>
+                                    </div>
                                 </div>
                             </div>
 
