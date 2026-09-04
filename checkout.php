@@ -168,6 +168,10 @@ if (empty($cartItems)) {
                                  
                                  <input type="hidden" class="form-control form-control-md" name="productname" value="<?php echo $product_row['productname'];; ?>">
 
+                                 <input type="hidden" class="form-control form-control-md" name="profit" value="<?php echo $product_row['profit'];; ?>">
+
+                                 <input type="hidden" class="form-control form-control-md" name="vendor_uin" value="<?php echo $product_row['vendor_uin'];; ?>">
+
                                 <div class="form-group">
                                     <label>Home Address *</label>
                                     <input type="text" value="<?php echo $session_address; ?>"

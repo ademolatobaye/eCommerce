@@ -11,6 +11,21 @@
 require_once __DIR__ . "/db_conn.php";
 require_once __DIR__ . "/includes/SimpleSMTP.php";
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: ../management/");
+    exit();
+}
+
 /**
  * Process a batch of pending jobs
  *
@@ -82,7 +97,7 @@ function handleSendOrderStatusEmail($payload) {
         throw new Exception("Recipient email is empty.");
     }
 
-    $subject = "Order Status Update - Order #" . $orderIdDisp . " - DEE MART";
+    $subject = "Order Status Update - Order #" . $orderIdDisp . " - $business_name";
 
     $courierHtml  = !empty($courierName) ? "<p style='margin: 5px 0;'><strong>Courier / Carrier:</strong> " . htmlspecialchars($courierName) . "</p>" : "";
     $trackingHtml = !empty($trackingNumber) ? "<p style='margin: 5px 0;'><strong>Tracking Code:</strong> " . htmlspecialchars($trackingNumber) . "</p>" : "";
@@ -91,7 +106,7 @@ function handleSendOrderStatusEmail($payload) {
     <div style='font-family: Arial, sans-serif; background-color: #f5f6fa; padding: 20px;'>
         <div style='max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);'>
             <div style='background-color: #4B0082; padding: 20px; text-align: center; color: #ffffff;'>
-                <h2 style='margin: 0;'>DEE MART</h2>
+                <h2 style='margin: 0;'>$business_name</h2>
                 <p style='margin: 5px 0 0 0; font-size: 14px;'>Order Status Update</p>
             </div>
             <div style='padding: 30px; color: #333333;'>
@@ -102,10 +117,10 @@ function handleSendOrderStatusEmail($payload) {
                 </div>
                 {$courierHtml}
                 {$trackingHtml}
-                <p style='margin-top: 20px;'>Thank you for shopping with DEE MART!</p>
+                <p style='margin-top: 20px;'>Thank you for shopping with $business_name!</p>
             </div>
             <div style='background-color: #f9f9f9; padding: 15px; text-align: center; font-size: 12px; color: #777777;'>
-                <p style='margin: 0;'>This email was automatically sent from DEE MART.</p>
+                <p style='margin: 0;'>This email was automatically sent from $business_name.</p>
             </div>
         </div>
     </div>";
@@ -113,10 +128,10 @@ function handleSendOrderStatusEmail($payload) {
     return SimpleSMTP::sendEmail(
         'mail.pocketvest.com.ng',
         465,
-        'ademolaomomeji@pocketvest.com.ng',
-        'Omomejih08',
-        'ademolaomomeji@pocketvest.com.ng',
-        'DEE MART',
+        'noreply@pocketvest.com.ng',
+        'ecommerce@2026',
+        'noreply@pocketvest.com.ng',
+        $business_name,
         $customerEmail,
         $customerName,
         $subject,

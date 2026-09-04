@@ -114,7 +114,7 @@ $email=$row['email'];
                                     <p class="text-dark text-center fw-600 mb-1">Enter 4 digit code</p>
                                     <?php 
                                         $elapsed = isset($_SESSION['otp_time']) ? time() - $_SESSION['otp_time'] : 0;
-                                        $remaining = max(0, 60 - $elapsed);
+                                        $remaining = max(0, 300 - $elapsed);
                                     ?>
                                     <p class="text-danger text-center fw-600 mb-3"><i class="w-icon-clock"></i> OTP expires in <span id="countdown"><?php echo $remaining; ?></span> seconds</p>
 
@@ -122,8 +122,8 @@ $email=$row['email'];
                                         <?php 
                                         include('db_conn.php');
                                         if(isset($_REQUEST["verify"])){
-                                            if (isset($_SESSION['otp_time']) && (time() - $_SESSION['otp_time']) > 60) {
-                                                echo "<script>alert('OTP has expired after 1 minute! Please request a new one.'); window.location.href='staff-otp';</script>";
+                                            if (isset($_SESSION['otp_time']) && (time() - $_SESSION['otp_time']) > 300) {
+                                                echo "<script>alert('OTP has expired after 5 minutes! Please request a new one.'); window.location.href='staff-otp';</script>";
                                                 exit();
                                             }
                                             $n1=$_REQUEST["n1"];
@@ -167,6 +167,38 @@ $email=$row['email'];
                                     </form>
 
                                     <script>
+                                        // --- Resend cooldown timer ---
+                                        const resendLink = document.getElementById('resend-link');
+                                        const resendTimerEl = document.getElementById('resend-timer');
+                                        const resendCountEl = document.getElementById('resend-countdown');
+
+                                        const otpSentAt = <?php echo isset($_SESSION['otp_time']) ? $_SESSION['otp_time'] : time(); ?>;
+                                        const nowSec = Math.floor(Date.now() / 1000);
+                                        let resendSec = Math.max(0, 60 - (nowSec - otpSentAt));
+
+                                        if (resendSec === 0) {
+                                            if (resendLink) {
+                                                resendLink.style.pointerEvents = 'auto';
+                                                resendLink.style.opacity = '1';
+                                            }
+                                            if (resendTimerEl) resendTimerEl.style.display = 'none';
+                                        } else {
+                                            if (resendCountEl) resendCountEl.textContent = resendSec;
+                                            const resendInterval = setInterval(function() {
+                                                resendSec--;
+                                                if (resendCountEl) resendCountEl.textContent = resendSec;
+                                                if (resendSec <= 0) {
+                                                    clearInterval(resendInterval);
+                                                    if (resendLink) {
+                                                        resendLink.style.pointerEvents = 'auto';
+                                                        resendLink.style.opacity = '1';
+                                                    }
+                                                    if (resendTimerEl) resendTimerEl.style.display = 'none';
+                                                }
+                                            }, 1000);
+                                        }
+
+                                        // --- OTP expiry countdown ---
                                         let remaining = <?php echo $remaining; ?>;
                                         const countdownEl = document.getElementById('countdown');
                                         if (remaining > 0) {
@@ -175,7 +207,7 @@ $email=$row['email'];
                                                 if (remaining <= 0) {
                                                     clearInterval(interval);
                                                     countdownEl.textContent = "0";
-                                                    alert('OTP has expired after 1 minute! Please request a new one.');
+                                                    alert('OTP has expired after 5 minutes! Please request a new one.');
                                                     window.location.href = 'staff-otp';
                                                 } else {
                                                     countdownEl.textContent = remaining;
@@ -199,7 +231,10 @@ $email=$row['email'];
                                         });
                                     </script>
 
-                                    <p class="text-center mt-4">Not received your code? <a href="staff-resendotp" class="text-primary">Resend code</a></p>
+                                    <p class="text-center mt-4">Not received your code? 
+                                        <a href="staff-resendotp" class="text-primary" id="resend-link" style="pointer-events: none; opacity: 0.4;">Resend code</a>
+                                        <span id="resend-timer" class="text-muted"> (available in <span id="resend-countdown">60</span>s)</span>
+                                    </p>
                                 </div>
                             </div>
                         </div>

@@ -22,6 +22,13 @@ if(!isset($_SESSION["email"])){
   exit();
 }
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'includes/Exception.php';
+require 'includes/PHPMailer.php';
+require 'includes/SMTP.php';
+
 $sql="SELECT * FROM stafftable WHERE email='$_SESSION[email]'";
 $result=mysqli_query($conn, $sql);
 $row=mysqli_fetch_array($result);
@@ -143,6 +150,74 @@ $email=$row['email'];
                                             if(mysqli_affected_rows($conn)!= 1){
                                                 $message = "Error inserting record into database.";
                                             } else {
+                                                // Send registration completion email via SMTP
+                                                $mail = new PHPMailer();
+                                                $mail->isSMTP();
+                                                $mail->Host       = "mail.pocketvest.com.ng";
+                                                $mail->SMTPAuth   = true;
+                                                $mail->SMTPSecure = "ssl";
+                                                $mail->Port       = "465";
+                                                $mail->Username   = "noreply@pocketvest.com.ng";
+                                                $mail->Password   = "ecommerce@2026";
+                                                $mail->Subject    = "STAFF REGISTRATION COMPLETION";
+                                                $mail->setFrom('noreply@pocketvest.com.ng', "$business_name");
+                                                $mail->isHTML(true);
+                                                $mail->addAddress($email);
+
+                                                $year = date("Y");
+                                                $mail->Body = "<style>
+                                                    html, body { margin: 0 auto !important; padding: 0 !important; height: 100% !important; width: 100% !important; font-family: 'Roboto', sans-serif !important; font-size: 14px; margin-bottom: 10px; line-height: 24px; color: #8094ae; font-weight: 400; }
+                                                    * { -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; margin: 0; padding: 0; }
+                                                    table, td { mso-table-lspace: 0pt !important; mso-table-rspace: 0pt !important; }
+                                                    table { border-spacing: 0 !important; border-collapse: collapse !important; table-layout: fixed !important; margin: 0 auto !important; }
+                                                    a { text-decoration: none; }
+                                                    img { -ms-interpolation-mode: bicubic; }
+                                                </style>
+
+                                                <center style='width: 100%; background-color: #f5f6fa;'>
+                                                    <table width='100%' border='0' cellpadding='0' cellspacing='0' bgcolor='#f5f6fa'>
+                                                        <tr>
+                                                            <td style='padding: 40px 0;'>
+                                                                <table style='width:100%;max-width:620px;margin:0 auto;'>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td style='text-align: center; padding-bottom:25px'>
+                                                                                <a href='#'><img style='height: 60px' src='https://ademolathedev.name.ng/e-commerce/assets/images/logo.png' alt='$business_name'></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table style='width:100%;max-width:620px;margin:0 auto;background-color:#ffffff;'>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td style='padding: 30px 30px 15px 30px; text-align: center;'>
+                                                                                <h2 style='font-size: 18px; color: #4B0082; font-weight: 600; margin: 0;'>Staff Registration Successful</h2>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style='padding: 0 30px 20px; text-align: center;'>
+                                                                                <p style='margin-bottom: 10px;'>Dear <b>$fullname</b>,</p>
+                                                                                <p style='margin-bottom: 10px;'>Your registration as a staff member on $business_name has been successfully completed!</p>
+                                                                                <p style='margin-bottom: 10px;'>You can now sign in using your registered email address.</p>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table style='width:100%;max-width:620px;margin:0 auto;'>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td style='text-align: center; padding:25px 20px 0;'>
+                                                                                <p style='font-size: 13px;'>Copyright &copy; $year $business_name. All rights reserved.</p>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </center>";
+                                                $mail->send();
+
                                                 echo "<script>alert('Dear $fullname, your staff account has been successfully created.');
                                                 window.location.href='staff-login'</script>";
                                             }

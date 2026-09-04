@@ -23,7 +23,7 @@ $customerPhone = isset($session_phone) ? $session_phone : $_SESSION['customer_ph
 $customerEmail = isset($session_email) ? $session_email : $_SESSION['customer_email'];
 
 if ($quantity <= 0) {
-    echo "<script>alert('Quantity must be greater than zero.'); window.location='product.php?uin=$uin';</script>";
+    echo "<script>alert('Quantity must be greater than zero.'); window.location='product?uin=$uin';</script>";
     exit();
 }
 
@@ -35,7 +35,7 @@ $result = mysqli_stmt_get_result($stmt);
 $row = mysqli_fetch_assoc($result);
 
 if (!$row) {
-    echo "<script>alert('Product not found'); window.location='product.php?uin=$uin';</script>";
+    echo "<script>alert('Product not found'); window.location='product?uin=$uin';</script>";
     exit();
 }
 
@@ -43,7 +43,7 @@ $availableQuantity = (int)$row['quantity'];
 if ($quantity > $availableQuantity) {
     echo "<script>
         alert('Not enough stock for {$row['productname']}. Available: {$availableQuantity}');
-        window.location='product.php?uin=$uin';
+        window.location='product?uin=$uin';
     </script>";
     exit();
 }
@@ -56,7 +56,7 @@ $costPrice    = (float)$row['costprice'];
 $sellingPrice = (float)$row['sellingprice'];
 
 if ($sellingPrice <= 0) {
-    echo "<script>alert('Price of product is not fixed yet'); window.location='product.php?uin=$uin';</script>";
+    echo "<script>alert('Price of product is not fixed yet'); window.location='product?uin=$uin';</script>";
     exit();
 }
 
@@ -76,7 +76,7 @@ if ($existingProduct) {
     $newQuantity = (int)$existingProduct['quantity'] + $quantity;
     
     if ($newQuantity > $availableQuantity) {
-        echo "<script>alert('Cannot add more. Total in cart exceeds available stock.'); window.location='product.php?uin=$uin';</script>";
+        echo "<script>alert('Cannot add more. Total in cart exceeds available stock.'); window.location='product?uin=$uin';</script>";
         exit();
     }
 

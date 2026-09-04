@@ -2,6 +2,21 @@
 include("session-check.php"); 
 include("db_conn.php");
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: ../management/");
+    exit();
+}
+
 if (!isset($_REQUEST['product_id'])) {
     header("Location: product");
     exit();
@@ -125,7 +140,7 @@ $images_query = mysqli_query($conn, "SELECT * FROM product_images WHERE uin = '$
     <meta charset="UTF-8">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>DEE MART – Manage Product Images</title>
+    <title><?php echo $business_name; ?> – Manage Product Images</title>
 
     <link id="style" href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">

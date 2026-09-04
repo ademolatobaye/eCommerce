@@ -15,6 +15,9 @@ $ordernote        = mysqli_real_escape_string($conn, $_POST['ordernote']);
 $paymentmethod    = mysqli_real_escape_string($conn, $_POST['paymentmethod']);
 $customer_uin     = mysqli_real_escape_string($conn, $_POST['customer_uin']);
 $invoicenumber    = mysqli_real_escape_string($conn, $_POST['invoiceorder']);
+$vendor_uin       = mysqli_real_escape_string($conn, $_POST['vendor_uin']);
+$productname      = mysqli_real_escape_string($conn, $_POST['productname']);
+$profit           = mysqli_real_escape_string($conn, $_POST['profit']);
 
 // Safe delivery handling
 $delivery = isset($_POST['delivery']) ? mysqli_real_escape_string($conn, implode(",", $_POST['delivery'])) : '';
@@ -41,11 +44,14 @@ $_SESSION['paymentmethod']    = $paymentmethod;
 $_SESSION['customer_uin']     = $customer_uin;
 $_SESSION['invoicenumber']    = $invoicenumber;
 $_SESSION['totalQty']         = $totalQty;
+$_SESSION['productname']      = $productname;
+$_SESSION['profit']           = $profit;
+$_SESSION['vendor_uin']       = $vendor_uin;
 
 // Paystack initialization
 $email = "$customer_email";
 $amountKobo   = $total * 100; // Paystack requires amount in kobo
-$callback_url = "https://pocketvest.com.ng/e-commerce/paycallback.php";
+$callback_url = "https://ademolathedev.name.ng/e-commerce/paycallback.php";
 
 $curl = curl_init();
 curl_setopt_array($curl, array(

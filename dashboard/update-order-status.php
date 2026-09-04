@@ -17,14 +17,14 @@ if (empty($setting_row['business_name'])) {
     exit();
 }
 
-// ini_set('display_errors', '1');
-// 	require 'includes/PHPMailer.php';
-// 	require 'includes/SMTP.php';
-// 	require 'includes/Exception.php';
-// //Define name spaces
-// 	use PHPMailer\PHPMailer\PHPMailer;
-// 	use PHPMailer\PHPMailer\SMTP;
-// 	use PHPMailer\PHPMailer\Exception;
+ini_set('display_errors', '1');
+	require 'includes/PHPMailer.php';
+	require 'includes/SMTP.php';
+	require 'includes/Exception.php';
+//Define name spaces
+	use PHPMailer\PHPMailer\PHPMailer;
+	use PHPMailer\PHPMailer\SMTP;
+	use PHPMailer\PHPMailer\Exception;
 
 if (!isset($_REQUEST['invoicenumber'])){
     header("Location: orders");

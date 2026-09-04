@@ -2,6 +2,21 @@
 include('session-check.php');
 include('db_conn.php');
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: ../management/");
+    exit();
+}
+
 // Handle product approval/rejection by Admin
 if (isset($_GET['action']) && isset($_GET['product_id'])) {
     $action_p = $_GET['action'];
@@ -38,7 +53,7 @@ if (isset($_GET['action']) && isset($_GET['product_id'])) {
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/brand/favicon.png">
 
     <!-- TITLE -->
-    <title>DEE MART – PRODUCTS</title>
+    <title><?php echo $business_name; ?> – PRODUCTS</title>
 
     <!-- BOOTSTRAP CSS -->
     <link id="style" href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -131,7 +146,7 @@ if (isset($_GET['action']) && isset($_GET['product_id'])) {
                                                 if ($result && mysqli_num_rows($result) > 0) {
                                                 $count = 1;
                                                 while ($row = mysqli_fetch_assoc($result)) {
-                                                    $vendor_name = !empty($row['vendor_storename']) ? $row['vendor_storename'] . " (Vendor)" : 'DEE MART';
+                                                    $vendor_name = !empty($row['vendor_storename']) ? $row['vendor_storename'] . " (Vendor)" : 'Vendor';
                                                     $p_stat      = !empty($row['approval_status']) ? $row['approval_status'] : (!empty($row['product_status']) ? $row['product_status'] : 'Approved');
                                                     if (empty($p_stat)) { $p_stat = 'Approved'; }
                                                 ?>

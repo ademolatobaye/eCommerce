@@ -2,6 +2,21 @@
 include("session-check.php"); 
 include("db_conn.php");
 
+$sql = "SELECT * FROM system_setting LIMIT 1";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+$setting_row = mysqli_fetch_assoc($result);
+$phone = $setting_row['phone'];
+$business_name = $setting_row['business_name'];
+$address = $setting_row['address'];
+$email = $setting_row['email'];
+
+// Check if business_name is NULL or empty
+if (empty($setting_row['business_name'])) {
+    header("Location: ../management/");
+    exit();
+}
+
 if (!isset($_REQUEST['id'])) {
     header("Location: view-staff");
     exit();
@@ -37,7 +52,7 @@ $staff = mysqli_fetch_assoc($result);
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/brand/favicon.png">
 
     <!-- TITLE -->
-    <title>DEE MART – Edit Staff</title>
+    <title><?php echo $business_name; ?> – Edit Staff</title>
 
     <!-- BOOTSTRAP CSS -->
     <link id="style" href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">

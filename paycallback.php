@@ -58,6 +58,9 @@ if ($paymentData['status'] && $paymentData['data']['status'] == 'success') {
     $formatted_date   = date("l jS F, Y", strtotime($date));
     $order_id         = mysqli_real_escape_string($conn, $_SESSION['order_id']);
     $customer_address = mysqli_real_escape_string($conn, $_SESSION['customer_address']);
+    $productname      = mysqli_real_escape_string($conn, $_SESSION['productname']);
+    $profit           = mysqli_real_escape_string($conn, $_SESSION['profit']);
+    $vendor_uin       = mysqli_real_escape_string($conn, $_SESSION['vendor_uin']);
     $customername     = mysqli_real_escape_string($conn, $_SESSION['customername']);
     $customer_email   = mysqli_real_escape_string($conn, $_SESSION['customer_email']);
     $customer_phone   = mysqli_real_escape_string($conn, $_SESSION['customer_phone']);
@@ -84,16 +87,16 @@ if ($paymentData['status'] && $paymentData['data']['status'] == 'success') {
     $userQuery = mysqli_query($conn, "SELECT * FROM customertable WHERE customer_uin = '$customer_uin' LIMIT 1");
     if (mysqli_num_rows($userQuery) > 0) {
 
-        // Update payment status on invoiceorder
-        $updateUser = mysqli_query($conn, "UPDATE invoiceorder SET paymentstatus='$status' 
-            WHERE invoicenumber='$invoicenumber' AND customer_uin='$customer_uin'");
+        // // Update payment status on invoiceorder
+        // $updateUser = mysqli_query($conn, "UPDATE invoiceorder SET paymentstatus='$status' 
+        //     WHERE invoicenumber='$invoicenumber' AND customer_uin='$customer_uin'");
 
         // Insert order into invoicesales using billing details from session
         $insertOrder = mysqli_query($conn, "INSERT INTO invoicesales
-            (order_id, invoicenumber, `date`, amount, customer_uin, customername, customer_phone, customer_address, customer_email, paymentmethod, quantity, paymentstatus, ordernote, deliverymethod, order_status) 
-            VALUES ('$order_id', '$invoicenumber', '$date', '$amount', '$customer_uin', '$customername', '$customer_phone', '$customer_address', '$customer_email', '$paymentmethod', '$totalQty', '$status', '$ordernote', '$delivery', 'Payment Confirmed')");
+            (order_id, invoicenumber, `date`, productname, amount, profit, customer_uin, customername, customer_phone, customer_address, customer_email, paymentmethod, quantity, paymentstatus, ordernote, deliverymethod, order_status, vendor_uin) 
+            VALUES ('$order_id', '$invoicenumber', '$date', '$productname', '$amount', '$profit', '$customer_uin', '$customername', '$customer_phone', '$customer_address', '$customer_email', '$paymentmethod', '$totalQty', '$status', '$ordernote', '$delivery', 'Payment Confirmed', '$vendor_uin')");
 
-        if ($updateUser && $insertOrder) {
+        if ($insertOrder) {
 
             // Stock was already reserved/deducted when items were added to cart.
 
@@ -131,7 +134,7 @@ if ($paymentData['status'] && $paymentData['data']['status'] == 'success') {
                     <table style='width:100%;max-width:620px;margin:0 auto;'>
                         <tbody align='center'>
                             <a href='https://ademolathedev.name.ng' target='_blank'>
-                                <img style='height: 60px' src='https://ademolathedev.name.ng/e-commerce/assets/images/logo.png' alt='DEE MART'>
+                                <img style='height: 60px' src='https://ademolathedev.name.ng/e-commerce/assets/images/logo.png' alt='$business_name'>
                             </a>
                         </tbody>
                     </table>
@@ -156,7 +159,7 @@ if ($paymentData['status'] && $paymentData['data']['status'] == 'success') {
                             <tr>
                                 <td style='text-align: center; padding:25px 20px 0;'>
                                     <p style='font-size: 13px;'>Copyright &copy; $year <strong>$business_name</strong>. All Rights Reserved.</p>
-                                    <p style='padding-top: 15px; font-size: 12px;'>This email was sent to you as a registered member on <a style='color: #4B0082; text-decoration:none;' href='#'><strong>$business_name</strong></a>.</p>
+                                    <p style='padding-top: 15px; font-size: 12px;'>This email was sent to you as a registered member on <a style='color: #4B0082; text-decoration:none;' href=''><strong>$business_name</strong></a>.</p>
                                 </td>
                             </tr>
                         </tbody>

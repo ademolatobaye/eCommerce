@@ -395,7 +395,7 @@ if ($status_clean === 'processing') {
                                                 <td class="product-name">
                                                     <div class="d-flex align-items-center">
                                                         <?php if (!empty($item['productimage'])): ?>
-                                                            <img src="dashboard/productupload/<?php echo htmlspecialchars($item['productimage']); ?>" alt="product" width="60" height="60" class="mr-4 style-rounded" style="object-fit:cover; border-radius:6px;">
+                                                            <img src="vendor/vendorupload/<?php echo htmlspecialchars($item['productimage']); ?>" alt="product" width="60" height="60" class="mr-4 style-rounded" style="object-fit:cover; border-radius:6px;">
                                                         <?php endif; ?>
                                                         <div>
                                                             <a href="product?uin=<?php echo urlencode($item['uin']); ?>" class="font-weight-bold text-dark">

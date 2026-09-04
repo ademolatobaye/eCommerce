@@ -3,7 +3,7 @@
             <div class="container">
                 <div class="row align-items-center flex-row-reverse">
                     <div class="col-md-12 col-sm-12 text-center">
-                        Copyright © <script>document.write(new Date().getFullYear())</script> <a href=""> <?php echo isset($business_name) ? htmlspecialchars($business_name) : 'DEE MART'; ?></a>.  All Rights Reserved.
+                        Copyright &copy; <script>document.write(new Date().getFullYear())</script> <a href=""> <?php echo $business_name; ?></a>.  All Rights Reserved.
                     </div>
                 </div>
             </div>

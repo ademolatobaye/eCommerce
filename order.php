@@ -52,7 +52,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>DEE MART || ORDER COMPLETE</title>
+    <title><?php echo $business_name; ?> || ORDER COMPLETE</title>
     <link rel="icon" type="image/png" href="assets/images/icons/favicon.png">
     <script>
         WebFontConfig = { google: { families: ['Poppins:400,500,600,700'] } };

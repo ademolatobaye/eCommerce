@@ -350,7 +350,7 @@ $quantity = $product_row['quantity'];
 
                                         <hr class="product-divider">
 
-                                        <form method="post" action="addtocart" id="add-to-cart-form">
+                                        <form method="post" action="addtocart">
                                             <input type="hidden" name="uin" value="<?php echo $uin; ?>">
                                             <input type="hidden" name="product_id" value="<?php echo $product_row['product_id']; ?>">
                                             <div class="product-form product-qty">
@@ -363,12 +363,12 @@ $quantity = $product_row['quantity'];
                                             </div>
                                             
                                             <?php if ($product_row['quantity'] > 0): ?>
-                                                <button type="submit" class="btn btn-primary btn-cart" name="add">
+                                                <button type="submit" class="btn btn-primary" name="add">
                                                     <i class="w-icon-cart"></i>
                                                     <span>Add to Cart</span>
                                                 </button>
                                             <?php else: ?>
-                                                <button type="button" class="btn btn-disabled btn-cart" disabled>
+                                                <button type="button" class="btn btn-disabled" disabled>
                                                     <span>Out of Stock</span>
                                                 </button>
                                             <?php endif; ?>
@@ -1046,7 +1046,8 @@ $quantity = $product_row['quantity'];
     <!-- End of Quick view -->
 
     <!-- Plugin JS File -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
     <script src="assets/vendor/sticky/sticky.js"></script>
     <script src="assets/vendor/jquery.plugin/jquery.plugin.min.js"></script>
     <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
