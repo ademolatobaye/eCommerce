@@ -86,6 +86,7 @@ function processJobsBatch($conn, $limit) {
  * Handler for sending order status emails using SimpleSMTP
  */
 function handleSendOrderStatusEmail($payload) {
+    global $business_name;
     $customerEmail  = isset($payload['customer_email']) ? $payload['customer_email'] : '';
     $customerName   = isset($payload['customer_name']) ? $payload['customer_name'] : 'Valued Customer';
     $orderIdDisp    = isset($payload['order_id_disp']) ? $payload['order_id_disp'] : '';
