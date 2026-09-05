@@ -10,7 +10,7 @@ $cartItems = array();
 $total = 0;
 
 if ($invoiceNumber != '' && $customerUin != '') {
-    $stmt = mysqli_prepare($conn, "SELECT * FROM invoiceorder WHERE invoicenumber = ? AND customer_uin = ? ORDER BY product_id ASC LIMIT 8");
+    $stmt = mysqli_prepare($conn, "SELECT * FROM invoiceorder WHERE invoicenumber = ? AND customer_uin = ? AND paymentstatus = 'Pending' ORDER BY product_id ASC LIMIT 8");
     mysqli_stmt_bind_param($stmt, 'ss', $invoiceNumber, $customerUin);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);

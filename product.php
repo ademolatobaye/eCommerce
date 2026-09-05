@@ -164,6 +164,78 @@ if (!$product_row) {
         height: 100px;
         object-fit: cover;
     }
+
+    /* Full-Width Stacked Product Action Layout (Option A) */
+    .product-action-stacked {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .product-action-stacked .product-qty {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .btn-cart-stacked,
+    .btn-wishlist-stacked {
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        height: 48px !important;
+        font-size: 1.4rem !important;
+        font-weight: 600 !important;
+        border-radius: 6px !important;
+        box-sizing: border-box !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .btn-cart-stacked {
+        background-color: #4B0082;
+        border: 1px solid #4B0082;
+        color: #ffffff;
+        box-shadow: 0 2px 6px rgba(75, 0, 130, 0.25);
+    }
+
+    .btn-cart-stacked:hover {
+        background-color: #380061;
+        border-color: #380061;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(75, 0, 130, 0.35);
+    }
+
+    .btn-cart-stacked.btn-disabled,
+    .btn-cart-stacked:disabled {
+        background-color: #e1e1e1;
+        border-color: #e1e1e1;
+        color: #888888;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    .btn-wishlist-stacked {
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        color: #333333;
+        text-decoration: none;
+    }
+
+    .btn-wishlist-stacked:hover {
+        color: #e3342f !important;
+        border-color: #e3342f !important;
+        background-color: #fff0f0 !important;
+        text-decoration: none;
+    }
+
+    .btn-wishlist-stacked.added {
+        color: #e3342f !important;
+        border-color: #e3342f !important;
+        background-color: #fff0f0 !important;
+    }
 </style>
 
 <body>
@@ -350,10 +422,11 @@ $quantity = $product_row['quantity'];
 
                                         <hr class="product-divider">
 
-                                        <form method="post" action="addtocart">
+                                        <form method="post" action="addtocart" class="product-action-stacked">
                                             <input type="hidden" name="uin" value="<?php echo $uin; ?>">
                                             <input type="hidden" name="product_id" value="<?php echo $product_row['product_id']; ?>">
-                                            <div class="product-form product-qty">
+                                            
+                                            <div class="product-form product-qty mb-4">
                                                 <label>Qty:</label>
                                                 <div class="input-group">
                                                     <input class="quantity form-control" name="quantity" type="number" min="1" max="10000000" value="1">
@@ -363,21 +436,21 @@ $quantity = $product_row['quantity'];
                                             </div>
                                             
                                             <?php if ($product_row['quantity'] > 0): ?>
-                                                <button type="submit" class="btn btn-primary" name="add">
-                                                    <i class="w-icon-cart"></i>
+                                                <button type="submit" class="btn btn-primary btn-cart-stacked mb-3" name="add">
+                                                    <i class="w-icon-cart mr-2"></i>
                                                     <span>Add to Cart</span>
                                                 </button>
                                             <?php else: ?>
-                                                <button type="button" class="btn btn-disabled" disabled>
+                                                <button type="button" class="btn btn-disabled btn-cart-stacked mb-3" disabled>
                                                     <span>Out of Stock</span>
                                                 </button>
                                             <?php endif; ?>
                                             
                                             <a href="addtowishlist?uin=<?php echo $uin; ?>" 
                                                id="btn-wishlist-toggle"
-                                               class="btn btn-outline btn-dark btn-rounded ml-3 <?php echo $in_wishlist ? 'added' : ''; ?>" 
+                                               class="btn btn-outline btn-dark btn-wishlist-stacked <?php echo $in_wishlist ? 'added' : ''; ?>" 
                                                title="<?php echo $in_wishlist ? 'Remove from Wishlist' : 'Add to Wishlist'; ?>"
-                                               style="display: inline-flex; align-items: center; justify-content: center; height: 46px; padding: 0 20px; font-weight: 600; <?php echo $in_wishlist ? 'color:#e3342f; border-color:#e3342f; background-color:#fff0f0;' : ''; ?>">
+                                               <?php if ($in_wishlist): ?>style="color:#e3342f; border-color:#e3342f; background-color:#fff0f0;"<?php endif; ?>>
                                                <i class="w-icon-heart mr-2" id="wishlist-btn-icon"></i>
                                                <span id="wishlist-btn-text"><?php echo $in_wishlist ? 'Wishlisted' : 'Add to Wishlist'; ?></span>
                                             </a>

@@ -34,6 +34,7 @@
                         <li><a href="blog">Blog</a></li>
                         <li><a href="contact-us">Contact Us</a></li>
                         <li><a href="cart">Cart</a></li>
+                        <li><a href="track-order">Track Order</a></li>
                         <li><a href="checkout">Checkout</a></li>
                         <?php if (isset($_SESSION['customer_email'])) { ?>
                             <li><a href="my-account"><?php echo isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'My Account'; ?></a></li>

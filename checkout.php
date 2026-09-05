@@ -339,7 +339,7 @@ if (empty($cartItems)) {
                                         </div>
 
                                         <div class="form-group place-order pt-6">
-                                            <button type="submit" class="btn btn-dark btn-block btn-rounded"name="submit" onclick="return confirm('Are you certain to proceed?')">Place Order</button>
+                                            <button type="submit" class="btn btn-dark btn-block btn-rounded"name="submit" onclick="return confirm('Proceed to place order?')">Place Order</button>
                                         </div>
                                     </div>
                                 </div>

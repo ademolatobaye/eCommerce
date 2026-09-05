@@ -88,15 +88,15 @@ if ($paymentData['status'] && $paymentData['data']['status'] == 'success') {
     if (mysqli_num_rows($userQuery) > 0) {
 
         // // Update payment status on invoiceorder
-        // $updateUser = mysqli_query($conn, "UPDATE invoiceorder SET paymentstatus='$status' 
-        //     WHERE invoicenumber='$invoicenumber' AND customer_uin='$customer_uin'");
+        $updateUser = mysqli_query($conn, "UPDATE invoiceorder SET paymentstatus='$status' 
+            WHERE invoicenumber='$invoicenumber' AND customer_uin='$customer_uin'");
 
         // Insert order into invoicesales using billing details from session
         $insertOrder = mysqli_query($conn, "INSERT INTO invoicesales
             (order_id, invoicenumber, `date`, productname, amount, profit, customer_uin, customername, customer_phone, customer_address, customer_email, paymentmethod, quantity, paymentstatus, ordernote, deliverymethod, order_status, vendor_uin) 
             VALUES ('$order_id', '$invoicenumber', '$date', '$productname', '$amount', '$profit', '$customer_uin', '$customername', '$customer_phone', '$customer_address', '$customer_email', '$paymentmethod', '$totalQty', '$status', '$ordernote', '$delivery', 'Payment Confirmed', '$vendor_uin')");
 
-        if ($insertOrder) {
+        if ($updateUser && $insertOrder) {
 
             // Stock was already reserved/deducted when items were added to cart.
 
