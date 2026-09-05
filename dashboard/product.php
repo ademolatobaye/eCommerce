@@ -193,7 +193,7 @@ if (isset($_GET['action']) && isset($_GET['product_id'])) {
 
                                                             <div class="dropdown-divider"></div>
 
-                                                            <a class="dropdown-item text-danger" href="delete-product?product_id=<?php echo $row['product_id']?>" onclick="return confirm('Are you sure to delete this product?')"><i class="fa fa-trash me-1"></i> Delete Product</a>
+                                                            <a class="dropdown-item text-danger" href="delete-product?product_id=<?php echo $row['product_id']?>" onclick="return confirm('Delete this product?')"><i class="fa fa-trash me-1"></i> Delete Product</a>
                                                         </div>
                                                     </div>
                                                         </td>

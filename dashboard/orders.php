@@ -108,11 +108,12 @@ $rows = mysqli_fetch_array($result);
                                                         <th class="border-bottom-0">S/N</th>
                                                         <th class="border-bottom-0">Order ID</th>
                                                         <th class="border-bottom-0">Invoice Number</th>
+                                                        <th class="border-bottom-0">Product</th>
                                                         <th class="border-bottom-0">Date</th>
                                                         <th class="border-bottom-0">Customer Name</th>
                                                         <th class="border-bottom-0">Phone</th>
                                                         <th class="border-bottom-0">Amount</th>
-                                                        <th class="border-bottom-0">Payment</th>
+                                                        <th class="border-bottom-0">Payment Status</th>
                                                         <th class="border-bottom-0">Order Status</th>
                                                         <th class="border-bottom-0">Courier Details</th>
                                                         <th class="border-bottom-0">Action</th>
@@ -137,6 +138,7 @@ $rows = mysqli_fetch_array($result);
                                                                 <td style="text-align:center;"><?php echo $count++; ?></td>
                                                                 <td><strong><?php echo htmlspecialchars($order_id_disp); ?></strong></td>
                                                                 <td><?php echo htmlspecialchars($row['invoicenumber']); ?></td>
+                                                                <td><?php echo htmlspecialchars($row['productname']); ?></td>
                                                                 <td><?php echo date('jS-F-Y', strtotime($row['date'])); ?></td>
                                                                 <td><?php echo htmlspecialchars($row['customername']); ?></td>
                                                                 <td><?php echo htmlspecialchars($row['customer_phone']); ?></td>

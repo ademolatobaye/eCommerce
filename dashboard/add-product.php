@@ -332,7 +332,7 @@ $rows = mysqli_fetch_array($result);
                                         <div class="row">
                                             <div class="col-md-3"></div>
                                             <div class="col-md-9">
-                                                <button type="submit" name="submit" class="btn btn-primary btn-block" onclick="return confirm('Are you sure to add product?')">Add Product</button>
+                                                <button type="submit" name="submit" class="btn btn-primary btn-block" onclick="return confirm('Add product?')">Add Product</button>
                                                 
                                             </div>
                                         </div>
