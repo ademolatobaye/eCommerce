@@ -58,6 +58,59 @@ $rows = mysqli_fetch_array($result);
     <!-- INTERNAL Switcher css -->
     <link href="assets/switcher/css/switcher.css" rel="stylesheet">
     <link href="assets/switcher/demo.css" rel="stylesheet">
+
+    <style>
+        .drop-zone {
+            border: 2px dashed #4b0082;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            background: #fdfaff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .drop-zone:hover, .drop-zone.dragover {
+            background: #f0e6ff;
+            border-color: #310056;
+        }
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .preview-card {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .preview-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .preview-card .remove-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(220, 53, 69, 0.9);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body class="app sidebar-mini ltr light-mode">
@@ -98,7 +151,6 @@ $rows = mysqli_fetch_array($result);
                                         include("db_conn.php");
                                         date_default_timezone_set("Africa/Lagos");
                                         $date= date("Y-m-d");
-                                        $business_name= "DEEMART";
                                         function generateCustomerID($productname, $business_name, $length = 4){
                                         $productname = strtoupper(substr(preg_replace('/\s+/', '', $productname), 0, 4));
                                         $businessname = strtoupper(substr(preg_replace('/\s+/', '', $business_name), 0, 5));
@@ -116,7 +168,7 @@ $rows = mysqli_fetch_array($result);
                                              $category = mysqli_real_escape_string($conn, trim($_REQUEST["category"]));
                                              $description = mysqli_real_escape_string($conn, trim($_REQUEST["description"]));
                                              $staff = mysqli_real_escape_string($conn, $session_role);
-                                             $customerID = mysqli_real_escape_string($conn, generateCustomerID($productname, $business_name));
+                                             $product_uin = mysqli_real_escape_string($conn, generateCustomerID($productname, $business_name));
 
                                             // FILE UPLOAD - MULTIPLE IMAGES
                                             $files = isset($_FILES['productimages']) ? $_FILES['productimages'] : (isset($_FILES['productimage']) ? $_FILES['productimage'] : null);
@@ -127,7 +179,7 @@ $rows = mysqli_fetch_array($result);
                                                 for ($i = 0; $i < $total_files; $i++) {
                                                     $filename = basename($files['name'][$i]);
                                                     if (!empty($filename)) {
-                                                        $target = "productupload/" . $filename;
+                                                        $target = "../vendor/vendorupload/" . $filename;
                                                         if (move_uploaded_file($files['tmp_name'][$i], $target)) {
                                                             $uploaded_images[] = $filename;
                                                         }
@@ -135,7 +187,7 @@ $rows = mysqli_fetch_array($result);
                                                 }
                                             } else if ($files && !empty($files['name'])) {
                                                 $filename = basename($files['name']);
-                                                $target = "productupload/" . $filename;
+                                                $target = "../vendor/vendorupload/" . $filename;
                                                 if (move_uploaded_file($files['tmp_name'], $target)) {
                                                     $uploaded_images[] = $filename;
                                                 }
@@ -151,7 +203,8 @@ $rows = mysqli_fetch_array($result);
                                                 echo "<script>alert('Product with this name already exists.')</script>";
                                             } else {
                                                 // INSERTING VALUES INTO product_table
-                                                $sql="INSERT INTO product_table (uin, productname, `date`, costprice, sellingprice, quantity, lowlevel, productimage, profit, category, `description`, staff) VALUES ('$customerID', '$productname', '$date', '$costprice', '$sellingprice', '$quantity', '$lowlevel', '$primary_image', '$profit', '$category', '$description', '$staff')";
+                                                $sql="INSERT INTO product_table (uin, productname, `date`, costprice, sellingprice, quantity, lowlevel, productimage, profit, category, `description`, vendor_uin, approval_status)
+                                                 VALUES ('$product_uin', '$productname', '$date', '$costprice', '$sellingprice', '$quantity', '$lowlevel', '$primary_image', '$profit', '$category', '$description','$session_uin', 'Approved')";
                                                 mysqli_query($conn, $sql) or die(mysqli_error($conn));
                                                 
                                                 if(mysqli_affected_rows($conn) == 1){
@@ -160,7 +213,7 @@ $rows = mysqli_fetch_array($result);
                                                         for ($i = 1; $i < count($uploaded_images); $i++) {
                                                             $sort_order = $i;
                                                             $img_escaped = mysqli_real_escape_string($conn, $uploaded_images[$i]);
-                                                            $sql_img = "INSERT INTO product_images (uin, product_image, sort_order) VALUES ('$customerID', '$img_escaped', '$sort_order')";
+                                                            $sql_img = "INSERT INTO product_images (uin, product_image, sort_order) VALUES ('$product_uin', '$img_escaped', '$sort_order')";
                                                             mysqli_query($conn, $sql_img);
                                                         }
                                                     }
@@ -227,23 +280,24 @@ $rows = mysqli_fetch_array($result);
                                                 <input type="hidden" class="form-control" name="profit" placeholder="Input product's profit" readonly>
                                             </div>
                                         </div>
-
                                         <div class="row mb-4">
                                             <label class="col-md-3 form-label">Category :</label>
                                             <div class="col-md-9">
-                                                <select class="form-control form-select select2" data-bs-placeholder="Select Category" name="category">
+                                                <select class="form-control form-select select2" data-bs-placeholder="Select Category" name="category" required>
                                                     <option value="">Select Category</option>
-                                                    <option value="Food">Food</option>
-                                                    <option value="Drinks">Drinks</option>
-                                                    <option value="Wears">Wears</option>
-                                                    <option value="Shoes">Shoes</option>
-                                                    <option value="Wristwatch">Wristwatch</option>
-                                                    <option value="Gadgets">Gadgets</option>
-                                                    <option value="Electronics">Electronics</option>
-                                                    <option value="Fashion">Fashion</option>
-                                                    <option value="Deodorant">Deodorant</option>
-                                                    <option value="Home Decor">Home Decor</option>
-                                                    <option value="Furniture">Furniture</option>
+                                                    <?php
+                                                    $cat_query = mysqli_query($conn, "SELECT * FROM category ORDER BY categoryname ASC");
+                                                    if ($cat_query && mysqli_num_rows($cat_query) > 0) {
+                                                        while ($c = mysqli_fetch_assoc($cat_query)) {
+                                                            echo '<option value="' . htmlspecialchars($c['categoryname']) . '">' . htmlspecialchars($c['categoryname']) . '</option>';
+                                                        }
+                                                    } else {
+                                                        $default_cats = array("Food", "Drinks", "Wears", "Shoes", "Wristwatch", "Gadgets", "Electronics", "Fashion", "Deodorant", "Home Decor", "Furniture");
+                                                        foreach ($default_cats as $cat) {
+                                                            echo '<option value="' . $cat . '">' . $cat . '</option>';
+                                                        }
+                                                    }
+                                                    ?>
                                             </select>
                                             </div>
                                         </div>
@@ -261,7 +315,14 @@ $rows = mysqli_fetch_array($result);
                                         <div class="row">
                                             <label class="col-md-3 form-label mb-4">Product Upload :</label>
                                             <div class="col-md-9">
-                                                <input id="demo" type="file" name="productimages[]" accept=".jpg, .png, .jpeg, .jfif, .webp, image/jpeg, image/png, image/webp" multiple>
+                                                
+                                                <div class="drop-zone" id="dropZone">
+                                                    <i class="fe fe-upload-cloud fs-35 text-primary mb-2"></i>
+                                                    <h5 class="fw-bold mb-1">Drag & Drop product images here or click to browse</h5>
+                                                    <p class="text-muted small mb-0">Select multiple image files (JPG, PNG, WEBP). First image will be set as primary cover.</p>
+                                                    <input type="file" name="productimages[]" id="fileInput" class="d-none" accept=".jpg, .png, .jpeg, .jfif, .webp, image/jpeg, image/png, image/webp" multiple required>
+                                                </div>
+                                                <div class="preview-container" id="previewContainer"></div>
                                             </div>
                                         </div>
                                         <!--End Row-->
@@ -352,6 +413,80 @@ $rows = mysqli_fetch_array($result);
     <!-- Switcher js -->
     <script src="assets/switcher/js/switcher.js"></script>
 
+    <!-- DYNAMIC DRAG & DROP UPLOADER LOGIC -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const previewContainer = document.getElementById('previewContainer');
+
+            if (dropZone && fileInput) {
+                dropZone.addEventListener('click', () => fileInput.click());
+
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.add('dragover');
+                    }, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.remove('dragover');
+                    }, false);
+                });
+
+                dropZone.addEventListener('drop', (e) => {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    fileInput.files = files;
+                    handleFiles(files);
+                });
+
+                fileInput.addEventListener('change', function() {
+                    handleFiles(this.files);
+                });
+
+                function handleFiles(files) {
+                    previewContainer.innerHTML = '';
+                    if (files.length > 0) {
+                        Array.from(files).forEach((file, index) => {
+                            if (file.type.startsWith('image/')) {
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    const card = document.createElement('div');
+                                    card.className = 'preview-card';
+                                    card.innerHTML = `
+                                        <img src="${e.target.result}" alt="Preview">
+                                        <span class="remove-btn" title="Remove" data-index="${index}">&times;</span>
+                                    `;
+                                    previewContainer.appendChild(card);
+                                };
+                                reader.readAsDataURL(file);
+                            }
+                        });
+                    }
+                }
+
+                previewContainer.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('remove-btn')) {
+                        const indexToRemove = parseInt(e.target.getAttribute('data-index'));
+                        const dt = new DataTransfer();
+                        Array.from(fileInput.files).forEach((file, i) => {
+                            if (i !== indexToRemove) {
+                                dt.items.add(file);
+                            }
+                        });
+                        fileInput.files = dt.files;
+                        handleFiles(fileInput.files);
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

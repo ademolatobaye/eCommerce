@@ -17,12 +17,12 @@ if (empty($setting_row['business_name'])) {
     exit();
 }
 
-if (!isset($_REQUEST['product_id'])) {
+if (!isset($_REQUEST['product_id']) && !isset($_REQUEST['id'])) {
     header("Location: product");
     exit();
 }
 
-$product_id = $_REQUEST['product_id'];
+$product_id = isset($_REQUEST['product_id']) ? intval($_REQUEST['product_id']) : intval($_REQUEST['id']);
 
 $query = "SELECT * FROM product_table WHERE product_id = ?";
 $stmt = mysqli_prepare($conn, $query);
@@ -32,6 +32,10 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $product = mysqli_fetch_assoc($result);
 
+if (!$product) {
+    echo "<script>alert('Product not found.'); window.location.href='product';</script>";
+    exit();
+}
 
 ?>
 
@@ -95,11 +99,11 @@ $product = mysqli_fetch_assoc($result);
 
                         <!-- PAGE-HEADER -->
                         <div class="page-header">
-                            <h1 class="page-title">Edit Product</h1>
+                            <h1 class="page-title">Edit Product Details</h1>
                             <div>
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Edit Product</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page"><a href="javascript:history.back()"> > Go back</a></li>
+                                    <li class="breadcrumb-item"><a href="product.php">Products</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Edit Product Details</li>
                                 </ol>
                             </div>
                         </div>
@@ -119,12 +123,13 @@ $product = mysqli_fetch_assoc($result);
                                              $costprice = floatval($_REQUEST["costprice"]);
                                              $sellingprice = floatval($_REQUEST["sellingprice"]);
                                              $quantity = intval($_REQUEST["quantity"]);
+                                             $lowlevel = isset($_REQUEST["lowlevel"]) ? intval($_REQUEST["lowlevel"]) : 5;
                                              $profit = $sellingprice - $costprice;
                                              $category = isset($_REQUEST["category"]) ? mysqli_real_escape_string($conn, trim($_REQUEST["category"])) : mysqli_real_escape_string($conn, $product['category']);
                                              $description = mysqli_real_escape_string($conn, trim($_REQUEST["description"]));
                                              $staff = isset($session_role) ? mysqli_real_escape_string($conn, $session_role) : 'Admin';
 
-                                            $sql = "UPDATE product_table SET productname='$productname', costprice='$costprice', sellingprice='$sellingprice', quantity='$quantity', profit='$profit', category='$category', `description`='$description', staff='$staff' WHERE product_id='$product_id'";
+                                            $sql = "UPDATE product_table SET productname='$productname', costprice='$costprice', sellingprice='$sellingprice', quantity='$quantity', lowlevel='$lowlevel', profit='$profit', category='$category', `description`='$description', staff='$staff' WHERE product_id='$product_id'";
                                             if(mysqli_query($conn, $sql)){
                                                 if (class_exists('CacheManager')) {
                                                     CacheManager::flush();
@@ -140,7 +145,7 @@ $product = mysqli_fetch_assoc($result);
                                     <div class="card-header d-flex justify-content-between align-items-center">
                                         <div class="card-title">Edit Product Details</div>
                                         <a href="edit-product-images?product_id=<?php echo $product['product_id']; ?>" class="btn btn-info btn-sm">
-                                            <i class="fa fa-image me-1"></i> Edit Product Images
+                                            <i class="fa fa-image me-1"></i> Manage Gallery Images
                                         </a>
                                     </div>
                                     <div class="card-body">
@@ -173,15 +178,30 @@ $product = mysqli_fetch_assoc($result);
                                         </div>
 
                                         <div class="row mb-4">
+                                            <label class="col-md-3 form-label">Low Level Stock Alert :</label>
+                                            <div class="col-md-9">
+                                                <input type="number" class="form-control" name="lowlevel" value="<?php echo htmlspecialchars($product['lowlevel']); ?>" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-4">
                                             <label class="col-md-3 form-label">Category :</label>
                                             <div class="col-md-9">
-                                                <select class="form-control form-select select2" data-bs-placeholder="Select Category" name="category">
+                                                <select class="form-control form-select select2" data-bs-placeholder="Select Category" name="category" required>
                                                     <option value="">Select Category</option>
                                                     <?php
-                                                    $categories = array("Food", "Drinks", "Wears", "Shoes", "Wristwatch", "Gadgets", "Electronics", "Fashion", "Deodorant", "Home Decor", "Furniture");
-                                                    foreach($categories as $cat) {
-                                                        $selected = ($product['category'] == $cat) ? "selected" : "";
-                                                        echo "<option value=\"$cat\" $selected>$cat</option>";
+                                                    $cat_query = mysqli_query($conn, "SELECT * FROM category ORDER BY categoryname ASC");
+                                                    if ($cat_query && mysqli_num_rows($cat_query) > 0) {
+                                                        while ($c = mysqli_fetch_assoc($cat_query)) {
+                                                            $selected = ($product['category'] == $c['categoryname']) ? "selected" : "";
+                                                            echo '<option value="' . htmlspecialchars($c['categoryname']) . '" ' . $selected . '>' . htmlspecialchars($c['categoryname']) . '</option>';
+                                                        }
+                                                    } else {
+                                                        $categories = array("Food", "Drinks", "Wears", "Shoes", "Wristwatch", "Gadgets", "Electronics", "Fashion", "Deodorant", "Home Decor", "Furniture");
+                                                        foreach($categories as $cat) {
+                                                            $selected = ($product['category'] == $cat) ? "selected" : "";
+                                                            echo "<option value=\"$cat\" $selected>$cat</option>";
+                                                        }
                                                     }
                                                     ?>
                                                 </select>

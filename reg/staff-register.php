@@ -129,7 +129,7 @@ $email=$row['email'];
 
                                             // PHOTO UPLOAD
                                             $img = $_POST['image'];
-                                            $folderPath = "assets/photo/";
+                                            $folderPath = "../dashboard/assets/photo/";
 
                                             $image_parts = explode(";base64,", $img);
                                             $image_type_aux = explode("image/", $image_parts[0]);
@@ -276,11 +276,6 @@ $email=$row['email'];
                                                 <select name="role" class="form-control" required>
                                                     <option value="">Select Role</option>
                                                     <option value="Super Admin">Super Admin</option>
-                                                    <option value="Admin">Admin</option>
-                                                    <option value="Manager">Manager</option>
-                                                    <option value="Supervisor">Supervisor</option>
-                                                    <option value="Staff">Staff</option>
-                                                    <option value="Cashier">Cashier</option>
                                                 </select>
                                         </div>
 

@@ -122,7 +122,7 @@ if (empty($setting_row['business_name'])) {
                                                      <?php if (!empty($row['vendor_uin'])): ?>
                                                          <i class="fas fa-store text-primary me-1"></i>
                                                          <a href="vendor-store?vendor_uin=<?php echo $row['vendor_uin']; ?>" class="text-primary font-weight-bold" style="text-decoration: underline;">
-                                                             <?php echo htmlspecialchars($row['vendor_storename']); ?>
+                                                             <?php echo $row['vendor_storename']; ?>
                                                          </a>
                                                      <?php else: ?>
                                                          <span class="text-muted"><i class="fas fa-shield-alt text-success me-1"></i> <?php echo $business_name;?></span>

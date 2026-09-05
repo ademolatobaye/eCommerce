@@ -100,10 +100,9 @@ $product = mysqli_fetch_assoc($result);
                         <div class="page-header">
                             <h1 class="page-title">Product Details</h1>
                             <div>
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Product Details</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page"><a href="javascript:history.back()"> > Go back</a></li>
-                                </ol>
+                                <a href="edit-product?product_id=<?php echo $product_id; ?>" class="btn btn-primary me-2"><i class="fe fe-edit me-1"></i> Edit Details</a>
+                                <a href="edit-product-images?product_id=<?php echo $product_id; ?>" class="btn btn-info me-2"><i class="fe fe-image me-1"></i> Manage Images</a>
+                                <a href="product" class="btn btn-secondary"><i class="fe fe-arrow-left me-1"></i> Back to Products</a>
                             </div>
                         </div>
                         <!-- PAGE-HEADER END -->
@@ -134,9 +133,10 @@ $product = mysqli_fetch_assoc($result);
 
                                                                      foreach ($v_imgs as $idx => $v_img_name) {
                                                                          $active_class = ($idx === 0) ? 'active' : '';
+                                                                         $img_src_path = "../vendor/vendorupload/" . $v_img_name;
                                                                      ?>
                                                                          <div class="carousel-item <?php echo $active_class; ?>">
-                                                                             <img src="productupload/<?php echo htmlspecialchars($v_img_name);?>" alt="img" class="img-fluid mx-auto d-block" style="max-height:350px; object-fit:contain;">
+                                                                             <img src="<?php echo $img_src_path; ?>" alt="img" class="img-fluid mx-auto d-block" style="max-height:350px; object-fit:contain;">
                                                                          </div>
                                                                      <?php } ?>
                                                                  </div>
@@ -147,9 +147,11 @@ $product = mysqli_fetch_assoc($result);
                                                              <div id="thumbcarousel" class="carousel slide" data-bs-interval="false">
                                                                  <div class="carousel-inner">
                                                                      <ul class="carousel-item active d-flex flex-wrap gap-2">
-                                                                         <?php foreach ($v_imgs as $idx => $v_img_name) { ?>
+                                                                         <?php foreach ($v_imgs as $idx => $v_img_name) {
+                                                                             $thumb_src_path = file_exists("../vendor/vendorupload/" . $v_img_name) ? "../vendor/vendorupload/" . htmlspecialchars($v_img_name) : "productupload/" . htmlspecialchars($v_img_name);
+                                                                         ?>
                                                                              <li data-bs-target="#Slider" data-bs-slide-to="<?php echo $idx; ?>" class="thumb <?php echo ($idx === 0) ? 'active' : ''; ?> m-1" style="cursor:pointer; width:60px; height:60px; overflow:hidden; border-radius:4px; border:1px solid #ccc;">
-                                                                                 <img src="productupload/<?php echo htmlspecialchars($v_img_name);?>" alt="img" style="width:100%; height:100%; object-fit:cover;">
+                                                                                 <img src="<?php echo $thumb_src_path; ?>" alt="img" style="width:100%; height:100%; object-fit:cover;">
                                                                              </li>
                                                                          <?php } ?>
                                                                      </ul>

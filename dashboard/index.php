@@ -96,7 +96,7 @@ $rows = mysqli_fetch_array($result);
                                         echo "Good Evening, $session_role $session_fullname.";
                                     } 
                                     else {
-                                        echo "Good Night, $session_role $session_fullname.";
+                                        echo "It's Bedtime, $session_role $session_fullname.";
                                         
                                         }
                                         ?></h1>
@@ -109,7 +109,7 @@ $rows = mysqli_fetch_array($result);
                         </div>
                         <!-- PAGE-HEADER END -->
 
-                        <!-- ROW-1 -->
+                        <!-- METRICS & QUICK ACTIONS ROW -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
                                 <div class="row">
@@ -118,26 +118,19 @@ $rows = mysqli_fetch_array($result);
                                             <div class="card-body">
                                                 <div class="d-flex">
                                                     <div class="mt-2">
-                                                        <h6 class="">Total Users</h6>
+                                                        <h6 class="text-muted">Total Registered Users</h6>
                                                          <?php
                                                         include("db_conn.php");
                                                         $sql="SELECT COUNT(*) AS totalcustomers FROM customertable";
                                                         $result=mysqli_query($conn, $sql);
-                                                        while($count= mysqli_fetch_array($result)){
+                                                        $count= mysqli_fetch_assoc($result);
                                                         ?>
-                                                        <h2 class="mb-0 number-font"><?php echo $count['totalcustomers']; ?></h2>
-                                                        <?php
-                                                        }
-                                                        ?>
+                                                        <h2 class="mb-0 number-font"><?php echo number_format($count['totalcustomers'] ?? 0); ?></h2>
                                                     </div>
-                                                    <div class="ms-auto">
-                                                        <div class="chart-wrapper mt-1">
-                                                            <canvas id="saleschart"
-                                                                class="h-8 w-9 chart-dropshadow"></canvas>
-                                                        </div>
+                                                    <div class="ms-auto font-weight-bold fs-25 text-primary">
+                                                        <i class="fe fe-users"></i>
                                                     </div>
                                                 </div>
-                                                
                                             </div>
                                         </div>
                                     </div>
@@ -147,27 +140,39 @@ $rows = mysqli_fetch_array($result);
                                             <div class="card-body">
                                                 <div class="d-flex">
                                                     <div class="mt-2">
-                                                        <h6 class="">Total Profit</h6>
+                                                        <h6 class="text-muted">Total Listed Products</h6>
                                                          <?php
-                                                        include("db_conn.php");
-                                                        $sql="SELECT SUM(profit) AS totalprofit FROM product_table";
-                                                        $result= mysqli_query($conn, $sql);
-                                                        while($count= mysqli_fetch_array($result)){
+                                                        $sql_p="SELECT COUNT(*) AS totalprods FROM product_table WHERE (vendor_uin = '$session_uin' OR vendor_uin IS NULL OR vendor_uin = '')";
+                                                        $res_p= mysqli_query($conn, $sql_p);
+                                                        $count_p= mysqli_fetch_assoc($res_p);
                                                         ?>
-                                                        <h2 class="mb-0 number-font">&#8358;<?php echo number_format($count['totalprofit'], 2); ?></h2>
-                                                        <?php
-                                                        }
+                                                        <h2 class="mb-0 number-font"><?php echo number_format($count_p['totalprods'] ?? 0); ?></h2>
+                                                    </div>
+                                                    <div class="ms-auto font-weight-bold fs-25 text-info">
+                                                        <i class="fe fe-box"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xl-3">
+                                        <div class="card overflow-hidden">
+                                            <div class="card-body">
+                                                <div class="d-flex">
+                                                    <div class="mt-2">
+                                                        <h6 class="text-muted">Paid Sales Revenue</h6>
+                                                         <?php
+                                                        $sql_rev="SELECT SUM(amount) AS totalrev FROM invoicesales WHERE (vendor_uin = '$session_uin' OR vendor_uin IS NULL OR vendor_uin = '') AND paymentstatus = 'Paid'";
+                                                        $res_rev= mysqli_query($conn, $sql_rev);
+                                                        $count_rev= mysqli_fetch_assoc($res_rev);
                                                         ?>
+                                                        <h2 class="mb-0 number-font">&#8358;<?php echo number_format($count_rev['totalrev'] ?? 0, 2); ?></h2>
                                                     </div>
-
-                                                    <div class="ms-auto">
-                                                        <div class="chart-wrapper mt-1">
-                                                            <canvas id="leadschart"
-                                                                class="h-8 w-9 chart-dropshadow"></canvas>
-                                                        </div>
+                                                    <div class="ms-auto font-weight-bold fs-25 text-success">
+                                                        <i class="fe fe-dollar-sign"></i>
                                                     </div>
                                                 </div>
-                                               
                                             </div>
                                         </div>
                                     </div>
@@ -176,17 +181,19 @@ $rows = mysqli_fetch_array($result);
                                         <div class="card overflow-hidden">
                                             <div class="card-body">
                                                 <div class="d-flex">
-                                                    <div class="mt-6">
-                                                        <h2 class="mb-0 number-font"><a href="" data-bs-toggle="modal" data-bs-target="#newcategory">Add New Category</a></h2>
+                                                    <div class="mt-2">
+                                                        <h6 class="text-muted">Pending / Unpaid Orders</h6>
+                                                         <?php
+                                                        $sql_pend="SELECT COUNT(*) AS totalpend FROM invoiceorder WHERE (vendor_uin = '$session_uin' OR vendor_uin IS NULL OR vendor_uin = '') AND paymentstatus = 'Pending'";
+                                                        $res_pend= mysqli_query($conn, $sql_pend);
+                                                        $count_pend= mysqli_fetch_assoc($res_pend);
+                                                        ?>
+                                                        <h2 class="mb-0 number-font"><?php echo number_format($count_pend['totalpend'] ?? 0); ?></h2>
                                                     </div>
-                                                    <div class="ms-auto">
-                                                        <div class="chart-wrapper mt-1">
-                                                            <!-- <canvas id="profitchart"
-                                                                class="h-8 w-9 chart-dropshadow"></canvas> -->
-                                                        </div>
+                                                    <div class="ms-auto font-weight-bold fs-25 text-warning">
+                                                        <i class="fe fe-clock"></i>
                                                     </div>
                                                 </div>
-                                                
                                             </div>
                                         </div>
                                     </div>
@@ -195,17 +202,10 @@ $rows = mysqli_fetch_array($result);
                                         <div class="card overflow-hidden">
                                             <div class="card-body">
                                                 <div class="d-flex">
-                                                    <div class="mt-6">
-                                                        <h2 class="mb-0 number-font"><a href="" data-bs-toggle="modal" data-bs-target="#newblogcategory">Add New Blog Category</a></h2>
-                                                    </div>
-                                                    <div class="ms-auto">
-                                                        <div class="chart-wrapper mt-1">
-                                                            <!-- <canvas id="profitchart"
-                                                                class="h-8 w-9 chart-dropshadow"></canvas> -->
-                                                        </div>
+                                                    <div class="mt-4">
+                                                        <h2 class="mb-0 number-font"><a href="" data-bs-toggle="modal" data-bs-target="#newcategory"><i class="fe fe-plus-circle me-1"></i> Add Category</a></h2>
                                                     </div>
                                                 </div>
-                                                
                                             </div>
                                         </div>
                                     </div>
@@ -214,17 +214,10 @@ $rows = mysqli_fetch_array($result);
                                         <div class="card overflow-hidden">
                                             <div class="card-body">
                                                 <div class="d-flex">
-                                                    <div class="mt-6">
-                                                         <h2 class="mb-0 number-font"><a href="add-product">Add New Product</a></h2>
-                                                    </div>
-                                                    <div class="ms-auto">
-                                                        <div class="chart-wrapper mt-1">
-                                                            <!-- <canvas id="profitchart"
-                                                                class="h-8 w-9 chart-dropshadow"></canvas> -->
-                                                        </div>
+                                                    <div class="mt-4">
+                                                         <h2 class="mb-0 number-font"><a href="add-product"><i class="fe fe-plus-square me-1"></i> Add Product</a></h2>
                                                     </div>
                                                 </div>
-                                                
                                             </div>
                                         </div>
                                     </div>
@@ -233,17 +226,10 @@ $rows = mysqli_fetch_array($result);
                                         <div class="card overflow-hidden">
                                             <div class="card-body">
                                                 <div class="d-flex">
-                                                    <div class="mt-6">
-                                                         <h2 class="mb-0 number-font"><a href="product">View All Products</a></h2>
-                                                    </div>
-                                                    <div class="ms-auto">
-                                                        <div class="chart-wrapper mt-1">
-                                                            <!-- <canvas id="profitchart"
-                                                                class="h-8 w-9 chart-dropshadow"></canvas> -->
-                                                        </div>
+                                                    <div class="mt-4">
+                                                         <h2 class="mb-0 number-font"><a href="orders" class="text-success"><i class="fe fe-check-square me-1"></i> Paid Orders</a></h2>
                                                     </div>
                                                 </div>
-                                                
                                             </div>
                                         </div>
                                     </div>
@@ -252,41 +238,13 @@ $rows = mysqli_fetch_array($result);
                                         <div class="card overflow-hidden">
                                             <div class="card-body">
                                                 <div class="d-flex">
-                                                    <div class="mt-6">
-                                                         <h2 class="mb-0 number-font"><a href="view-category">View All Categories</a></h2>
-                                                    </div>
-                                                    <div class="ms-auto">
-                                                        <div class="chart-wrapper mt-1">
-                                                            <!-- <canvas id="profitchart"
-                                                                class="h-8 w-9 chart-dropshadow"></canvas> -->
-                                                        </div>
+                                                    <div class="mt-4">
+                                                         <h2 class="mb-0 number-font"><a href="pending-orders" class="text-warning"><i class="fe fe-clock me-1"></i> Pending Orders</a></h2>
                                                     </div>
                                                 </div>
-                                                
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xl-3">
-                                        <div class="card overflow-hidden">
-                                            <div class="card-body">
-                                                <div class="d-flex">
-                                                    <div class="mt-6">
-                                                         <h2 class="mb-0 number-font"><a href="orders">View All Orders</a></h2>
-                                                    </div>
-                                                    <div class="ms-auto">
-                                                        <div class="chart-wrapper mt-1">
-                                                            <!-- <canvas id="profitchart"
-                                                                class="h-8 w-9 chart-dropshadow"></canvas> -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                   
 
                                 </div>
                             </div>
@@ -305,13 +263,13 @@ $rows = mysqli_fetch_array($result);
                 array_push($labels, $label);
             
                 // Total Sales (amount) from invoicesales for that day
-                $sales_sql = "SELECT SUM(amount) as totalsales FROM invoicesales WHERE DATE(`date`) = '$date'";
+                $sales_sql = "SELECT SUM(amount) as totalsales FROM invoicesales WHERE DATE(`date`) = '$date' AND (vendor_uin = '$session_uin' OR vendor_uin IS NULL OR vendor_uin = '') AND paymentstatus = 'Paid'";
                 $sales_result = mysqli_query($conn, $sales_sql);
                 $sales_row = mysqli_fetch_array($sales_result);
                 array_push($sales_data, $sales_row['totalsales'] ? $sales_row['totalsales'] : 0);
             
                 // Total Orders (count) from invoiceorder for that day
-                $orders_sql = "SELECT COUNT(*) as totalorders FROM invoiceorder WHERE DATE(`date`) = '$date'";
+                $orders_sql = "SELECT COUNT(*) as totalorders FROM invoiceorder WHERE DATE(`date`) = '$date' AND (vendor_uin = '$session_uin' OR vendor_uin IS NULL OR vendor_uin = '')";
                 $orders_result = mysqli_query($conn, $orders_sql);
                 $orders_row = mysqli_fetch_array($orders_result);
                 array_push($orders_data, $orders_row['totalorders'] ? $orders_row['totalorders'] : 0);
@@ -325,6 +283,70 @@ $rows = mysqli_fetch_array($result);
                        
                        
                         <!-- ROW-2 -->
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="card">
+                                    <div class="card-header border-bottom d-flex justify-content-between align-items-center">
+                                        <h3 class="card-title">Recent Customer Orders</h3>
+                                        <div>
+                                            <a href="orders" class="btn btn-sm btn-primary me-1">Paid Orders</a>
+                                            <a href="pending-orders" class="btn btn-sm btn-warning">Pending Orders</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered text-nowrap key-buttons border-bottom">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Order ID / Invoice #</th>
+                                                        <th>Date</th>
+                                                        <th>Product</th>
+                                                        <th>Customer Name</th>
+                                                        <th>Customer Phone</th>
+                                                        <th>Amount</th>
+                                                        <th>Payment Status</th>
+                                                        <th>Order Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $rec_stmt = mysqli_prepare($conn, "SELECT * FROM invoicesales WHERE (vendor_uin = ? OR vendor_uin IS NULL OR vendor_uin = '') ORDER BY id DESC LIMIT 10");
+                                                    mysqli_stmt_bind_param($rec_stmt, "s", $session_uin);
+                                                    mysqli_stmt_execute($rec_stmt);
+                                                    $rec_orders = mysqli_stmt_get_result($rec_stmt);
+                                                    if ($rec_orders && mysqli_num_rows($rec_orders) > 0) {
+                                                        $r_cnt = 1;
+                                                        while ($r_row = mysqli_fetch_assoc($rec_orders)) {
+                                                            $r_oid = !empty($r_row['order_id']) ? $r_row['order_id'] : $r_row['invoicenumber'];
+                                                            $r_stat = !empty($r_row['order_status']) ? $r_row['order_status'] : 'Processing';
+                                                    ?>
+                                                            <tr>
+                                                                <td class="text-center"><?php echo $r_cnt++; ?></td>
+                                                                <td><strong><?php echo htmlspecialchars($r_oid); ?></strong></td>
+                                                                <td><?php echo date('jS-F-Y', strtotime($r_row['date'])); ?></td>
+                                                                <td><strong><?php echo htmlspecialchars($r_row['productname']); ?></strong></td>
+                                                                <td><?php echo htmlspecialchars($r_row['customername']); ?></td>
+                                                                <td><?php echo htmlspecialchars($r_row['customer_phone']); ?></td>
+                                                                <td><strong>&#8358;<?php echo number_format((float)$r_row['amount'], 2); ?></strong></td>
+                                                                <td class="text-center"><span class="badge bg-success"><?php echo htmlspecialchars($r_row['paymentstatus']); ?></span></td>
+                                                                <td class="text-center"><span class="badge bg-info"><?php echo htmlspecialchars($r_stat); ?></span></td>
+                                                            </tr>
+                                                    <?php
+                                                        }
+                                                    } else {
+                                                        echo "<tr><td colspan='9' class='text-center py-4 text-muted'>No recent customer orders found.</td></tr>";
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ROW-3 -->
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                 <div class="card">
@@ -346,7 +368,7 @@ $rows = mysqli_fetch_array($result);
                             </div>
                              
                         </div>
-                        <!-- ROW-2 END -->
+                        <!-- ROW-3 END -->
 
                 <script>
                     var labels = <?php echo $labels_json; ?>;

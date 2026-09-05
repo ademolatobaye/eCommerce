@@ -115,7 +115,7 @@ ini_set('display_errors', '1');
                                         $rand = rand(1000, 9999);
                                         $_SESSION['otp_time'] = time();
                                         $today = date("dmy");
-                                        $customer_uin = "DEE" . $rand . $today;
+                                        $customer_uin = $business_name . $rand . $today;
                                         $date = date("Y-m-d");
                                         $year = date("Y");
                                         error_reporting(E_ALL);

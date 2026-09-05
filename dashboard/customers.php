@@ -17,10 +17,9 @@ if (empty($setting_row['business_name'])) {
     exit();
 }
 
-$id = 1;
-$sql = "SELECT * FROM invoicesales WHERE id='$id'";
+
+$sql = "SELECT * FROM customertable ORDER BY customer_id DESC";
 $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-$rows = mysqli_fetch_array($result);
 
 ?>
 
@@ -41,7 +40,7 @@ $rows = mysqli_fetch_array($result);
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/brand/favicon.png">
 
     <!-- TITLE -->
-    <title><?php echo $business_name; ?> - ORDERS </title>
+    <title><?php echo $business_name; ?> – VIEW STAFF</title>
 
     <!-- BOOTSTRAP CSS -->
     <link id="style" href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -75,7 +74,9 @@ $rows = mysqli_fetch_array($result);
     <!-- PAGE -->
     <div class="page">
         <div class="page-main">
+
            
+
             <!--app-content open-->
             <div class="main-content app-content mt-0">
                 <div class="side-app">
@@ -85,11 +86,14 @@ $rows = mysqli_fetch_array($result);
 
                         <!-- PAGE-HEADER -->
                         <div class="page-header">
-                            <h1 class="page-title">Paid / Confirmed Orders</h1>
+                            <h1 class="page-title">Customer List</h1>
                             <div>
-                                <a href="pending-orders" class="btn btn-warning me-2"><i class="fe fe-clock me-1"></i> View Pending Orders</a>
-                                <a href="index" class="btn btn-secondary"><i class="fe fe-arrow-left me-1"></i> Dashboard</a>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Customer List</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page"><a href="javascript:history.back()">< Go back</a></li>
+                                </ol>
                             </div>
+
                         </div>
                         <!-- PAGE-HEADER END -->
 
@@ -97,8 +101,8 @@ $rows = mysqli_fetch_array($result);
                         <div class="row row-sm">
                             <div class="col-lg-12">
                                 <div class="card">
-                                    <div class="card-header border-bottom-0">
-                                        <h3 class="card-title">Confirmed Sales & Orders</h3>
+                                    <div class="card-header">
+                                        <h3 class="card-title">All Customers</h3>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -106,61 +110,51 @@ $rows = mysqli_fetch_array($result);
                                                 <thead>
                                                     <tr>
                                                         <th class="border-bottom-0">S/N</th>
-                                                        <th class="border-bottom-0">Order ID</th>
-                                                        <th class="border-bottom-0">Invoice Number</th>
-                                                        <th class="border-bottom-0">Date</th>
-                                                        <th class="border-bottom-0">Customer Name</th>
+                                                        <th class="border-bottom-0">Email</th>
+                                                        <th class="border-bottom-0">UIN</th>
+                                                        <th class="border-bottom-0">Fullname</th>
                                                         <th class="border-bottom-0">Phone</th>
-                                                        <th class="border-bottom-0">Amount</th>
-                                                        <th class="border-bottom-0">Payment</th>
-                                                        <th class="border-bottom-0">Order Status</th>
-                                                        <th class="border-bottom-0">Courier Details</th>
+                                                        <th class="border-bottom-0">Address</th>
+                                                        <th class="border-bottom-0">Reg. Date</th>
                                                         <th class="border-bottom-0">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
 
                                                     <?php
-                                                    include("db_conn.php");
-                                                    $stmt = mysqli_prepare($conn, "SELECT * FROM invoicesales WHERE (vendor_uin = ? OR vendor_uin IS NULL OR vendor_uin = '') AND paymentstatus = 'Paid' ORDER BY id DESC");
-                                                    mysqli_stmt_bind_param($stmt, "s", $session_uin);
-                                                    mysqli_stmt_execute($stmt);
-                                                    $result = mysqli_stmt_get_result($stmt);
-                                                    if ($result && mysqli_num_rows($result) > 0) {
-                                                        $count = 1;
-                                                        while ($row = mysqli_fetch_array($result)) {
-                                                            $order_id_disp = !empty($row['order_id']) ? $row['order_id'] : $row['invoicenumber'];
-                                                            $current_ord_status = !empty($row['order_status']) ? $row['order_status'] : 'Payment Confirmed';
-                                                            $courier_disp = !empty($row['courier_name']) ? htmlspecialchars($row['courier_name']) . ($row['tracking_number'] ? ' ('.$row['tracking_number'].')' : '') : 'N/A';
-                                                    ?>
-                                                            <tr>
-                                                                <td style="text-align:center;"><?php echo $count++; ?></td>
-                                                                <td><strong><?php echo htmlspecialchars($order_id_disp); ?></strong></td>
-                                                                <td><?php echo htmlspecialchars($row['invoicenumber']); ?></td>
-                                                                <td><?php echo date('jS-F-Y', strtotime($row['date'])); ?></td>
-                                                                <td><?php echo htmlspecialchars($row['customername']); ?></td>
-                                                                <td><?php echo htmlspecialchars($row['customer_phone']); ?></td>
-                                                                <td style="text-align:center;">&#8358;<?php echo number_format($row['amount'], 2); ?></td>
-                                                                <td style="text-align:center;"><span class="badge bg-success"><?php echo htmlspecialchars($row['paymentstatus']); ?></span></td>
-                                                                <td style="text-align:center;"><span class="badge bg-info"><?php echo htmlspecialchars($current_ord_status); ?></span></td>
-                                                                <td><small><?php echo $courier_disp; ?></small></td>
-                                                                <td>
-                                                                    <div class="dropdown">
-                                                                        <button type="button" class="btn btn-info dropdown-toggle btn-sm" data-bs-toggle="dropdown">
-                                                                            <i class="fe fe-action me-1"></i>Action
-                                                                        </button>
-                                                                        <div class="dropdown-menu">
-                                                                            <a class="dropdown-item" href="update-order-status?invoicenumber=<?php echo urlencode($row['invoicenumber']); ?>">Update Status</a>
-                                                                            <a class="dropdown-item" href="delete-order?invoicenumber=<?php echo urlencode($row['invoicenumber']); ?>" onclick="return confirm('Are you sure to delete this order record?')">Delete Order</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                    <?php
-                                                        }
-                                                    }
-                                                    ?>
+                                                include("db_conn.php");
+                                                $sql="SELECT * FROM customertable ORDER BY customer_id DESC";
+                                                $result= mysqli_query($conn, $sql);
+                                                if(mysqli_num_rows($result)>0){
+                                                $count=1;
+                                                while($row=mysqli_fetch_array($result)){
+                                                
+                                                ?>
+                                                    <tr>
+                                                        <td><?php echo $count++?></td>
+                                                        <td><?php echo $row['customer_email']?></td>
+                                                        <td><?php echo $row['customer_uin']?></td>
+                                                        <td><?php echo $row['fullname']?></td>
+                                                        <td><?php echo $row['phone']?></td>
+                                                        <td><?php echo $row['address']?></td>
+                                                        <td><?php echo date('jS-F-Y', strtotime($row['date']) )?></td>
+                                                         <td>
+                                                             <div class="dropdown">
+                                                        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown">
+                                                                <i class="fe fe-action me-2"></i>Action
+                                                            </button>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item" href="delete-customer?id=<?php echo $row['customer_id']?>" onclick="return confirm('Delete this customer?')">Delete Customer</a>
 
+                                                        </div>
+                                                    </div>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                                }
+                                                    ?>
+                                                   
                                                 </tbody>
                                             </table>
                                         </div>
@@ -169,6 +163,8 @@ $rows = mysqli_fetch_array($result);
                             </div>
                         </div>
                         <!-- End Row -->
+
+                       
                        
                     </div>
                     <!-- CONTAINER CLOSED -->

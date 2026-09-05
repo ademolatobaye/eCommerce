@@ -18,8 +18,8 @@
                         <!-- LOGO -->
                         <div class="main-header-center ms-3 d-none d-lg-block">
                             <form action="search" method="get">
-                                <input type="text" class="form-control" id="typehead" placeholder="Search for products..." required name="search">
-                            <button class="btn px-0 pt-2"><i class="fe fe-search" aria-hidden="true"></i></button>
+                                <input type="text" class="form-control" id="typehead" placeholder="Search products, customers, orders, staff..." required name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                            <button class="btn px-0 pt-2" type="submit"><i class="fe fe-search" aria-hidden="true"></i></button>
                             </form>
                         </div>
 
@@ -40,14 +40,14 @@
                                                 <i class="fe fe-search"></i>
                                             </a>
                                             <div class="dropdown-menu header-search dropdown-menu-start">
-                                                <div class="input-group w-100 p-2">
-                                                    <form action="search" method="get">
-                                                        <input type="text" class="form-control" placeholder="Search...." name="search">
-                                                    </form>
-                                                    <div class="input-group-text btn btn-primary">
-                                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                                <form action="search" method="get" class="p-2">
+                                                    <div class="input-group w-100">
+                                                        <input type="text" class="form-control" placeholder="Search products, orders, customers..." name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                                                        <button class="input-group-text btn btn-primary" type="submit">
+                                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                                        </button>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
 
@@ -72,7 +72,7 @@
                                         <!-- SIDE-MENU -->
                                         <div class="dropdown d-flex profile-1">
                                             <a href="javascript:void(0)" data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
-                                                <img src="assets/images/users/21.jpg" alt="profile-user"
+                                                <img src="assets/photo/<?php echo $session_photo; ?>" alt="profile-user"
                                                     class="avatar  profile-user brround cover-image">
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -162,7 +162,7 @@
                 $checkrows = mysqli_num_rows($check);
 
                 if($checkrows > 0){
-                  echo "<script>alert('Category already.')</script>";
+                  echo "<script>alert('Category already exists.')</script>";
                 }
                 else{
                   // END
@@ -189,7 +189,7 @@
                       </div>
 
                       <div class="modal-footer">
-                    <button class="btn ripple btn-success" type="submit" name="addcategory" onclick="return confirm('Are you sure to add category?')">Add Category</button>
+                    <button class="btn ripple btn-success" type="submit" name="addcategory" onclick="return confirm('Add category?')">Add Category</button>
                 </div>
 
                     </form>
@@ -318,13 +318,46 @@
 										<div class="panel-body tabs-menu-body p-0 border-0">
 											<div class="tab-content">
 												<div class="tab-pane active" id="side9">
-													<ul class="sidemenu-list">
-                                                        <li class="side-menu-label1"><a href="javascript:void(0)">Pages</a></li>
-                                                        
+													<ul class="sidemenu-list">                                                        
                                                          <li><a href="register-staff" class="slide-item"> Register New Staff</a></li>
                                                         
                                                          <li><a href="view-staff" class="slide-item"> View All Staff</a></li>
                                                                                                                  
+													</ul>
+                                                
+												</div>
+
+
+											</div>
+										</div>
+									</li>
+								</ul>
+                            </li>
+
+
+                            <li class="slide">
+                                <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)"><i
+                                        class="side-menu__icon fe fe-user"></i><span
+                                        class="side-menu__label">Customers(Online)</span><i
+                                        class="angle fe fe-chevron-right"></i>
+                                </a>
+
+								<ul class="slide-menu">
+									<li class="panel sidetab-menu">
+										<div class="tab-menu-heading p-0 pb-2 border-0">
+											<div class="tabs-menu ">
+												<!-- Tabs -->
+												<ul class="nav panel-tabs">
+													<li><a href="#side9" class="d-flex active" data-bs-toggle="tab"><i class="fe fe-monitor me-2"></i><p>Home</p></a></li>
+													<li><a href="#side10" data-bs-toggle="tab" class="d-flex"><i class="fe fe-message-square me-2"></i><p>Chat</p></a></li>
+												</ul>
+											</div>
+										</div>
+										<div class="panel-body tabs-menu-body p-0 border-0">
+											<div class="tab-content">
+												<div class="tab-pane active" id="side9">
+													<ul class="sidemenu-list">                                                       
+                                                         <li><a href="customers" class="slide-item"> View All Customers(Online)</a></li>                                                     
 													</ul>
                                                 
 												</div>
@@ -409,7 +442,9 @@
 
                                                         <li><a href="view-category" class="slide-item"> View Category</a></li>
 
-                                                        <li><a href="orders" class="slide-item"> View All Orders</a></li>
+                                                        <li><a href="orders" class="slide-item"> Paid / Confirmed Orders</a></li>
+
+                                                        <li><a href="pending-orders" class="slide-item"> Unpaid / Pending Orders</a></li>
 
                                                         <li><a href="vendors" class="slide-item"> Manage Vendors</a></li>
 

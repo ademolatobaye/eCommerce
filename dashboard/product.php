@@ -185,13 +185,15 @@ if (isset($_GET['action']) && isset($_GET['product_id'])) {
                                                             <?php if ($p_stat === 'Pending' || $p_stat === 'Approved'): ?>
                                                                 <a class="dropdown-item text-warning" href="product?action=reject_product&product_id=<?php echo $row['product_id']?>" onclick="return confirm('Reject this product?')"><i class="fa fa-times me-1"></i> Reject Product</a>
                                                             <?php endif; ?>
-                                                            <a class="dropdown-item" href="delete-product?product_id=<?php echo $row['product_id']?>" onclick="return confirm('Are you sure to delete this product?')">Delete Product</a>
+                                                            <!-- <a class="dropdown-item" href="view-product?product_id=<?php //echo $row['product_id']?>"><i class="fa fa-eye me-1"></i> View Product</a> -->
 
-                                                            <a class="dropdown-item" href="view-product?product_id=<?php echo $row['product_id']?>">View Product</a>
+                                                            <a class="dropdown-item" href="edit-product?product_id=<?php echo $row['product_id']?>"><i class="fa fa-edit me-1"></i> Edit Details</a>
 
-                                                            <!-- <a class="dropdown-item" href="edit-product.php?product_id=<?php echo $row['product_id']?>"><i class="fa fa-edit me-1"></i> Edit Product</a>
+                                                            <a class="dropdown-item" href="edit-product-images?product_id=<?php echo $row['product_id']?>"><i class="fa fa-image me-1"></i> Manage Gallery Images</a>
 
-                                                            <a class="dropdown-item" href="edit-product-images.php?product_id=<?php echo $row['product_id']?>"><i class="fa fa-image me-1"></i> Edit Images</a> -->
+                                                            <div class="dropdown-divider"></div>
+
+                                                            <a class="dropdown-item text-danger" href="delete-product?product_id=<?php echo $row['product_id']?>" onclick="return confirm('Are you sure to delete this product?')"><i class="fa fa-trash me-1"></i> Delete Product</a>
                                                         </div>
                                                     </div>
                                                         </td>
