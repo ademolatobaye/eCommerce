@@ -21,7 +21,7 @@ if(isset($_REQUEST['customer_id'])){
     $sql = "DELETE FROM customertable WHERE customer_id='$customer_id'";
     if(mysqli_query($conn, $sql)){
         echo "<script>alert('Customer successfully deleted.');
-                window.location.href='customers';
+            window.location.href='customers';
              </script>";
     } else {
         echo "Error deleting record: " . mysqli_error($conn);
