@@ -17,6 +17,7 @@ if (empty($setting_row['business_name'])) {
     exit();
 }
 
+
 $id = 1;
 $sql = "SELECT * FROM blog WHERE id='$id'";
 $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));

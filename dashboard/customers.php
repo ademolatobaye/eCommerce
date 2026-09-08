@@ -20,7 +20,6 @@ if (empty($setting_row['business_name'])) {
 
 $sql = "SELECT * FROM customertable ORDER BY customer_id DESC";
 $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-
 ?>
 
 <!doctype html>
