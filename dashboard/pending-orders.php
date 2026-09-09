@@ -56,8 +56,8 @@ $orders = mysqli_stmt_get_result($stmt);
                         <!-- PAGE HEADER -->
                         <div class="page-header">
                             <h1 class="page-title">Unpaid / Pending Checkout Orders</h1>
-                            <div>
-                                <a href="orders" class="btn btn-primary me-2"><i class="fe fe-check-circle me-1"></i> View Paid Orders</a>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="orders" class="btn btn-primary"><i class="fe fe-check-circle me-1"></i> View Paid Orders</a>
                                 <a href="index" class="btn btn-secondary"><i class="fe fe-arrow-left me-1"></i> Dashboard</a>
                             </div>
                         </div>
@@ -67,7 +67,7 @@ $orders = mysqli_stmt_get_result($stmt);
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header border-bottom-0">
-                                        <h3 class="card-title">Pending Order Lines</h3>
+                                        <h3 class="card-title">Pending Orders</h3>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">

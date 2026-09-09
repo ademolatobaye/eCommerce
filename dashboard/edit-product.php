@@ -33,7 +33,8 @@ $result = mysqli_stmt_get_result($stmt);
 $product = mysqli_fetch_assoc($result);
 
 if (!$product) {
-    echo "<script>alert('Product not found.'); window.location.href='product';</script>";
+    echo "<script>alert('Product not found.');
+     window.location.href='product';</script>";
     exit();
 }
 
@@ -127,9 +128,9 @@ if (!$product) {
                                              $profit = $sellingprice - $costprice;
                                              $category = isset($_REQUEST["category"]) ? mysqli_real_escape_string($conn, trim($_REQUEST["category"])) : mysqli_real_escape_string($conn, $product['category']);
                                              $description = mysqli_real_escape_string($conn, trim($_REQUEST["description"]));
-                                             $staff = isset($session_role) ? mysqli_real_escape_string($conn, $session_role) : 'Admin';
+                                            //  $staff = isset($session_role) ? mysqli_real_escape_string($conn, $session_role) : 'Admin';
 
-                                            $sql = "UPDATE product_table SET productname='$productname', costprice='$costprice', sellingprice='$sellingprice', quantity='$quantity', lowlevel='$lowlevel', profit='$profit', category='$category', `description`='$description', staff='$staff' WHERE product_id='$product_id'";
+                                            $sql = "UPDATE product_table SET productname='$productname', costprice='$costprice', sellingprice='$sellingprice', quantity='$quantity', lowlevel='$lowlevel', profit='$profit', category='$category', `description`='$description' WHERE product_id='$product_id'";
                                             if(mysqli_query($conn, $sql)){
                                                 if (class_exists('CacheManager')) {
                                                     CacheManager::flush();

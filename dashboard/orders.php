@@ -86,8 +86,8 @@ $rows = mysqli_fetch_array($result);
                         <!-- PAGE-HEADER -->
                         <div class="page-header">
                             <h1 class="page-title">Paid / Confirmed Orders</h1>
-                            <div>
-                                <a href="pending-orders" class="btn btn-warning me-2"><i class="fe fe-clock me-1"></i> View Pending Orders</a>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="pending-orders" class="btn btn-warning"><i class="fe fe-clock me-1"></i> View Pending Orders</a>
                                 <a href="index" class="btn btn-secondary"><i class="fe fe-arrow-left me-1"></i> Dashboard</a>
                             </div>
                         </div>

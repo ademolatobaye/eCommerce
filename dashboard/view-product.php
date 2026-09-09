@@ -31,8 +31,6 @@ mysqli_stmt_execute($stmt);
 
 $result = mysqli_stmt_get_result($stmt);
 $product = mysqli_fetch_assoc($result);
-
- 
 ?>
 
 
@@ -99,9 +97,9 @@ $product = mysqli_fetch_assoc($result);
                         <!-- PAGE-HEADER -->
                         <div class="page-header">
                             <h1 class="page-title">Product Details</h1>
-                            <div>
-                                <a href="edit-product?product_id=<?php echo $product_id; ?>" class="btn btn-primary me-2"><i class="fe fe-edit me-1"></i> Edit Details</a>
-                                <a href="edit-product-images?product_id=<?php echo $product_id; ?>" class="btn btn-info me-2"><i class="fe fe-image me-1"></i> Manage Images</a>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="edit-product?product_id=<?php echo $product_id; ?>" class="btn btn-primary"><i class="fe fe-edit me-1"></i> Edit Details</a>
+                                <a href="edit-product-images?product_id=<?php echo $product_id; ?>" class="btn btn-info"><i class="fe fe-image me-1"></i> Manage Images</a>
                                 <a href="product" class="btn btn-secondary"><i class="fe fe-arrow-left me-1"></i> Back to Products</a>
                             </div>
                         </div>
@@ -180,7 +178,16 @@ $product = mysqli_fetch_assoc($result);
                                                     <p><?php echo $product['description'];?></p>
                                                     <h3 class="mb-4"><span class="me-2 fw-bold fs-25 d-inline-flex">&#8358;<?php echo number_format($product['sellingprice'], 2);?></h3>
                                                     
-                                                    <div class=" mt-4 mb-5"><span class="fw-bold me-2">Availability :</span><span class="fw-bold text-success">In-stock</span></div>
+                                                    <div class=" mt-4 mb-5"><span class="fw-bold me-2">Availability :</span>
+                                                    <?php
+                                                    $stock_level = $product['lowlevel'];
+                                                    if($stock_level <= 5){
+                                                        echo "<span class='fw-bold text-danger'>Low Stock - " . $stock_level . " left</span>";
+                                                    }else{
+                                                        echo "<span class='fw-bold text-success'>In Stock</span>";
+                                                    }
+                                                    ?>
+                                                    </div>
                                                     <div class="colors d-flex me-3 mt-4 mb-5">
                                                         <span class="mt-2 fw-bold">Colors:</span>
                                                         <div class="row gutters-xs ms-4">

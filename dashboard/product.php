@@ -185,7 +185,7 @@ if (isset($_GET['action']) && isset($_GET['product_id'])) {
                                                             <?php if ($p_stat === 'Pending' || $p_stat === 'Approved'): ?>
                                                                 <a class="dropdown-item text-warning" href="product?action=reject_product&product_id=<?php echo $row['product_id']?>" onclick="return confirm('Reject this product?')"><i class="fa fa-times me-1"></i> Reject Product</a>
                                                             <?php endif; ?>
-                                                            <!-- <a class="dropdown-item" href="view-product?product_id=<?php //echo $row['product_id']?>"><i class="fa fa-eye me-1"></i> View Product</a> -->
+                                                            <a class="dropdown-item" href="view-product?product_id=<?php echo $row['product_id']?>"><i class="fa fa-eye me-1"></i> View Product</a>
 
                                                             <a class="dropdown-item" href="edit-product?product_id=<?php echo $row['product_id']?>"><i class="fa fa-edit me-1"></i> Edit Details</a>
 

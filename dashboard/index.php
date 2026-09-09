@@ -286,10 +286,10 @@ $rows = mysqli_fetch_array($result);
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                 <div class="card">
-                                    <div class="card-header border-bottom d-flex justify-content-between align-items-center">
+                                    <div class="card-header border-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
                                         <h3 class="card-title">Recent Customer Orders</h3>
-                                        <div>
-                                            <a href="orders" class="btn btn-sm btn-primary me-1">Paid Orders</a>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            <a href="orders" class="btn btn-sm btn-primary">Paid Orders</a>
                                             <a href="pending-orders" class="btn btn-sm btn-warning">Pending Orders</a>
                                         </div>
                                     </div>
