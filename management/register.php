@@ -199,7 +199,7 @@ ini_set('display_errors', '1');
 	if ($mail->send()) {
     echo "<script>alert('Dear $business_name, your account has been successfully created.');
      window.location.href='thank-you'</script>";
-                                            }
+                                            
 } else {
     error_log("Mailer Error: " . $mail->ErrorInfo);
     echo "<script>alert('Account created but confirmation email failed.'); 
@@ -207,6 +207,7 @@ ini_set('display_errors', '1');
 }
             }
         }
+    }
                                     
                                         ?>
 
