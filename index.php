@@ -67,7 +67,7 @@ if (isset($_SESSION['customer_email'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title><?php echo $business_name; ?> - Multipurpose E-Commerce Web Application And Multi Vendor</title>
+    <title><?php echo $business_name; ?> - Multipurpose E-Commerce Web Application</title>
 
     <meta name="keywords" content="" />
     <meta name="description" content="">
