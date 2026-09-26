@@ -217,7 +217,7 @@ if (empty($setting_row['business_name'])) {
 
                                                         <div class="swiper-slide widget-col">
                                                             <?php
-                                        $sql = "SELECT * FROM `blog` ORDER BY id DESC";
+                                        $sql = "SELECT * FROM blog ORDER BY id DESC";
                                         $result = mysqli_query($conn, $sql);
                                         if (mysqli_num_rows($result) > 0) {
                                             while ($row = mysqli_fetch_array($result)) {
@@ -240,7 +240,7 @@ if (empty($setting_row['business_name'])) {
 
                                                         <div class="swiper-slide widget-col">
                                                              <?php
-                                        $sql = "SELECT * FROM `blog` ORDER BY id ASC";
+                                        $sql = "SELECT * FROM blog ORDER BY id ASC";
                                         $result = mysqli_query($conn, $sql);
                                         if (mysqli_num_rows($result) > 0) {
                                             while ($row = mysqli_fetch_array($result)) {
@@ -275,7 +275,7 @@ if (empty($setting_row['business_name'])) {
                                         
                                         <div class="widget-body tags">
                                             <?php
-                                        $sql = "SELECT * FROM `blog_category` ORDER BY id ";
+                                        $sql = "SELECT * FROM blog_category ORDER BY id ";
                                         $result = mysqli_query($conn, $sql);
                                         if (mysqli_num_rows($result) > 0) {
                                             while ($row = mysqli_fetch_array($result)) {
