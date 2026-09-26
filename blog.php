@@ -100,7 +100,7 @@ if (empty($setting_row['business_name'])) {
                     <div class="row gutter-lg mb-10">
                         <div class="main-content">
                             <?php
-                            $sql = "SELECT * FROM `blog` ORDER BY id DESC";
+                            $sql = "SELECT * FROM blog ORDER BY id DESC";
                             $result = mysqli_query($conn, $sql);
                             if (mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_array($result)) {
@@ -192,7 +192,7 @@ if (empty($setting_row['business_name'])) {
                                          
                                         <ul class="widget-body filter-items search-ul">
                                             <?php
-                                        $sql = "SELECT * FROM `blog_category` ORDER BY id ";
+                                        $sql = "SELECT * FROM blog_category ORDER BY id ";
                                         $result = mysqli_query($conn, $sql);
                                         if (mysqli_num_rows($result) > 0) {
                                             while ($row = mysqli_fetch_array($result)) {
