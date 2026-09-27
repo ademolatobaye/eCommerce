@@ -280,7 +280,7 @@ if (empty($setting_row['business_name'])) {
                                         if (mysqli_num_rows($result) > 0) {
                                             while ($row = mysqli_fetch_array($result)) {
                                         ?>
-                                            <a href="#" class="tag"><?php echo $row['blogcategoryname']; ?></a>
+                                            <a href="" class="tag"><?php echo $row['blogcategoryname']; ?></a>
                                             <?php }} ?>
                                         </div>
                                         
