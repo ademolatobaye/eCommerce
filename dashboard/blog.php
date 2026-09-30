@@ -128,7 +128,7 @@ $rows = mysqli_fetch_array($result);
 
                                                     <?php
                                                 include("db_conn.php");
-                                                $sql="SELECT * FROM `blog` ORDER BY `date` DESC";
+                                                $sql="SELECT * FROM blog ORDER BY `date` ASC";
                                                 $result= mysqli_query($conn, $sql);
                                                 if(mysqli_num_rows($result)>0){
                                                 $count=1;
