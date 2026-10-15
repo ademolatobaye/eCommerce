@@ -87,9 +87,12 @@ if ($paymentData['status'] && $paymentData['data']['status'] == 'success') {
     $userQuery = mysqli_query($conn, "SELECT * FROM customertable WHERE customer_uin = '$customer_uin' LIMIT 1");
     if (mysqli_num_rows($userQuery) > 0) {
 
-        // // Update payment status on invoiceorder
-        $updateUser = mysqli_query($conn, "UPDATE invoiceorder SET paymentstatus='$status' 
+        // Update payment status on invoiceorder and ensure customer_phone is recorded
+        $updateUser = mysqli_query($conn, "UPDATE invoiceorder SET paymentstatus='$status', customer_phone='$customer_phone' 
             WHERE invoicenumber='$invoicenumber' AND customer_uin='$customer_uin'");
+
+        // Ensure customertable has the verified phone and address saved
+        mysqli_query($conn, "UPDATE customertable SET phone='$customer_phone', `address`='$customer_address' WHERE customer_uin='$customer_uin'");
 
         // Insert order into invoicesales using billing details from session
         $insertOrder = mysqli_query($conn, "INSERT INTO invoicesales

@@ -151,7 +151,7 @@ if (empty($cartItems)) {
                                     <div class="col-xs-12">
                                         <div class="form-group">
                                             <label>Fullname *</label>
-                                            <input type="text" class="form-control form-control-md" name="customername" value="<?php echo $product_row['customername']; ?>" readonly>
+                                            <input type="text" class="form-control form-control-md" name="customername" value="<?php echo htmlspecialchars(!empty($session_fullname) ? $session_fullname : $product_row['customername']); ?>" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -214,7 +214,7 @@ if (empty($cartItems)) {
 
                                         <div class="form-group">
                                             <label>Phone Number *</label>
-                                            <input type="text" class="form-control form-control-md" name="customer_phone" value="<?php echo $product_row['customer_phone']; ?>" required>
+                                            <input type="text" class="form-control form-control-md" name="customer_phone" value="<?php echo htmlspecialchars(!empty($session_phone) ? $session_phone : $product_row['customer_phone']); ?>" required>
                                         </div>
                                     </div>
                                 </div>
@@ -222,7 +222,7 @@ if (empty($cartItems)) {
 
                                 <div class="form-group mb-7">
                                     <label>Email Address *</label>
-                                    <input type="email" class="form-control form-control-md" name="customer_email" value="<?php echo $product_row['customer_email']; ?>" required>
+                                    <input type="email" class="form-control form-control-md" name="customer_email" value="<?php echo htmlspecialchars(!empty($session_email) ? $session_email : $product_row['customer_email']); ?>" required>
                                 </div>
                                  
                                 

@@ -138,7 +138,7 @@ $customer_email=$row['customer_email'];
                                             } else {
 
                                                 // UPDATING OTP STATUS FROM PENDING TO VERIFIED AND REDIRECTING TO A NEW PAGE.
-                                                $sql="UPDATE customertable SET `status`='Verified' WHERE customer_email='$customer_email'";
+                                                $sql="UPDATE customertable SET `status` ='Verified' WHERE customer_email='$customer_email'";
                                                 $result=mysqli_query($conn, $sql);
                                                 if($result){
                                                     echo "<script>alert('OTP successfully verified!');

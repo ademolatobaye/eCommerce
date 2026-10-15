@@ -28,6 +28,23 @@ $totalRow    = mysqli_fetch_assoc($totalResult);
 $total       = (float)$totalRow['total'];
 $totalQty    = (int)$totalRow['totalQty'];
 
+// Auto-save phone & address to customer profile so future checkouts autofill
+if (!empty($customer_uin)) {
+    $stmt_cust = mysqli_prepare($conn, "UPDATE customertable SET phone = ?, `address` = ? WHERE customer_uin = ?");
+    if ($stmt_cust) {
+        mysqli_stmt_bind_param($stmt_cust, "sss", $customer_phone, $customer_address, $customer_uin);
+        mysqli_stmt_execute($stmt_cust);
+        mysqli_stmt_close($stmt_cust);
+    }
+
+    $stmt_inv = mysqli_prepare($conn, "UPDATE invoiceorder SET customer_phone = ? WHERE invoicenumber = ? AND customer_uin = ?");
+    if ($stmt_inv) {
+        mysqli_stmt_bind_param($stmt_inv, "sss", $customer_phone, $invoicenumber, $customer_uin);
+        mysqli_stmt_execute($stmt_inv);
+        mysqli_stmt_close($stmt_inv);
+    }
+}
+
 // Store everything in session for use in paycallback.php
 $_SESSION['date']             = $date;
 $_SESSION['order_id']         = $order_id;
