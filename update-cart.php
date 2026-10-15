@@ -15,6 +15,7 @@ if (!isset($_SESSION['customer_email']) || !isset($_SESSION['invoicenumber'])) {
     exit();
 }
 
+
 $invoiceNumber = $_SESSION['invoicenumber'];
 
 // Handle array of quantities from cart form: $_POST['quantities'][$product_id] = $qty
