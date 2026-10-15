@@ -19,6 +19,14 @@ if (empty($setting_row['business_name'])) {
     exit();
 }
 
+// If customer is already logged in, redirect to index or intended page
+if (isset($_SESSION['customer_email'])) {
+    $redirect_url = $_SESSION['redirect_after_login'] ?? '../index';
+    unset($_SESSION['redirect_after_login']);
+    header("Location: $redirect_url");
+    exit();
+}
+
 if (isset($_POST['identifier']) && isset($_POST['password'])) {
         $identifier = stripslashes($_POST['identifier']);
         $identifier = mysqli_real_escape_string($conn, $identifier);
@@ -70,7 +78,9 @@ if (isset($_POST['identifier']) && isset($_POST['password'])) {
                     $_SESSION['invoicenumber'] = $invoice_row['invoicenumber'];
                 }
 
-                header("Location: ../index");
+                $redirect_url = $_SESSION['redirect_after_login'] ?? '../index';
+                unset($_SESSION['redirect_after_login']);
+                header("Location: $redirect_url");
                 exit();
 
             } else {
@@ -191,6 +201,46 @@ if (isset($_POST['identifier']) && isset($_POST['password'])) {
                                         <button type="submit" name="submit" class="btn btn-primary w-100">Sign In</button>
                                          <a href="index">Don't have an account? Register Here</a>
                                     </form>
+
+                                    <div style="text-align: center; margin-top: 20px;"><p>OR</p></div>
+
+                                    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+                                    <div id="g_id_onload"
+                                        data-client_id="819598202326-9ncesagc8ap8rsmbe3oe3ch6o9j1e6oe.apps.googleusercontent.com"
+                                        data-login_uri="http://localhost/eCommerce/reg/google-callback.php"
+                                        data-ux_mode="redirect"
+                                        data-auto_prompt="false">
+                                    </div>
+
+                                    <div id="google-btn-wrap" style="margin-top:15px; display:flex; justify-content:center;">
+                                    <div id="google-btn"></div>
+                                    </div>
+
+                                    <script>
+                                    function renderGoogleBtn() {
+                                        var wrap = document.getElementById('google-btn-wrap');
+                                        var width = Math.min(400, Math.max(200, Math.floor(wrap.clientWidth)));
+                                        document.getElementById('google-btn').innerHTML = '';
+                                        google.accounts.id.renderButton(document.getElementById('google-btn'), {
+                                            type: 'standard',
+                                            shape: 'rectangular',
+                                            theme: 'outline',
+                                            text: 'continue_with',
+                                            size: 'large',
+                                            logo_alignment: 'center',
+                                            width: width
+                                        });
+                                    }
+
+                                    window.addEventListener('load', renderGoogleBtn);
+
+                                    var gTimer;
+                                    window.addEventListener('resize', function () {
+                                        clearTimeout(gTimer);
+                                        gTimer = setTimeout(renderGoogleBtn, 200);
+                                    });
+                                    </script>
 
                                     <script>
                                         function togglePassword(inputId, iconId) {

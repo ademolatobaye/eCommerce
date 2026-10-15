@@ -88,7 +88,7 @@ if (!empty($customerUin)) {
                 <a href="my-account" class="d-lg-show">My Account</a>
                 <?php } ?>
                <?php if (isset($_SESSION['customer_email'])) { ?>
-                <a href="signout" class="d-lg-show" onclick="return confirm('Are you certain to sign out?')"><i class="w-icon-account"></i>Sign Out</a>
+                <a href="signout" class="d-lg-show" onclick="return confirm('Sign Out?')"><i class="w-icon-account"></i>Sign Out</a>
             <?php } else { ?>
                 <a href="reg/user-login" class="d-lg-show"><i class="w-icon-account"></i>Sign In</a>
                 <span class="delimiter d-lg-show">/</span>

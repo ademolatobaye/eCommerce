@@ -266,8 +266,51 @@ ini_set('display_errors', '1');
                                         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
                                         <button type="submit" name="continue" class="btn btn-primary w-100">Continue</button>
+                                        
                                     </form>
+                                    
                                     <p class="text-center mt-4">Have an account already? <a href="user-login" class="text-primary">Sign in</a></p>
+
+                                    <p class="text-center mt-4">OR</p>
+
+                                    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+                                    <div id="g_id_onload"
+                                        data-client_id="819598202326-9ncesagc8ap8rsmbe3oe3ch6o9j1e6oe.apps.googleusercontent.com"
+                                        data-login_uri="http://localhost/eCommerce/reg/google-callback.php"
+                                        data-ux_mode="redirect"
+                                        data-auto_prompt="false">
+                                    </div>
+
+                                    <div id="google-btn-wrap" style="margin-top:15px; display:flex; justify-content:center;">
+                                    <div id="google-btn"></div>
+                                    </div>
+
+                                    <script>
+                                    function renderGoogleBtn() {
+                                        var wrap = document.getElementById('google-btn-wrap');
+                                        var width = Math.min(400, Math.max(200, Math.floor(wrap.clientWidth)));
+                                        document.getElementById('google-btn').innerHTML = '';
+                                        google.accounts.id.renderButton(document.getElementById('google-btn'), {
+                                            type: 'standard',
+                                            shape: 'rectangular',
+                                            theme: 'outline',
+                                            text: 'continue_with',
+                                            size: 'large',
+                                            logo_alignment: 'center',
+                                            width: width
+                                        });
+                                    }
+
+                                    window.addEventListener('load', renderGoogleBtn);
+
+                                    var gTimer;
+                                    window.addEventListener('resize', function () {
+                                        clearTimeout(gTimer);
+                                        gTimer = setTimeout(renderGoogleBtn, 200);
+                                    });
+                                    </script>
+                                
                                 </div>
                             </div>
                         </div>
