@@ -1,5 +1,7 @@
 <?php
+include("session-check.php");
 include("db_conn.php");
+check_access(array('Super Admin'));
 
 $sql = "SELECT * FROM system_setting LIMIT 1";
 $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
@@ -29,11 +31,17 @@ if(isset($_REQUEST['id'])){
     $vendor_id = intval($_REQUEST['id']);
     
     // Fetch vendor info before update
-    $v_query = mysqli_query($conn, "SELECT * FROM vendor_table WHERE id = '$vendor_id' LIMIT 1");
-    $vendor = mysqli_fetch_assoc($v_query);
+    $v_stmt = mysqli_prepare($conn, "SELECT * FROM vendor_table WHERE id = ? LIMIT 1");
+    mysqli_stmt_bind_param($v_stmt, "i", $vendor_id);
+    mysqli_stmt_execute($v_stmt);
+    $v_res = mysqli_stmt_get_result($v_stmt);
+    $vendor = mysqli_fetch_assoc($v_res);
+    mysqli_stmt_close($v_stmt);
 
-    $sql = "UPDATE vendor_table SET `status` = 'Active' WHERE id='$vendor_id'";
-    if(mysqli_query($conn, $sql)){
+    $upd_stmt = mysqli_prepare($conn, "UPDATE vendor_table SET `status` = 'Active' WHERE id = ?");
+    mysqli_stmt_bind_param($upd_stmt, "i", $vendor_id);
+    if(mysqli_stmt_execute($upd_stmt)){
+        mysqli_stmt_close($upd_stmt);
         if ($vendor && !empty($vendor['vendor_email'])) {
             $vendor_email = $vendor['vendor_email'];
             $vendor_name  = $vendor['vendor_name'];
