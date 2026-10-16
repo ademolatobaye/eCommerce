@@ -12,6 +12,7 @@ if (!isset($_SESSION['customer_email']) || !isset($_SESSION['invoicenumber'])) {
         exit();
     }
     header("Location: reg/user-login");
+    
     exit();
 }
 
