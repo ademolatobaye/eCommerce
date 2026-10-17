@@ -96,6 +96,7 @@ ini_set('display_errors', '1');
                                             $email = mysqli_real_escape_string($conn, trim($_REQUEST["email"]));
                                             $address = mysqli_real_escape_string($conn, trim($_REQUEST["address"]));
                                             $business_type = mysqli_real_escape_string($conn, trim($_REQUEST["business_type"]));
+                                            $business_model = mysqli_real_escape_string($conn, trim($_REQUEST["business_model"]));
                                             $website = mysqli_real_escape_string($conn, trim($_REQUEST["website"]));
                                             $country = mysqli_real_escape_string($conn, trim($_REQUEST["country"]));
                                             $state = mysqli_real_escape_string($conn, trim($_REQUEST["state"]));
@@ -105,14 +106,14 @@ ini_set('display_errors', '1');
                                             $check=mysqli_query($conn, "SELECT * FROM system_setting WHERE business_name='$business_name' AND phone='$phone' AND email='$email'");
                                             $checkrows=mysqli_num_rows($check);
 
-                                            if($checkrows>0) {
-                                            echo "<script>alert('Invalid account. You already have an account.')
-                                            location.href='../'</script>";
-                                            } else {
+                                            if ($checkrows > 0) {
+                                                echo "<script>alert('Invalid account. You already have an account.'); location.href='../';</script>";
+                                                exit();
+                                            }
                                             
 
-                                                $sql = "INSERT INTO system_setting(business_name, `address`, phone, email, country, `state`, city, business_type, `status`, website) 
-                                                VALUES ('$business_name', '$address', '$phone', '$email', '$country', '$state', '$city', '$business_type', 'Active', '$website')";
+                                                $sql = "INSERT INTO system_setting(business_name, `address`, phone, email, country, `state`, city, business_type, business_model, `status`, website) 
+                                                VALUES ('$business_name', '$address', '$phone', '$email', '$country', '$state', '$city', '$business_type', '$business_model', 'Active', '$website')";
                                                 mysqli_query($conn, $sql) or die(mysqli_error($conn));
                                             if(mysqli_affected_rows($conn)!= 1){
                                                 $message = "Error inserting record.";
@@ -159,7 +160,7 @@ ini_set('display_errors', '1');
                     <table style='width:100%;max-width:620px;margin:0 auto;'>
                         <tbody align='center'>
                             <a href='https://ademolathedev.name.ng/e-commerce' target='_blank'>
-                                <img style='height: 60px' src='https://ademolathedev.name.ng/e-commerce/assets/images/logo.png' alt='DEE MART'>
+                                <img style='height: 60px' src='https://ademolathedev.name.ng/e-commerce/assets/images/logo.png' alt=''>
                             </a>
                         </tbody>
                     </table>
@@ -168,13 +169,13 @@ ini_set('display_errors', '1');
                             <tr>
                                 <td style='padding: 0 30px 20px;'>
                                     <p></p><br>
-                                    <p style='margin-bottom: 10px;'>Dear <b>$fullname,</b></p>
+                                    <p style='margin-bottom: 10px;'>Dear <b>$business_name,</b></p>
                                     <p style='margin-bottom: 10px;'>Your account has been successfully registered. Kindly log in to your account to explore our products.</p>
                                     
                                     <hr>
-                                    <p style='margin-bottom: 10px;'>If you have any questions or need help, feel free to contact us. Do well to enjoy <strong>DEE MART</strong>.</p>
+                                    <p style='margin-bottom: 10px;'>If you have any questions or need help, feel free to contact us. Do well to enjoy.</p>
                                     <hr>
-                                    <p style='margin-bottom: 10px;'><em>Warm regards,</em><br><b>DEE MART.</b></p>
+                                    <p style='margin-bottom: 10px;'><em>Warm regards,</em><br><b>Management.</b></p>
                                 </td>
                             </tr>
                         </tbody>
@@ -183,8 +184,7 @@ ini_set('display_errors', '1');
                         <tbody>
                             <tr>
                                 <td style='text-align: center; padding:25px 20px 0;'>
-                                    <p style='font-size: 13px;'>Copyright &copy; $year <strong>DEE MART</strong>. All Rights Reserved.</p>
-                                    <p style='padding-top: 15px; font-size: 12px;'>This email was sent to you as a registered member on <a style='color: #4B0082; text-decoration:none;' href='#'><strong>DEE MART</strong></a>.</p>
+                                    <p style='font-size: 13px;'>Copyright &copy; $year <strong>Management</strong>. All Rights Reserved.</p>
                                 </td>
                             </tr>
                         </tbody>
@@ -197,16 +197,12 @@ ini_set('display_errors', '1');
 	$mail->addAddress("$email");
 //Finally send email
 	if ($mail->send()) {
-    echo "<script>alert('Dear $business_name, your account has been successfully created.');
-     window.location.href='thank-you'</script>";
-                                            
-} else {
-    error_log("Mailer Error: " . $mail->ErrorInfo);
-    echo "<script>alert('Account created but confirmation email failed.'); 
-    window.location.href='thank-you'</script>";
-}
+        echo "<script>alert('Dear $business_name, your account has been successfully created.'); window.location.href='thank-you';</script>";
+    } else {
+        error_log("Mailer Error: " . $mail->ErrorInfo);
+        echo "<script>alert('Account created but confirmation email failed.'); window.location.href='thank-you';</script>";
+    }
             }
-        }
     }
                                     
                                         ?>
@@ -231,6 +227,15 @@ ini_set('display_errors', '1');
                                             <select name="business_type" class="form-control" required>
                                                 <option value="">Select Business Type</option>
                                                 <option value="E-Commerce">E-Commerce</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Business Model *</label>
+                                            <select name="business_model" class="form-control" required>
+                                                <option value="">Select Business Model</option>
+                                                <option value="Single Store">Single Store</option>
+                                                <option value="Multi-Vendor">Multi-Vendor</option>
                                             </select>
                                         </div>
 

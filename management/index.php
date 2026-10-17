@@ -92,6 +92,10 @@ session_start();
                                             </li>
                                             <li class="mb-3 d-flex align-items-center">
                                                 <i class="w-icon-check text-primary mr-3" style="font-size: 18px; font-weight: bold;"></i>
+                                                <span>Provide your <strong>Business Model</strong>.</span>
+                                            </li>
+                                            <li class="mb-3 d-flex align-items-center">
+                                                <i class="w-icon-check text-primary mr-3" style="font-size: 18px; font-weight: bold;"></i>
                                                 <span>Provide your <strong>Business Address, Country, State, and City</strong>.</span>
                                             </li>
                                         </ul>
