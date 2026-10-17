@@ -117,26 +117,40 @@ $rows = mysqli_fetch_array($result);
                                              $photocredit = mysqli_real_escape_string($conn, trim($_REQUEST["photocredit"]));
                                              $staff = mysqli_real_escape_string($conn, $session_role);
 
-                                            // FILE UPLOAD - MULTIPLE IMAGES
+                                            // FILE UPLOAD - MULTIPLE IMAGES SECURELY
                                             $files = isset($_FILES['blogimages']) ? $_FILES['blogimages'] : (isset($_FILES['blogimage']) ? $_FILES['blogimage'] : null);
                                             $uploaded_images = array();
+                                            $allowed_exts = array('jpg', 'jpeg', 'png', 'webp', 'gif');
+                                            $allowed_mimes = array('image/jpeg', 'image/png', 'image/webp', 'image/gif');
 
                                             if ($files && is_array($files['name'])) {
                                                 $total_files = count($files['name']);
                                                 for ($i = 0; $i < $total_files; $i++) {
-                                                    $filename = basename($files['name'][$i]);
-                                                    if (!empty($filename)) {
-                                                        $target = "blogupload/" . $filename;
-                                                        if (move_uploaded_file($files['tmp_name'][$i], $target)) {
-                                                            $uploaded_images[] = $filename;
+                                                    if (!empty($files['name'][$i]) && $files['error'][$i] === UPLOAD_ERR_OK) {
+                                                        $ext = strtolower(pathinfo($files['name'][$i], PATHINFO_EXTENSION));
+                                                        $tmp_path = $files['tmp_name'][$i];
+                                                        $img_info = @getimagesize($tmp_path);
+
+                                                        if (in_array($ext, $allowed_exts) && $img_info && in_array($img_info['mime'], $allowed_mimes)) {
+                                                            $filename = "blog_" . time() . "_" . $i . "_" . bin2hex(random_bytes(5)) . "." . $ext;
+                                                            $target = "blogupload/" . $filename;
+                                                            if (move_uploaded_file($tmp_path, $target)) {
+                                                                $uploaded_images[] = $filename;
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            } else if ($files && !empty($files['name'])) {
-                                                $filename = basename($files['name']);
-                                                $target = "blogupload/" . $filename;
-                                                if (move_uploaded_file($files['tmp_name'], $target)) {
-                                                    $uploaded_images[] = $filename;
+                                            } else if ($files && !empty($files['name']) && $files['error'] === UPLOAD_ERR_OK) {
+                                                $ext = strtolower(pathinfo($files['name'], PATHINFO_EXTENSION));
+                                                $tmp_path = $files['tmp_name'];
+                                                $img_info = @getimagesize($tmp_path);
+
+                                                if (in_array($ext, $allowed_exts) && $img_info && in_array($img_info['mime'], $allowed_mimes)) {
+                                                    $filename = "blog_" . time() . "_" . bin2hex(random_bytes(5)) . "." . $ext;
+                                                    $target = "blogupload/" . $filename;
+                                                    if (move_uploaded_file($tmp_path, $target)) {
+                                                        $uploaded_images[] = $filename;
+                                                    }
                                                 }
                                             }
 
