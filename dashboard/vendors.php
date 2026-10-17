@@ -26,8 +26,8 @@ require 'includes/Exception.php';
 require 'includes/PHPMailer.php';
 require 'includes/SMTP.php';
 
-// Enforce access control for Super Admin / Admin
-check_access(array('Super Admin', 'Admin', 'Manager'));
+// Enforce access control for Super Admin
+check_access(array('Super Admin'));
 
 $message = "";
 $messageType = "";
