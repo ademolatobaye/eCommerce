@@ -1,5 +1,7 @@
 <?php
+include("session-check.php");
 include("db_conn.php");
+check_access(array('Super Admin'));
 
 $sql = "SELECT * FROM system_setting LIMIT 1";
 $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
@@ -18,11 +20,25 @@ if (empty($setting_row['business_name'])) {
 
 if(isset($_REQUEST['id'])){
     $staff_id = intval($_REQUEST['id']);
-    $sql = "DELETE FROM stafftable WHERE id='$staff_id'";
-    if(mysqli_query($conn, $sql)){
-        echo "<script>alert('Staff successfully deleted.'); window.location.href='view-staff';</script>";
-    } else {
-        echo "Error deleting record: " . mysqli_error($conn);
+    
+    // Prevent self-deletion
+    if (isset($row['id']) && $staff_id === intval($row['id'])) {
+        echo "<script>alert('You cannot delete your own account.');
+         window.location.href='view-staff';</script>";
+        exit();
+    }
+
+    $stmt = mysqli_prepare($conn, "DELETE FROM stafftable WHERE id = ?");
+    if($stmt){
+        mysqli_stmt_bind_param($stmt, "i", $staff_id);
+        if(mysqli_stmt_execute($stmt)){
+            mysqli_stmt_close($stmt);
+            echo "<script>alert('Staff successfully deleted.'); window.location.href='view-staff';</script>";
+            exit();
+        } else {
+            echo "Error deleting record: " . mysqli_error($conn);
+            mysqli_stmt_close($stmt);
+        }
     }
     mysqli_close($conn);
 }
