@@ -18,6 +18,13 @@ if (empty($setting_row['business_name'])) {
     exit();
 }
 
+// Vendors page is exclusively for Multi-Vendor marketplace model
+$business_model = $setting_row['business_model'] ?? 'Single Store';
+if ($business_model !== 'Multi-Vendor') {
+    header("Location: index");
+    exit();
+}
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -118,8 +125,15 @@ if (isset($_GET['action']) && isset($_GET['vendor_uin'])){
     }
 }
 
-// Fetch all vendors
-$sql = "SELECT * FROM vendor_table ORDER BY id DESC";
+// Fetch vendors with filter support
+$filter = isset($_GET['filter']) ? $_GET['filter'] : '';
+if ($filter === 'pending') {
+    $sql = "SELECT * FROM vendor_table WHERE `status` = 'Pending' OR `status` != 'Active' OR `status` IS NULL ORDER BY id DESC";
+} elseif ($filter === 'active') {
+    $sql = "SELECT * FROM vendor_table WHERE `status` = 'Active' ORDER BY id DESC";
+} else {
+    $sql = "SELECT * FROM vendor_table ORDER BY id DESC";
+}
 $result = mysqli_query($conn, $sql);
 ?>
 
@@ -162,8 +176,19 @@ $result = mysqli_query($conn, $sql);
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
-                                    <div class="card-header border-bottom-0">
-                                        <h3 class="card-title">All Registered Vendors</h3>
+                                    <div class="card-header border-bottom-0 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                                        <h3 class="card-title">
+                                            <?php 
+                                            if ($filter === 'pending') echo "Pending Vendor Applications";
+                                            elseif ($filter === 'active') echo "Active Vendor Stores";
+                                            else echo "All Registered Vendors";
+                                            ?>
+                                        </h3>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <a href="vendors" class="btn btn-sm <?php echo empty($filter) ? 'btn-primary' : 'btn-outline-primary'; ?> btn-pill">All Vendors</a>
+                                            <a href="vendors?filter=active" class="btn btn-sm <?php echo $filter === 'active' ? 'btn-success' : 'btn-outline-success'; ?> btn-pill">Active</a>
+                                            <a href="vendors?filter=pending" class="btn btn-sm <?php echo $filter === 'pending' ? 'btn-warning' : 'btn-outline-warning'; ?> btn-pill">Pending Review</a>
+                                        </div>
                                     </div>
                                     <div class="card-body">
 
@@ -231,9 +256,9 @@ $result = mysqli_query($conn, $sql);
                                                                         </button>
                                                                         <div class="dropdown-menu">
                                                                             <?php if ($v['status'] === 'Pending'): ?>
-                                                                                <a class="dropdown-item text-success" href="accept?id=<?php echo urlencode($v['id']); ?>" onclick="return confirm('Accept this vendor account? This will send an acceptance email.')">
+                                                                                <!-- <a class="dropdown-item text-success" href="accept?id=<?php //echo urlencode($v['id']); ?>" onclick="return confirm('Accept this vendor account? This will send an acceptance email.')">
                                                                                     <i class="fe fe-check-circle me-1"></i> Accept Vendor
-                                                                                </a>
+                                                                                </a> -->
                                                                                 <a class="dropdown-item text-success" href="approve?id=<?php echo urlencode($v['id']); ?>" onclick="return confirm('Approve this vendor account? This will send an approval email.')">
                                                                                     <i class="fe fe-check me-1"></i> Approve Vendor
                                                                                 </a>
