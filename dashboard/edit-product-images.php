@@ -117,20 +117,32 @@ if (isset($_POST['upload_images'])) {
         $uploaded_count = 0;
         $first_new_img = "";
 
+        $allowed_exts = array('jpg', 'jpeg', 'png', 'webp', 'gif');
+        $allowed_mimes = array('image/jpeg', 'image/png', 'image/webp', 'image/gif');
+
         for ($i = 0; $i < $total_files; $i++) {
             $orig_name = $files['name'][$i];
-            if (!empty($orig_name)) {
-                $ext = pathinfo($orig_name, PATHINFO_EXTENSION);
-                $filename = "prod_" . time() . "_" . $i . "_" . rand(1000, 9999) . "." . $ext;
-                $target = $uploadDir . $filename;
+            if (!empty($orig_name) && $files['error'][$i] === UPLOAD_ERR_OK) {
+                $ext = strtolower(pathinfo($orig_name, PATHINFO_EXTENSION));
+                $tmp_path = $files['tmp_name'][$i];
+                $img_info = @getimagesize($tmp_path);
 
-                if (move_uploaded_file($files['tmp_name'][$i], $target)) {
-                    $current_sort++;
-                    $filename_escaped = mysqli_real_escape_string($conn, $filename);
-                    mysqli_query($conn, "INSERT INTO product_images (uin, product_image, sort_order) VALUES ('$uin', '$filename_escaped', '$current_sort')");
-                    $uploaded_count++;
-                    if (empty($first_new_img)) {
-                        $first_new_img = $filename;
+                if (in_array($ext, $allowed_exts) && $img_info && in_array($img_info['mime'], $allowed_mimes)) {
+                    $filename = "prod_" . time() . "_" . $i . "_" . bin2hex(random_bytes(5)) . "." . $ext;
+                    $target = $uploadDir . $filename;
+
+                    if (move_uploaded_file($tmp_path, $target)) {
+                        $current_sort++;
+                        $stmt_img = mysqli_prepare($conn, "INSERT INTO product_images (uin, product_image, sort_order) VALUES (?, ?, ?)");
+                        if ($stmt_img) {
+                            mysqli_stmt_bind_param($stmt_img, "ssi", $uin, $filename, $current_sort);
+                            mysqli_stmt_execute($stmt_img);
+                            mysqli_stmt_close($stmt_img);
+                        }
+                        $uploaded_count++;
+                        if (empty($first_new_img)) {
+                            $first_new_img = $filename;
+                        }
                     }
                 }
             }
@@ -168,118 +180,6 @@ $images_query = mysqli_query($conn, "SELECT * FROM product_images WHERE uin = '$
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/plugins.css" rel="stylesheet">
     <link href="assets/css/icons.css" rel="stylesheet">
-
-    <style>
-        .drop-zone {
-            border: 2px dashed #4b0082;
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            background: #fdfaff;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .drop-zone:hover, .drop-zone.dragover {
-            background: #f0e6ff;
-            border-color: #310056;
-        }
-        .preview-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 15px;
-        }
-        .preview-card {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            border-radius: 6px;
-            overflow: hidden;
-            border: 1px solid #ddd;
-            background: #fff;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-        }
-        .preview-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .preview-card .remove-btn {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            background: rgba(220, 53, 69, 0.9);
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .img-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .img-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1) !important;
-        }
-        .img-card .zoom-trigger {
-            cursor: pointer;
-        }
-
-        /* DARK MODE PURPLE TEXT & BUTTON OVERRIDES */
-        body.dark-mode .text-primary,
-        body.dark-mode .drop-zone h5,
-        body.dark-mode .drop-zone i,
-        body.dark-mode .drop-zone p,
-        body.dark-mode h4.text-primary,
-        body.dark-mode h3.card-title strong,
-        body.dark-theme .text-primary,
-        body.dark-theme .drop-zone h5,
-        body.dark-theme .drop-zone i,
-        body.dark-theme .drop-zone p,
-        body.dark-theme h4.text-primary,
-        .dark-mode .text-primary,
-        .dark-mode .drop-zone h5,
-        .dark-mode .drop-zone i,
-        .dark-mode .drop-zone p,
-        .dark-mode h4.text-primary {
-            color: #ffffff !important;
-        }
-
-        body.dark-mode .btn-outline-primary,
-        body.dark-theme .btn-outline-primary,
-        .dark-mode .btn-outline-primary {
-            color: #ffffff !important;
-            border-color: #a855f7 !important;
-            background-color: transparent !important;
-        }
-
-        body.dark-mode .btn-outline-primary:hover,
-        body.dark-theme .btn-outline-primary:hover,
-        .dark-mode .btn-outline-primary:hover {
-            color: #ffffff !important;
-            border-color: #8b5cf6 !important;
-            background-color: #8b5cf6 !important;
-        }
-
-        body.dark-mode .drop-zone,
-        body.dark-theme .drop-zone,
-        .dark-mode .drop-zone {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border-color: rgba(255, 255, 255, 0.4) !important;
-        }
-        body.dark-mode .drop-zone:hover,
-        body.dark-theme .drop-zone:hover,
-        .dark-mode .drop-zone:hover {
-            background: rgba(255, 255, 255, 0.12) !important;
-            border-color: #ffffff !important;
-        }
-    </style>
 </head>
 
 <body class="app sidebar-mini ltr light-mode">
