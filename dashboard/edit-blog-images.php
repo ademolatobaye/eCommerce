@@ -89,17 +89,31 @@ if (isset($_POST['upload_images'])) {
         $uploaded_count = 0;
         $first_new_img = "";
 
+        $allowed_exts = array('jpg', 'jpeg', 'png', 'webp', 'gif');
+        $allowed_mimes = array('image/jpeg', 'image/png', 'image/webp', 'image/gif');
+
         for ($i = 0; $i < $total_files; $i++) {
-            $filename = basename($files['name'][$i]);
-            if (!empty($filename)) {
-                $target = "blogupload/" . $filename;
-                if (move_uploaded_file($files['tmp_name'][$i], $target)) {
-                    $current_sort++;
-                    $filename_escaped = mysqli_real_escape_string($conn, $filename);
-                    mysqli_query($conn, "INSERT INTO blog_images (uin, blog_image, sort_order) VALUES ('$uin', '$filename_escaped', '$current_sort')");
-                    $uploaded_count++;
-                    if (empty($first_new_img)) {
-                        $first_new_img = $filename;
+            $orig_name = $files['name'][$i];
+            if (!empty($orig_name) && $files['error'][$i] === UPLOAD_ERR_OK) {
+                $ext = strtolower(pathinfo($orig_name, PATHINFO_EXTENSION));
+                $tmp_path = $files['tmp_name'][$i];
+                $img_info = @getimagesize($tmp_path);
+
+                if (in_array($ext, $allowed_exts) && $img_info && in_array($img_info['mime'], $allowed_mimes)) {
+                    $filename = "blog_" . time() . "_" . $i . "_" . bin2hex(random_bytes(5)) . "." . $ext;
+                    $target = "blogupload/" . $filename;
+                    if (move_uploaded_file($tmp_path, $target)) {
+                        $current_sort++;
+                        $stmt_img = mysqli_prepare($conn, "INSERT INTO blog_images (uin, blog_image, sort_order) VALUES (?, ?, ?)");
+                        if ($stmt_img) {
+                            mysqli_stmt_bind_param($stmt_img, "ssi", $uin, $filename, $current_sort);
+                            mysqli_stmt_execute($stmt_img);
+                            mysqli_stmt_close($stmt_img);
+                        }
+                        $uploaded_count++;
+                        if (empty($first_new_img)) {
+                            $first_new_img = $filename;
+                        }
                     }
                 }
             }
