@@ -17,8 +17,7 @@ if (empty($setting_row['business_name'])) {
     exit();
 }
 
-$stmt = mysqli_prepare($conn, "SELECT * FROM invoiceorder WHERE (vendor_uin = ? OR vendor_uin IS NULL OR vendor_uin = '') AND paymentstatus = 'Pending' ORDER BY product_id DESC");
-mysqli_stmt_bind_param($stmt, "s", $session_uin);
+$stmt = mysqli_prepare($conn, "SELECT * FROM invoiceorder WHERE paymentstatus = 'Pending' ORDER BY product_id DESC");
 mysqli_stmt_execute($stmt);
 $orders = mysqli_stmt_get_result($stmt);
 ?>
