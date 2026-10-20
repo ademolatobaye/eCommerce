@@ -10,6 +10,8 @@ $phone = $setting_row['phone'];
 $business_name = $setting_row['business_name'];
 $address = $setting_row['address'];
 $email = $setting_row['email'];
+$business_model = $setting_row['business_model'];
+$is_multivendor = ($business_model === 'Multi-Vendor');
 
 // Check if business_name is NULL or empty
 if (empty($setting_row['business_name'])) {
@@ -17,8 +19,8 @@ if (empty($setting_row['business_name'])) {
     exit();
 }
 
-// Handle product approval/rejection by Admin
-if (isset($_GET['action']) && isset($_GET['product_id'])) {
+// Handle product approval/rejection by Admin (Only in Multi-Vendor Marketplace)
+if ($is_multivendor && isset($_GET['action']) && isset($_GET['product_id'])) {
     $action_p = $_GET['action'];
     $pid = intval($_GET['product_id']);
     
@@ -112,8 +114,22 @@ if (isset($_GET['action']) && isset($_GET['product_id'])) {
                         <div class="row row-sm">
                             <div class="col-lg-12">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">All Products</h3>
+                                    <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+                                        <h3 class="card-title">
+                                            <?php 
+                                            $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
+                                            if ($is_multivendor && $filter === 'pending') echo "Products Awaiting Approval";
+                                            elseif ($filter === 'lowstock') echo "Low Stock Inventory Alerts";
+                                            else echo "All Listed Products";
+                                            ?>
+                                        </h3>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <a href="product" class="btn btn-sm <?php echo empty($filter) ? 'btn-primary' : 'btn-outline-primary'; ?> btn-pill">All Products</a>
+                                            <?php if ($is_multivendor): ?>
+                                                <a href="product?filter=pending" class="btn btn-sm <?php echo $filter === 'pending' ? 'btn-warning' : 'btn-outline-warning'; ?> btn-pill"><i class="fe fe-clock me-1"></i> Pending Approval</a>
+                                            <?php endif; ?>
+                                            <a href="product?filter=lowstock" class="btn btn-sm <?php echo $filter === 'lowstock' ? 'btn-danger' : 'btn-outline-danger'; ?> btn-pill"><i class="fe fe-alert-triangle me-1"></i> Low Stock</a>
+                                        </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -124,16 +140,16 @@ if (isset($_GET['action']) && isset($_GET['product_id'])) {
                                                         <th class="border-bottom-0">Product ID</th>
                                                         <th class="border-bottom-0">Product Name</th>
                                                         <th class="border-bottom-0">Date</th>
-                                                        <!-- <th class="border-bottom-0">Cost Price</th> -->
                                                         <th class="border-bottom-0">Selling Price</th>
                                                         <th class="border-bottom-0">Quantity</th>
                                                         <th class="border-bottom-0">Low Level</th>
                                                         <th class="border-bottom-0" style="width:90px;">Product Image</th>
-                                                        <!-- <th class="border-bottom-0">Profit</th> -->
                                                         <th class="border-bottom-0">Category</th>
                                                         <th class="border-bottom-0">Description</th>
-                                                        <th class="border-bottom-0">Vendor</th>
-                                                        <th class="border-bottom-0">Approval Status</th>
+                                                        <?php if ($is_multivendor): ?>
+                                                            <th class="border-bottom-0">Vendor</th>
+                                                            <th class="border-bottom-0">Approval Status</th>
+                                                        <?php endif; ?>
                                                         <th class="border-bottom-0">Action</th>
                                                     </tr>
                                                 </thead>
@@ -141,7 +157,14 @@ if (isset($_GET['action']) && isset($_GET['product_id'])) {
 
                                                     <?php
                                                 include("db_conn.php");
-                                                $sql = "SELECT * FROM product_table ORDER BY product_id DESC";
+                                                $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
+                                                if ($is_multivendor && $filter === 'pending') {
+                                                    $sql = "SELECT * FROM product_table WHERE approval_status != 'Approved' OR approval_status IS NULL ORDER BY product_id DESC";
+                                                } elseif ($filter === 'lowstock') {
+                                                    $sql = "SELECT * FROM product_table WHERE quantity <= CAST(COALESCE(NULLIF(lowlevel, ''), '5') AS UNSIGNED) OR quantity = 0 ORDER BY quantity ASC, product_id DESC";
+                                                } else {
+                                                    $sql = "SELECT * FROM product_table ORDER BY product_id DESC";
+                                                }
                                                 $result = mysqli_query($conn, $sql);
                                                 if ($result && mysqli_num_rows($result) > 0) {
                                                 $count = 1;
@@ -163,27 +186,31 @@ if (isset($_GET['action']) && isset($_GET['product_id'])) {
                                                         <!-- <td style="text-align:center;">&#8358;<?php //echo number_format($row['profit'], 2); ?></td> -->
                                                         <td style="text-align:center;"><?php echo $row['category']?></td>
                                                         <td><?php echo $row['description']?></td>
-                                                        <td><strong><?php echo htmlspecialchars($vendor_name); ?></strong></td>
-                                                        <td>
-                                                            <?php if ($p_stat === 'Approved'): ?>
-                                                                <span class="badge bg-success">Approved & Live</span>
-                                                            <?php elseif ($p_stat === 'Pending'): ?>
-                                                                <span class="badge bg-warning">Pending Approval</span>
-                                                            <?php else: ?>
-                                                                <span class="badge bg-danger"><?php echo htmlspecialchars($p_stat); ?></span>
-                                                            <?php endif; ?>
-                                                        </td>
+                                                        <?php if ($is_multivendor): ?>
+                                                            <td><strong><?php echo htmlspecialchars($vendor_name); ?></strong></td>
+                                                            <td>
+                                                                <?php if ($p_stat === 'Approved'): ?>
+                                                                    <span class="badge bg-success">Approved & Live</span>
+                                                                <?php elseif ($p_stat === 'Pending'): ?>
+                                                                    <span class="badge bg-warning">Pending Approval</span>
+                                                                <?php else: ?>
+                                                                    <span class="badge bg-danger"><?php echo htmlspecialchars($p_stat); ?></span>
+                                                                <?php endif; ?>
+                                                            </td>
+                                                        <?php endif; ?>
                                                          <td>
                                                              <div class="dropdown">
                                                         <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown">
                                                                 <i class="fe fe-action me-2"></i>Action
                                                             </button>
                                                         <div class="dropdown-menu">
-                                                            <?php if ($p_stat === 'Pending' || $p_stat === 'Rejected'): ?>
-                                                                <a class="dropdown-item text-success" href="product?action=approve_product&product_id=<?php echo $row['product_id']?>" onclick="return confirm('Approve this product for storefront display?')"><i class="fa fa-check me-1"></i> Approve Product</a>
-                                                            <?php endif; ?>
-                                                            <?php if ($p_stat === 'Pending' || $p_stat === 'Approved'): ?>
-                                                                <a class="dropdown-item text-warning" href="product?action=reject_product&product_id=<?php echo $row['product_id']?>" onclick="return confirm('Reject this product?')"><i class="fa fa-times me-1"></i> Reject Product</a>
+                                                            <?php if ($is_multivendor): ?>
+                                                                <?php if ($p_stat === 'Pending' || $p_stat === 'Rejected'): ?>
+                                                                    <a class="dropdown-item text-success" href="product?action=approve_product&product_id=<?php echo $row['product_id']?>" onclick="return confirm('Approve this product for storefront display?')"><i class="fa fa-check me-1"></i> Approve Product</a>
+                                                                <?php endif; ?>
+                                                                <?php if ($p_stat === 'Pending' || $p_stat === 'Approved'): ?>
+                                                                    <a class="dropdown-item text-warning" href="product?action=reject_product&product_id=<?php echo $row['product_id']?>" onclick="return confirm('Reject this product?')"><i class="fa fa-times me-1"></i> Reject Product</a>
+                                                                <?php endif; ?>
                                                             <?php endif; ?>
                                                             <a class="dropdown-item" href="view-product?product_id=<?php echo $row['product_id']?>"><i class="fa fa-eye me-1"></i> View Product</a>
 
