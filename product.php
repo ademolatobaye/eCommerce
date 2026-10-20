@@ -10,6 +10,7 @@ $phone = $setting_row['phone'];
 $business_name = $setting_row['business_name'];
 $address = $setting_row['address'];
 $email = $setting_row['email'];
+$business_model = !empty($setting_row['business_model']) ? $setting_row['business_model'] : 'Multi-Vendor';
 
 // Check if business_name is NULL or empty
 if (empty($setting_row['business_name'])) {
@@ -150,93 +151,8 @@ if (!$product_row) {
 
     <!-- Default CSS -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/custom.css">
 </head>
-
-<style>
-    .product-single .product-image img {
-        max-height: 500px; 
-        width: auto;
-        margin: 0 auto;
-        object-fit: contain;
-    }
-    
-    .product-thumb img {
-        height: 100px;
-        object-fit: cover;
-    }
-
-    /* Full-Width Stacked Product Action Layout (Option A) */
-    .product-action-stacked {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        margin-bottom: 2rem;
-    }
-
-    .product-action-stacked .product-qty {
-        margin-bottom: 1.5rem !important;
-    }
-
-    .btn-cart-stacked,
-    .btn-wishlist-stacked {
-        width: 100% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        height: 48px !important;
-        font-size: 1.4rem !important;
-        font-weight: 600 !important;
-        border-radius: 6px !important;
-        box-sizing: border-box !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        text-align: center;
-        transition: all 0.3s ease;
-    }
-
-    .btn-cart-stacked {
-        background-color: #4B0082;
-        border: 1px solid #4B0082;
-        color: #ffffff;
-        box-shadow: 0 2px 6px rgba(75, 0, 130, 0.25);
-    }
-
-    .btn-cart-stacked:hover {
-        background-color: #380061;
-        border-color: #380061;
-        color: #ffffff;
-        box-shadow: 0 4px 12px rgba(75, 0, 130, 0.35);
-    }
-
-    .btn-cart-stacked.btn-disabled,
-    .btn-cart-stacked:disabled {
-        background-color: #e1e1e1;
-        border-color: #e1e1e1;
-        color: #888888;
-        cursor: not-allowed;
-        box-shadow: none;
-    }
-
-    .btn-wishlist-stacked {
-        background-color: #ffffff;
-        border: 1px solid #cccccc;
-        color: #333333;
-        text-decoration: none;
-    }
-
-    .btn-wishlist-stacked:hover {
-        color: #e3342f !important;
-        border-color: #e3342f !important;
-        background-color: #fff0f0 !important;
-        text-decoration: none;
-    }
-
-    .btn-wishlist-stacked.added {
-        color: #e3342f !important;
-        border-color: #e3342f !important;
-        background-color: #fff0f0 !important;
-    }
-</style>
 
 <body>
     <div class="page-wrapper">
@@ -357,6 +273,7 @@ if (!$product_row) {
                                               </div>
                                           </div>
 
+                                          <?php if ($business_model === 'Multi-Vendor'): ?>
                                           <!-- Vendor Sold By Bar -->
                                           <div class="vendor-sold-by-bar" style="display: flex; align-items: center; justify-content: space-between; background: #f7f8fa; border: 1px solid #e1e4e8; border-radius: 6px; padding: 8px 14px; margin: 12px 0 16px 0;">
                                               <div style="display: flex; align-items: center; gap: 8px;">
@@ -381,6 +298,7 @@ if (!$product_row) {
                                                   </a>
                                               <?php endif; ?>
                                           </div>
+                                          <?php endif; ?>
 
                                         <hr class="product-divider">
 
