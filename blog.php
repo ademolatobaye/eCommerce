@@ -64,6 +64,7 @@ if (empty($setting_row['business_name'])) {
 
     <!-- Default CSS -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/custom.css">
 </head>
 
 <body>
