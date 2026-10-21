@@ -97,8 +97,12 @@ $rows = mysqli_fetch_array($result);
                         <div class="row row-sm">
                             <div class="col-lg-12">
                                 <div class="card">
-                                    <div class="card-header border-bottom-0">
-                                        <h3 class="card-title">Confirmed Sales & Orders</h3>
+                                    <div class="card-header border-bottom-0 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                        <h3 class="card-title">Confirmed Sales &amp; Orders</h3>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="orders.php" class="btn <?php echo empty($_GET['filter']) ? 'btn-primary' : 'btn-outline-primary'; ?>">All Orders</a>
+                                            <a href="orders.php?filter=fulfillment" class="btn <?php echo (isset($_GET['filter']) && $_GET['filter'] === 'fulfillment') ? 'btn-warning' : 'btn-outline-warning'; ?>"><i class="fe fe-package me-1"></i> Awaiting Dispatch</a>
+                                        </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -123,8 +127,12 @@ $rows = mysqli_fetch_array($result);
 
                                                     <?php
                                                     include("db_conn.php");
-                                                    $stmt = mysqli_prepare($conn, "SELECT * FROM invoicesales WHERE (vendor_uin = ? OR vendor_uin IS NULL OR vendor_uin = '') AND paymentstatus = 'Paid' ORDER BY id DESC");
-                                                    mysqli_stmt_bind_param($stmt, "s", $session_uin);
+                                                    $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
+                                                    if ($filter === 'fulfillment') {
+                                                        $stmt = mysqli_prepare($conn, "SELECT * FROM invoicesales WHERE paymentstatus = 'Paid' AND (order_status IS NULL OR order_status = '' OR order_status = 'Payment Confirmed' OR order_status = 'Processing') ORDER BY id DESC");
+                                                    } else {
+                                                        $stmt = mysqli_prepare($conn, "SELECT * FROM invoicesales WHERE paymentstatus = 'Paid' ORDER BY id DESC");
+                                                    }
                                                     mysqli_stmt_execute($stmt);
                                                     $result = mysqli_stmt_get_result($stmt);
                                                     if ($result && mysqli_num_rows($result) > 0) {
