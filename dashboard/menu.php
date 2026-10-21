@@ -1,5 +1,15 @@
         <?php
         check_access(array('Super Admin'));
+        if (!isset($business_model)) {
+            if (isset($conn)) {
+                $sys_model_query = mysqli_query($conn, "SELECT business_model FROM system_setting LIMIT 1");
+                $sys_model_row = $sys_model_query ? mysqli_fetch_assoc($sys_model_query) : null;
+                $business_model = !empty($sys_model_row['business_model']) ? $sys_model_row['business_model'] : 'Multi-Vendor';
+            } else {
+                $business_model = 'Multi-Vendor';
+            }
+        }
+        $is_multivendor = ($business_model === 'Multi-Vendor');
         ?>    
             
             
@@ -53,7 +63,9 @@
 
                                         
                                         
-                                        <!-- COUNTRY -->
+
+
+                                        <!-- THEME LAYOUT -->
                                         <div class="d-flex">
                                             <a class="nav-link icon theme-layout nav-link-bg layout-setting">
                                                 <span class="dark-layout"><i class="fe fe-moon"></i></span>
@@ -446,7 +458,9 @@
 
                                                         <li><a href="pending-orders" class="slide-item"> Unpaid / Pending Orders</a></li>
 
+                                                        <?php if ($is_multivendor): ?>
                                                         <li><a href="vendors" class="slide-item"> Manage Vendors</a></li>
+                                                        <?php endif; ?>
 
                                                         <li class="sub-slide">
                                                             <a class="sub-side-menu__item" href="#" data-bs-toggle="modal" data-bs-target="#productreportbydate"><span
@@ -470,41 +484,3 @@
                 </div>
             </div>
             <!--/APP-SIDEBAR-->
-
-<style>
-/* Global Dark Mode Override: Turn purple text and primary accents to white in Dark Mode */
-body.dark-mode .text-primary,
-body.dark-mode a.text-primary,
-body.dark-mode h1.text-primary,
-body.dark-mode h2.text-primary,
-body.dark-mode h3.text-primary,
-body.dark-mode h4.text-primary,
-body.dark-mode h5.text-primary,
-body.dark-mode h6.text-primary,
-body.dark-mode p.text-primary,
-body.dark-mode span.text-primary,
-body.dark-mode i.text-primary,
-body.dark-mode label.text-primary,
-body.dark-mode strong.text-primary,
-body.dark-mode b.text-primary,
-body.dark-mode .badge.bg-primary-light,
-body.dark-theme .text-primary,
-body.dark-theme a.text-primary,
-.dark-mode .text-primary,
-.dark-mode a.text-primary,
-.dark-mode [style*="color: #4b0082"],
-.dark-mode [style*="color: #4B0082"],
-.dark-mode [style*="color:#4b0082"],
-.dark-mode [style*="color:#4B0082"],
-.dark-mode [style*="color: purple"],
-.dark-mode [style*="color:purple"] {
-    color: #ffffff !important;
-}
-
-body.dark-mode .badge.bg-primary-light,
-body.dark-theme .badge.bg-primary-light,
-.dark-mode .badge.bg-primary-light {
-    background-color: rgba(255, 255, 255, 0.15) !important;
-    color: #ffffff !important;
-}
-</style>
