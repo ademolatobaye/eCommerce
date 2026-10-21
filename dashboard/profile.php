@@ -17,10 +17,10 @@ if (empty($setting_row['business_name'])) {
     exit();
 }
 
-if (!isset($_REQUEST['id'])) {
-    header("Location: view-staff");
-    exit();
-}
+// if (!isset($_REQUEST['id'])) {
+//     header("Location: view-staff");
+//     exit();
+// }
 
 $staff_id = $_REQUEST['id'];
 
