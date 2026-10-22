@@ -170,12 +170,12 @@ ini_set('display_errors', '1');
                                 <td style='padding: 0 30px 20px;'>
                                     <p></p><br>
                                     <p style='margin-bottom: 10px;'>Dear <b>$business_name,</b></p>
-                                    <p style='margin-bottom: 10px;'>Your account has been successfully registered. Kindly log in to your account to explore our products.</p>
+                                    <p style='margin-bottom: 10px;'>Your $business_model account has been successfully registered.</p>
                                     
                                     <hr>
                                     <p style='margin-bottom: 10px;'>If you have any questions or need help, feel free to contact us. Do well to enjoy.</p>
                                     <hr>
-                                    <p style='margin-bottom: 10px;'><em>Warm regards,</em><br><b>Management.</b></p>
+                                    <p style='margin-bottom: 10px;'><em>Warm Regards,</em><br><b>Management.</b></p>
                                 </td>
                             </tr>
                         </tbody>
