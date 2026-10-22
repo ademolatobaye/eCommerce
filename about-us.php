@@ -55,47 +55,7 @@ if (empty($setting_row['business_name'])) {
     <link rel="stylesheet" href="assets/vendor/swiper/swiper-bundle.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendor/magnific-popup/magnific-popup.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.min.css">
-
-    <style>
-        .about-card {
-            height: 100%;
-            padding: 2.5rem 2rem;
-            border: 1px solid #eee;
-            border-radius: 1rem;
-            background-color: #fff;
-        }
-
-        .about-card .icon-box-icon {
-            margin-bottom: 1.2rem;
-            font-size: 2.4rem;
-            color: #336699;
-        }
-
-        .product-media img {
-            width: 100%;
-            height: 240px;
-            object-fit: cover;
-        }
-
-        .product-wrap {
-            margin-bottom: 2rem;
-        }
-
-        .category-pill {
-            display: inline-block;
-            margin: 0 .8rem .8rem 0;
-            padding: .8rem 1.4rem;
-            border: 1px solid #ddd;
-            border-radius: 999px;
-            color: #333;
-            transition: all .2s ease;
-        }
-
-        .category-pill:hover {
-            border-color: #4B0082;
-            color: #4B0082;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="assets/css/custom.css">
 </head>
 
 <body class="about-us">
