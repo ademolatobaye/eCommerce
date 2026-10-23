@@ -70,6 +70,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendor/magnific-popup/magnific-popup.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/custom.css">
 </head>
 
 <body>
