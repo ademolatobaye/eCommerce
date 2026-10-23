@@ -54,6 +54,7 @@ mysqli_stmt_close($stmt);
     <link rel="icon" type="image/png" href="assets/images/icons/favicon.png">
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/custom.css">
 </head>
 
 <body>
