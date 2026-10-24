@@ -32,32 +32,10 @@ if (empty($setting_row['business_name'])) {
 
     <link rel="icon" type="image/png" href="assets/images/icons/favicon.png">
 
-    <style>
-        .product-media img {
-            width: 100%;
-            height: 200px; 
-            object-fit: cover; 
-        }
-        .product-wrap {
-            margin-bottom: 20px;
-        }
-    </style>
-
-    <script>
-        WebFontConfig = {
-            google: { families: ['Poppins:400,500,600,700'] }
-        };
-        (function (d) {
-            var wf = d.createElement('script'), s = d.scripts[0];
-            wf.src = 'assets/js/webfont.js';
-            wf.async = true;
-            s.parentNode.insertBefore(wf, s);
-        })(document);
-    </script>
-
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendor/animate/animate.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/custom.css">
 </head>
 
 <body>
