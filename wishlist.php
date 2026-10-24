@@ -73,38 +73,7 @@ if (!empty($customer_uin)) {
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendor/animate/animate.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.min.css">
-    
-    <style>
-        .wishlist-table img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 6px;
-        }
-        .wishlist-table .product-thumbnail {
-            text-align: center;
-        }
-        .wishlist-table .product-thumbnail > div,
-        .wishlist-table .product-thumbnail .p-relative {
-            display: inline-block !important;
-            width: 80px !important;
-            max-width: 80px !important;
-            position: relative !important;
-            margin: 0 auto !important;
-        }
-        .wishlist-table .btn-close {
-            top: -8px !important;
-            right: -8px !important;
-        }
-        .stock-status.in-stock {
-            color: #28a745;
-            font-weight: 600;
-        }
-        .stock-status.out-stock {
-            color: #dc3545;
-            font-weight: 600;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="assets/css/custom.css">
 </head>
 
 <body>
