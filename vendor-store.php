@@ -38,7 +38,8 @@ $v_res = mysqli_stmt_get_result($v_query);
 $vendor = mysqli_fetch_assoc($v_res);
 
 if (!$vendor) {
-    echo "<script>alert('Vendor store not found or account is inactive.'); window.location.href='shop';</script>";
+    echo "<script>alert('Vendor store not found or account is inactive.');
+     window.location.href='shop';</script>";
     exit();
 }
 
