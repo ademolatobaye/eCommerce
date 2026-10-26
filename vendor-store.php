@@ -17,6 +17,12 @@ if (empty($setting_row['business_name'])) {
     exit();
 }
 
+$business_model = !empty($setting_row['business_model']) ? $setting_row['business_model'] : 'Multi-Vendor';
+if ($business_model === 'Single Store') {
+    header("Location: shop");
+    exit();
+}
+
 if (!isset($_GET['vendor_uin']) || empty($_GET['vendor_uin'])) {
     header("Location: shop");
     exit();
@@ -52,62 +58,7 @@ $products = mysqli_stmt_get_result($p_query);
 
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.min.css">
-    <style>
-        .vendor-banner-container {
-            position: relative;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
-        .vendor-banner-img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            opacity: 0.6;
-        }
-        .vendor-profile-overlay {
-            position: relative;
-            margin-top: -60px;
-            padding: 0 30px 25px;
-            display: flex;
-            align-items: flex-end;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .vendor-logo-img {
-            width: 110px;
-            height: 110px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 4px solid #ffffff;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            background: #fff;
-        }
-        .vendor-info-box {
-            color: #ffffff;
-            flex: 1;
-        }
-        .vendor-info-box h2 {
-            color: #ffffff;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        .vendor-meta-badge {
-            background: rgba(255,255,255,0.15);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            display: inline-block;
-            margin-right: 10px;
-            margin-bottom: 6px;
-        }
-        .product-media img {
-            height: 240px;
-            object-fit: cover;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="assets/css/custom.css">
 </head>
 <body class="home">
     <div class="page-wrapper">
