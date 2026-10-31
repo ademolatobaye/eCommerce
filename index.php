@@ -109,69 +109,7 @@ if (isset($_SESSION['customer_email'])) {
 
     <!-- Default CSS -->
     <link rel="stylesheet" type="text/css" href="assets/css/demo1.min.css">
-
-    <style>
-        .single-product .product-image img {
-            width: 100%;
-            height: 420px;
-            object-fit: cover;
-        }
-
-        .single-product .product-thumb img {
-            width: 100%;
-            height: 68px;
-            object-fit: cover;
-        }
-
-        .product-wrap .product-media {
-            overflow: hidden;
-        }
-
-        .product-wrap .product-media img {
-            width: 100%;
-            height: 243px;
-            object-fit: cover;
-        }
-
-        .product-widget .product-media img {
-            width: 105px;
-            height: 118px;
-            object-fit: cover;
-        }
-
-        .category-media img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-        }
-
-        .top-category-card {
-            background-color: #fff;
-            border-radius: .5rem;
-            overflow: hidden;
-            text-align: center;
-            height: 100%;
-        }
-
-        .top-category-card .category-media {
-            display: block;
-        }
-
-        .top-category-card .category-content {
-            padding: 1.5rem 1rem 1.2rem;
-        }
-
-        .top-category-card .category-name {
-            margin-bottom: .7rem;
-        }
-
-        .post-media img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-    </style>
-
+    <link rel="stylesheet" type="text/css" href="assets/css/custom.css">
 </head>
 
 <body class="home">
