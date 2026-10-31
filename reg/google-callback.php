@@ -22,7 +22,7 @@ if (empty($_POST['g_csrf_token']) || empty($_COOKIE['g_csrf_token'])
     exit('Invalid CSRF token');
 }
 
-// 2. Verify the ID token with Google (no library)
+// Verify the ID token with Google (no library)
 $idToken = $_POST['credential'] ?? '';
 $ch = curl_init('https://oauth2.googleapis.com/tokeninfo?id_token=' . urlencode($idToken));
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
