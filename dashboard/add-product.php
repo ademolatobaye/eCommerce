@@ -58,59 +58,6 @@ $rows = mysqli_fetch_array($result);
     <!-- INTERNAL Switcher css -->
     <link href="assets/switcher/css/switcher.css" rel="stylesheet">
     <link href="assets/switcher/demo.css" rel="stylesheet">
-
-    <style>
-        .drop-zone {
-            border: 2px dashed #4b0082;
-            border-radius: 8px;
-            padding: 25px;
-            text-align: center;
-            background: #fdfaff;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .drop-zone:hover, .drop-zone.dragover {
-            background: #f0e6ff;
-            border-color: #310056;
-        }
-        .preview-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 15px;
-        }
-        .preview-card {
-            position: relative;
-            width: 110px;
-            height: 110px;
-            border-radius: 6px;
-            overflow: hidden;
-            border: 1px solid #ddd;
-            background: #fff;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-        }
-        .preview-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .preview-card .remove-btn {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            background: rgba(220, 53, 69, 0.9);
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
 </head>
 
 <body class="app sidebar-mini ltr light-mode">
